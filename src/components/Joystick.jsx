@@ -18,6 +18,7 @@ var reqAnimationFrame = (function () {
 export default function () {
   const [verticalAxis, setVerticalAxis] = createSignal(0)
   const [horizontalAxis, setHorizontalAxis] = createSignal(0)
+  const [hammerev, setHammerev] = createSignal("")
 
   onMount(() => {
     var screen = document.querySelector(".device-screen")
@@ -60,6 +61,7 @@ export default function () {
         setHorizontalAxis(ev.deltaX)
         setVerticalAxis(ev.deltaY)
       }
+      setHammerev(JSON.stringify(ev, null, 2))
     })
 
     function logEvent(ev) {
@@ -195,14 +197,6 @@ export default function () {
     }
 
     resetElement()
-
-    document.querySelector(".device-button").addEventListener(
-      "click",
-      function () {
-        document.querySelector(".device").classList.toggle("hammertime")
-      },
-      false
-    )
   })
 
   return (
@@ -214,7 +208,6 @@ export default function () {
 
         <div class="try">
           <div class="device">
-            <div class="device-button"></div>
             <div class="device-screen-wrapper">
               <div class="device-screen">
                 <div id="hitarea"></div>
@@ -223,6 +216,8 @@ export default function () {
           </div>
         </div>
       </div>
+
+      <pre class="joydebug">{hammerev}</pre>
     </div>
   )
 }

@@ -1,21 +1,38 @@
-const app = require("express")()
-const http = require("http").Server(app)
-const io = require("socket.io")(http)
-const port = process.env.PORT || 3000
+// import { Server } from "socket.io"
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/socket.html")
-})
+// const io = new Server({
+//   serveClient: false
+// })
 
-io.on("connection", (socket) => {
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg)
-  })
-})
+// io.on("connection", socket => {
+//   console.log("CONNECTION")
+//   // ...
+// })
 
-http.listen(port, () => {
-  console.log(`Socket.IO server running at http://localhost:${port}/`)
-})
+// io.listen(6669)
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+// const app = require("express")()
+// const http = require("http").Server(app)
+// const io = require("socket.io")(http)
+// const port = process.env.PORT || 3000
+
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/socket.html")
+// })
+
+// io.on("connection", (socket) => {
+//   socket.on("chat message", (msg) => {
+//     io.emit("chat message", msg)
+//   })
+// })
+
+// http.listen(port, () => {
+//   console.log(`Socket.IO server running at http://localhost:${port}/`)
+// })
+
+// // // // // // // // // // // // // // // // // // // // // // // // // // //
 
 // const { json } = require("express")
 // const express = require("express")
