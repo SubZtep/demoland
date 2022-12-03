@@ -1,6 +1,6 @@
-import logo from "./logo.svg"
-import styles from "./App.module.css"
 import Joystick from "./components/Joystick.jsx"
+import styles from "./App.module.css"
+import logo from "./logo.svg"
 
 function App() {
   return (

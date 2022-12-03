@@ -5,4 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* disable pinch zoom gestures and and double-tap to zoom */
+  touch-action: pan-x pan-y;
+
+  /* disable panning */
+  touch-action: none;
 }

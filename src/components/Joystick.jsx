@@ -1,19 +1,9 @@
+// @ts-nocheck
 import { createSignal, onMount } from "solid-js"
 import Hammer from "hammerjs"
 import "./Joystick.css"
 
 delete Hammer.defaults.cssProps.userSelect
-
-// polyfill
-var reqAnimationFrame = (function () {
-  return (
-    window[Hammer.prefixed(window, "requestAnimationFrame")] ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60)
-    }
-  )
-})()
-
 
 export default function () {
   const [verticalAxis, setVerticalAxis] = createSignal(0)
@@ -21,6 +11,24 @@ export default function () {
   const [hammerev, setHammerev] = createSignal("")
 
   onMount(() => {
+    const socket = io()
+
+    socket.on("connect", () => {
+      console.log("connected", socket.connected) // true
+    })
+
+    socket.on("connect_error", ev => {
+      console.log("connect_error", ev.message)
+    })
+
+    socket.on("disconnect", () => {
+      console.log("disconnected", socket.connected) // false
+    })
+
+    socket.on("hammer", ev => {
+      console.log("server hammer", ev)
+    })
+
     var screen = document.querySelector(".device-screen")
     var el = document.querySelector("#hitarea")
 
@@ -37,10 +45,7 @@ export default function () {
 
     mc.add(new Hammer.Swipe()).recognizeWith(mc.get("pan"))
     mc.add(new Hammer.Rotate({ threshold: 0 })).recognizeWith(mc.get("pan"))
-    mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([
-      mc.get("pan"),
-      mc.get("rotate"),
-    ])
+    mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get("pan"), mc.get("rotate")])
 
     mc.add(new Hammer.Tap({ event: "doubletap", taps: 2 }))
     mc.add(new Hammer.Tap())
@@ -58,6 +63,7 @@ export default function () {
         setHorizontalAxis(0)
         setVerticalAxis(0)
       } else {
+        socket.emit("hammer", `${ev.deltaX},${ev.deltaY}`)
         setHorizontalAxis(ev.deltaX)
         setVerticalAxis(ev.deltaY)
       }
@@ -76,28 +82,16 @@ export default function () {
         angle: 0,
         rx: 0,
         ry: 0,
-        rz: 0,
+        rz: 0
       }
       requestElementUpdate()
     }
 
     function updateElementTransform() {
       var value = [
-        "translate3d(" +
-          transform.translate.x +
-          "px, " +
-          transform.translate.y +
-          "px, 0)",
+        "translate3d(" + transform.translate.x + "px, " + transform.translate.y + "px, 0)",
         "scale(" + transform.scale + ", " + transform.scale + ")",
-        "rotate3d(" +
-          transform.rx +
-          "," +
-          transform.ry +
-          "," +
-          transform.rz +
-          "," +
-          transform.angle +
-          "deg)",
+        "rotate3d(" + transform.rx + "," + transform.ry + "," + transform.rz + "," + transform.angle + "deg)"
       ]
 
       value = value.join(" ")
@@ -109,7 +103,7 @@ export default function () {
 
     function requestElementUpdate() {
       if (!ticking) {
-        reqAnimationFrame(updateElementTransform)
+        requestAnimationFrame(updateElementTransform)
         ticking = true
       }
     }
@@ -118,7 +112,7 @@ export default function () {
       el.className = ""
       transform.translate = {
         x: START_X + ev.deltaX,
-        y: START_Y + ev.deltaY,
+        y: START_Y + ev.deltaY
       }
 
       logEvent(ev)
@@ -156,10 +150,7 @@ export default function () {
       var angle = 50
       transform.ry = ev.direction & Hammer.DIRECTION_HORIZONTAL ? 1 : 0
       transform.rx = ev.direction & Hammer.DIRECTION_VERTICAL ? 1 : 0
-      transform.angle =
-        ev.direction & (Hammer.DIRECTION_RIGHT | Hammer.DIRECTION_UP)
-          ? angle
-          : -angle
+      transform.angle = ev.direction & (Hammer.DIRECTION_RIGHT | Hammer.DIRECTION_UP) ? angle : -angle
 
       clearTimeout(timer)
       timer = setTimeout(function () {
