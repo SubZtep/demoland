@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { createSignal, onMount } from "solid-js"
+import { createSignal, onMount, batch } from "solid-js"
 import Hammer from "hammerjs"
+import { lngLatSignal } from "../store"
 import "./Joystick.css"
 
 delete Hammer.defaults.cssProps.userSelect
@@ -9,6 +10,7 @@ export default function () {
   const [verticalAxis, setVerticalAxis] = createSignal(0)
   const [horizontalAxis, setHorizontalAxis] = createSignal(0)
   const [hammerev, setHammerev] = createSignal("")
+  const [, setLngLat] = lngLatSignal
 
   onMount(() => {
     const socket = io()
@@ -32,6 +34,11 @@ export default function () {
     // TODO: resize
     var screen = document.querySelector(".device-screen")
     var el = document.querySelector("#hitarea")
+
+    const norm = v => {
+      const size = Math.min(screen.offsetWidth, screen.offsetHeight)
+      return +((v / size) * 2).toFixed(4)
+    }
 
     var START_X = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
     var START_Y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
@@ -61,12 +68,19 @@ export default function () {
     mc.on("hammer.input", function (ev) {
       if (ev.isFinal) {
         resetElement()
-        setHorizontalAxis(0)
-        setVerticalAxis(0)
+        batch(() => {
+          setHorizontalAxis(0)
+          setVerticalAxis(0)
+        })
       } else {
         socket.emit("hammer", `${ev.deltaX},${ev.deltaY}`)
-        setHorizontalAxis(-ev.deltaY)
-        setVerticalAxis(ev.deltaX)
+        const x = norm(ev.deltaX)
+        const y = -norm(ev.deltaY)
+        batch(() => {
+          setHorizontalAxis(x)
+          setVerticalAxis(y)
+          setLngLat([x * 10, y * 10])
+        })
       }
       setHammerev(JSON.stringify(ev, null, 2))
     })
@@ -193,14 +207,16 @@ export default function () {
 
   return (
     <>
-      <div class="device">
-        <div class="device-screen">
-          <div id="hitarea"></div>
+      <div class="device-wrapper">
+        <div class="device">
+          <div class="device-screen">
+            <div id="hitarea"></div>
+          </div>
         </div>
       </div>
       <div class="debug">
         <big>
-          axis: {verticalAxis} {horizontalAxis}
+          axis: {horizontalAxis} x {verticalAxis}
         </big>
         <pre>{hammerev}</pre>
       </div>

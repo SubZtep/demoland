@@ -1,21 +1,13 @@
 #map {
-  /* inset: 0; */
   position: absolute;
   width: 100vw;
   height: 100vh;
 }
 
-#map.fade {
+.fade {
   transition: opacity 300ms;
 }
 
-#map.hidden {
+.hidden {
   opacity: 0;
-  /* opacity: 1;
-  transition: opacity 300ms; */
-}
-
-#map.fade-in {
-  opacity: 1;
-  transition: opacity 300ms;
 }
