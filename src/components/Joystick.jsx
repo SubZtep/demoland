@@ -29,6 +29,7 @@ export default function () {
       console.log("server hammer", ev)
     })
 
+    // TODO: resize
     var screen = document.querySelector(".device-screen")
     var el = document.querySelector("#hitarea")
 
@@ -64,8 +65,8 @@ export default function () {
         setVerticalAxis(0)
       } else {
         socket.emit("hammer", `${ev.deltaX},${ev.deltaY}`)
-        setHorizontalAxis(ev.deltaX)
-        setVerticalAxis(ev.deltaY)
+        setHorizontalAxis(-ev.deltaY)
+        setVerticalAxis(ev.deltaX)
       }
       setHammerev(JSON.stringify(ev, null, 2))
     })
@@ -191,24 +192,18 @@ export default function () {
   })
 
   return (
-    <div class="row splash">
-      <div class="column">
-        <div class="text-center">
-          Hello, {verticalAxis} {horizontalAxis}!
-        </div>
-
-        <div class="try">
-          <div class="device">
-            <div class="device-screen-wrapper">
-              <div class="device-screen">
-                <div id="hitarea"></div>
-              </div>
-            </div>
-          </div>
+    <>
+      <div class="device">
+        <div class="device-screen">
+          <div id="hitarea"></div>
         </div>
       </div>
-
-      <pre class="joydebug">{hammerev}</pre>
-    </div>
+      <div class="debug">
+        <big>
+          axis: {verticalAxis} {horizontalAxis}
+        </big>
+        <pre>{hammerev}</pre>
+      </div>
+    </>
   )
 }

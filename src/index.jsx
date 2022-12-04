@@ -1,7 +1,8 @@
 /* @refresh reload */
 import { render } from "solid-js/web"
-
-import "./index.css"
 import App from "./App"
+import "./index.css"
+
+document.body.classList.add(`sky-gradient-${new Date().getHours()}`)
 
 render(() => <App />, document.getElementById("root"))

@@ -23,12 +23,13 @@ export default defineConfig({
           })
       },
       transformIndexHtml(html) {
-        return html.replace(/<\/body>/i, `<script src="/socket.io/socket.io.js"></script></body>`)
+        return html.replace(/<\/body>/, `<script src="/socket.io/socket.io.js"></script></body>`)
       }
     }
   ],
   server: {
     port: 3000
+    // host: true
   },
   build: {
     target: "esnext"
