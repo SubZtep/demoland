@@ -67,8 +67,8 @@ export default function () {
               "circle-radius": 8,
               "circle-color": "#ff0",
               "circle-opacity": 0.6,
-              "circle-stroke-color": "#00f",
-              "circle-stroke-width": 4,
+              "circle-stroke-color": "#000",
+              "circle-stroke-width": 3,
               "circle-stroke-opacity": 0.8
             }
           },

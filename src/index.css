@@ -23,12 +23,12 @@ body {
   bottom: 0;
   position: absolute;
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: bolder;
   pointer-events: none;
-  opacity: 0.8;
-  color: #efa;
+  color: #ff0;
   padding: 0.5rem;
-  text-shadow: 1px 1px 1px #333a;
+  text-shadow: -1px -1px #111d, -1px 1px #111d, 1px -1px #111d, 1px 1px #111d;
 }
 
 .debug big {

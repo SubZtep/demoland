@@ -11,15 +11,15 @@ export default defineConfig({
         const io = new Server(server.httpServer!)
           .on("connection", socket => {
             console.log("CONNECTED")
-            socket.on("hammer", msg => {
-              io.emit("hammer", msg)
+            socket.on("joystick", msg => {
+              io.emit("joystick", msg)
             })
           })
-          .on("disconnect", _socket => {
-            console.log("DOSCONNECTED")
+          .on("disconnect", v => {
+            console.log("DOSCONNECTED", v)
           })
-          .on("error", _socket => {
-            console.log("ERROR")
+          .on("error", v => {
+            console.log("ERROR", v)
           })
       },
       transformIndexHtml(html) {

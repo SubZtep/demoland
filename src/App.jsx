@@ -1,4 +1,4 @@
-import Joystick from "./components/Joystick.jsx"
+import Joystick from "./components/Joystick.tsx"
 import Map from "./components/map.tsx"
 
 function App() {

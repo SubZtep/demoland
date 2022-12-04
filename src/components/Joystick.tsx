@@ -1,47 +1,52 @@
-// @ts-nocheck
 import { createSignal, onMount, batch } from "solid-js"
 import Hammer from "hammerjs"
 import { lngLatSignal } from "../store"
 import "./Joystick.css"
+import { io } from "socket.io-client"
+import debounce from "lodash/debounce"
 
 delete Hammer.defaults.cssProps.userSelect
 
 export default function () {
   const [verticalAxis, setVerticalAxis] = createSignal(0)
   const [horizontalAxis, setHorizontalAxis] = createSignal(0)
+  const [startX, setStartX] = createSignal(0)
+  const [startY, setStartY] = createSignal(0)
   const [hammerev, setHammerev] = createSignal("")
   const [, setLngLat] = lngLatSignal
+
+  const setStartPos = () => {
+    const { x, y } = startPos()
+    batch(() => {
+      setStartX(x)
+      setStartY(y)
+    })
+  }
 
   onMount(() => {
     const socket = io()
 
-    socket.on("connect", () => {
-      console.log("connected", socket.connected) // true
-    })
-
     socket.on("connect_error", ev => {
-      console.log("connect_error", ev.message)
+      throw new Error(ev.message)
     })
 
-    socket.on("disconnect", () => {
-      console.log("disconnected", socket.connected) // false
+    socket.on("joystick", ev => {
+      console.log("from server", ev)
     })
 
-    socket.on("hammer", ev => {
-      console.log("server hammer", ev)
-    })
+    setStartPos()
+    window.addEventListener("resize", debounce(setStartPos, 100))
 
-    // TODO: resize
-    var screen = document.querySelector(".device-screen")
-    var el = document.querySelector("#hitarea")
+    // var screen = document.querySelector(".device-screen")
+    const el = document.querySelector("#hitarea")
 
-    const norm = v => {
-      const size = Math.min(screen.offsetWidth, screen.offsetHeight)
-      return +((v / size) * 2).toFixed(4)
-    }
+    // const norm = v => {
+    //   const size = Math.min(screen.offsetWidth, screen.offsetHeight)
+    //   return +((v / size) * 2).toFixed(4)
+    // }
 
-    var START_X = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
-    var START_Y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
+    // var START_X = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
+    // var START_Y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
 
     var ticking = false
     var transform
@@ -73,7 +78,7 @@ export default function () {
           setVerticalAxis(0)
         })
       } else {
-        socket.emit("hammer", `${ev.deltaX},${ev.deltaY}`)
+        socket.emit("joystick", `${ev.deltaX},${ev.deltaY}`)
         const x = norm(ev.deltaX)
         const y = -norm(ev.deltaY)
         batch(() => {
@@ -92,7 +97,7 @@ export default function () {
     function resetElement() {
       el.className = "animate"
       transform = {
-        translate: { x: START_X, y: START_Y },
+        translate: { x: startX(), y: startY() },
         scale: 1,
         angle: 0,
         rx: 0,
@@ -126,8 +131,8 @@ export default function () {
     function onPan(ev) {
       el.className = ""
       transform.translate = {
-        x: START_X + ev.deltaX,
-        y: START_Y + ev.deltaY
+        x: startX() + ev.deltaX,
+        y: startY() + ev.deltaY
       }
 
       logEvent(ev)
@@ -222,4 +227,22 @@ export default function () {
       </div>
     </>
   )
+}
+
+function startPos() {
+  const screen = document.querySelector<HTMLElement>(".device-screen")
+  const el = document.querySelector<HTMLElement>("#hitarea")
+  let x = 0
+  let y = 0
+  if (screen && el) {
+    x = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
+    y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
+  }
+  return { x, y }
+}
+
+function norm(v: number) {
+  const screen = document.querySelector<HTMLElement>(".device-screen")
+  const size = screen ? Math.min(screen.offsetWidth, screen.offsetHeight) : 800
+  return +((v / size) * 2).toFixed(4)
 }
