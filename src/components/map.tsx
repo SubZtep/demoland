@@ -1,102 +1,53 @@
-import { onMount, createEffect, on } from "solid-js"
-import { Map as MapLibre, GeolocateControl, FullscreenControl, GeoJSONSource } from "maplibre-gl"
-import {lngLatSignal } from "../store"
-import "./map.css"
+import { onMount } from "solid-js"
+import { Map as MapLibre, GeolocateControl, FullscreenControl, type GeolocateOptions } from "maplibre-gl"
+import { SocketControl } from "../lib/socket-control"
+import styles from "./map.module.css"
 
 if (!((await import("maplibre-gl")) as any).supported()) {
   throw new Error("Your browser is not currently supported")
 }
 
+interface MapProps {
+  /** Callback when user requests GPS coordinates */
+  onGeolocate?: (lngLat: LngLatTuple) => void
+}
+
 let map: MapLibre
 
-export default function () {
-  const [lngLat] = lngLatSignal
-
+export default function ({ onGeolocate }: MapProps) {
   onMount(() => {
     map = new MapLibre({
       container: "map",
       style: "style.json",
-      attributionControl: false,
-      zoom: 0
+      attributionControl: false
     })
 
     map.once("load", () => {
       const el = map.getContainer()
-      el.classList.remove("hidden")
-      nextTick(() => el.classList.remove("fade"))
+      el.classList.remove(styles.hidden)
+      nextTick(() => el.classList.remove(styles.fade))
+
+      const geolocate = new GeolocateControl({
+        showAccuracyCircle: true,
+        showUserLocation: true,
+        fitBoundsOptions: {
+          padding: 30,
+          maxZoom: 5
+        }
+      } as GeolocateOptions)
+
+      geolocate.on("geolocate", ({ coords: { latitude, longitude } }) => {
+        onGeolocate?.([longitude, latitude])
+      })
 
       map
         .addControl(new FullscreenControl({ container: document.body }))
-        .addControl(
-          new GeolocateControl({
-            // positionOptions: {
-            //   enableHighAccuracy: true
-            // },
-            // trackUserLocation: false,
-            showAccuracyCircle: true,
-            showUserLocation: true,
-            // showUserLocation: true,
-            fitBoundsOptions: {
-              // TODO: add don't move the map option
-              padding: 30,
-              maxZoom: 5
-              // linear: true,
-              // zoom: map.getZoom(),
-              // center: map.getCenter(),
-              // animate: false
-            }
-          })
-        )
-        .addSource("users", {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "MultiPoint",
-              coordinates: [[0, 0]]
-            }
-          }
-        })
-        .addLayer(
-          {
-            id: "userslayer",
-            type: "circle",
-            source: "users",
-            paint: {
-              "circle-radius": 8,
-              "circle-color": "#ff0",
-              "circle-opacity": 0.6,
-              "circle-stroke-color": "#000",
-              "circle-stroke-width": 3,
-              "circle-stroke-opacity": 0.8
-            }
-          },
-          map.getStyle().layers.find(({ type }) => type === "symbol")?.id
-        )
+        .addControl(geolocate)
+        .addControl(new SocketControl())
     })
   })
 
-  createEffect(
-    on(lngLat, v => {
-      if (!v || !map) return
-
-      const source = map.getSource("users") as GeoJSONSource
-      if (source) {
-        const data: GeoJSON.GeoJSON = {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "MultiPoint",
-            coordinates: [v]
-          }
-        }
-        source.setData(data)
-      }
-    })
-  )
-
-  return <div id="map" class="hidden fade" />
+  return <div id="map" class={[styles.map, styles.hidden, styles.fase].join(" ")} />
 }
 
 function nextTick(callback: Fn) {

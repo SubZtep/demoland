@@ -1,15 +1,16 @@
 import { createSignal, onMount, batch } from "solid-js"
 import Hammer from "hammerjs"
+import debounce from "lodash/debounce"
+import throttle from "lodash/throttle"
 import { lngLatSignal } from "../store"
 import "./Joystick.css"
-import { io } from "socket.io-client"
-import debounce from "lodash/debounce"
 
+// @ts-expect-error
 delete Hammer.defaults.cssProps.userSelect
 
+let eventsEl: HTMLElement
+
 export default function () {
-  const [verticalAxis, setVerticalAxis] = createSignal(0)
-  const [horizontalAxis, setHorizontalAxis] = createSignal(0)
   const [startX, setStartX] = createSignal(0)
   const [startY, setStartY] = createSignal(0)
   const [hammerev, setHammerev] = createSignal("")
@@ -24,78 +25,56 @@ export default function () {
   }
 
   onMount(() => {
-    const socket = io()
-
-    socket.on("connect_error", ev => {
-      throw new Error(ev.message)
-    })
-
-    socket.on("joystick", ev => {
-      console.log("from server", ev)
-    })
-
+    eventsEl = document.querySelector("socket-events")!
+    const joyEl = document.querySelector<HTMLElement>("#hitarea")!
     setStartPos()
     window.addEventListener("resize", debounce(setStartPos, 100))
 
-    // var screen = document.querySelector(".device-screen")
-    const el = document.querySelector("#hitarea")
+    // hammerweb from here
+    let ticking = false
+    let transform: CSSRuleList | any
+    let timer: NodeJS.Timeout
 
-    // const norm = v => {
-    //   const size = Math.min(screen.offsetWidth, screen.offsetHeight)
-    //   return +((v / size) * 2).toFixed(4)
-    // }
+    const hammer = new Hammer.Manager(joyEl)
 
-    // var START_X = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
-    // var START_Y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
+    hammer.add(new Hammer.Pan({ threshold: 0, pointers: 0 }))
 
-    var ticking = false
-    var transform
-    var timer
+    hammer.add(new Hammer.Swipe()).recognizeWith(hammer.get("pan"))
+    hammer.add(new Hammer.Rotate({ threshold: 0 })).recognizeWith(hammer.get("pan"))
+    hammer.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([hammer.get("pan"), hammer.get("rotate")])
 
-    var mc = new Hammer.Manager(el)
+    hammer.add(new Hammer.Tap({ event: "doubletap", taps: 2 }))
+    hammer.add(new Hammer.Tap())
 
-    mc.add(new Hammer.Pan({ threshold: 0, pointers: 0 }))
+    hammer.on("panstart panmove", onPan)
+    hammer.on("rotatestart rotatemove", onRotate)
+    hammer.on("pinchstart pinchmove", onPinch)
+    hammer.on("swipe", onSwipe)
+    hammer.on("tap", onTap)
+    hammer.on("doubletap", onDoubleTap)
 
-    mc.add(new Hammer.Swipe()).recognizeWith(mc.get("pan"))
-    mc.add(new Hammer.Rotate({ threshold: 0 })).recognizeWith(mc.get("pan"))
-    mc.add(new Hammer.Pinch({ threshold: 0 })).recognizeWith([mc.get("pan"), mc.get("rotate")])
-
-    mc.add(new Hammer.Tap({ event: "doubletap", taps: 2 }))
-    mc.add(new Hammer.Tap())
-
-    mc.on("panstart panmove", onPan)
-    mc.on("rotatestart rotatemove", onRotate)
-    mc.on("pinchstart pinchmove", onPinch)
-    mc.on("swipe", onSwipe)
-    mc.on("tap", onTap)
-    mc.on("doubletap", onDoubleTap)
-
-    mc.on("hammer.input", function (ev) {
-      if (ev.isFinal) {
-        resetElement()
-        batch(() => {
-          setHorizontalAxis(0)
-          setVerticalAxis(0)
-        })
-      } else {
-        socket.emit("joystick", `${ev.deltaX},${ev.deltaY}`)
-        const x = norm(ev.deltaX)
-        const y = -norm(ev.deltaY)
-        batch(() => {
-          setHorizontalAxis(x)
-          setVerticalAxis(y)
-          setLngLat([x * 10, y * 10])
-        })
-      }
-      setHammerev(JSON.stringify(ev, null, 2))
-    })
+    hammer.on(
+      "hammer.input",
+      throttle(ev => {
+        // console.log("HAMMER INPUT")
+        if (ev.isFinal) {
+          resetElement()
+        } else {
+          const x = norm(ev.deltaX) * 10
+          const y = -norm(ev.deltaY) * 10
+          eventsEl.setAttribute("position", `${x},${y}`)
+        }
+        setHammerev(JSON.stringify(ev, null, 2))
+      }, 1_000 / 30)
+    )
 
     function logEvent(ev) {
+      // console.log("hammer event", ev)
       //el.innerText = ev.type;
     }
 
     function resetElement() {
-      el.className = "animate"
+      joyEl.className = "animate"
       transform = {
         translate: { x: startX(), y: startY() },
         scale: 1,
@@ -108,16 +87,16 @@ export default function () {
     }
 
     function updateElementTransform() {
-      var value = [
+      let value: any = [
         "translate3d(" + transform.translate.x + "px, " + transform.translate.y + "px, 0)",
         "scale(" + transform.scale + ", " + transform.scale + ")",
         "rotate3d(" + transform.rx + "," + transform.ry + "," + transform.rz + "," + transform.angle + "deg)"
       ]
 
       value = value.join(" ")
-      el.style.webkitTransform = value
-      el.style.mozTransform = value
-      el.style.transform = value
+      joyEl.style.webkitTransform = value
+      joyEl.style.mozTransform = value
+      joyEl.style.transform = value
       ticking = false
     }
 
@@ -129,7 +108,7 @@ export default function () {
     }
 
     function onPan(ev) {
-      el.className = ""
+      joyEl.className = ""
       transform.translate = {
         x: startX() + ev.deltaX,
         y: startY() + ev.deltaY
@@ -145,7 +124,7 @@ export default function () {
         initScale = transform.scale || 1
       }
 
-      el.className = ""
+      joyEl.className = ""
       transform.scale = initScale * ev.scale
 
       logEvent(ev)
@@ -158,7 +137,7 @@ export default function () {
         initAngle = transform.angle || 0
       }
 
-      el.className = ""
+      joyEl.className = ""
       transform.rz = 1
       transform.angle = initAngle + ev.rotation
 
@@ -219,12 +198,7 @@ export default function () {
           </div>
         </div>
       </div>
-      <div class="debug">
-        <big>
-          axis: {horizontalAxis} x {verticalAxis}
-        </big>
-        <pre>{hammerev}</pre>
-      </div>
+      <pre class="debug">{hammerev}</pre>
     </>
   )
 }
@@ -244,5 +218,5 @@ function startPos() {
 function norm(v: number) {
   const screen = document.querySelector<HTMLElement>(".device-screen")
   const size = screen ? Math.min(screen.offsetWidth, screen.offsetHeight) : 800
-  return +((v / size) * 2).toFixed(4)
+  return +((v / size) * 2) // .toFixed(5)
 }

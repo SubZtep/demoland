@@ -41,7 +41,7 @@
 }
 
 #hitarea {
-  box-shadow: 5px -5px 15px #0006, inset 1px -1px 2px #eeea;
+  box-shadow: 4px -4px 12px #3336, inset 1px -1px 2px #eeea;
   position: absolute;
   top: 0;
   left: 0;

@@ -1,5 +1,5 @@
-#map {
-  position: absolute;
+.map {
+  position: absolute !important;
   width: 100vw;
   height: 100vh;
 }
@@ -7,7 +7,7 @@
 .fade {
   transition: opacity 300ms;
 }
-
+/*
 .hidden {
   opacity: 0;
-}
+} */

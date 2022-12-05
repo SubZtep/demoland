@@ -1,11 +1,14 @@
-import Joystick from "./components/Joystick.tsx"
-import Map from "./components/map.tsx"
+import { createSignal } from "solid-js"
+import Joystick from "./components/Joystick"
+import Map from "./components/map"
 
 function App() {
+  const [showJoystick, setShowJoystick] = createSignal(false)
+
   return (
     <>
-      <Map />
-      <Joystick />
+      <Map onGeolocate={() => setShowJoystick(true)} />
+      {showJoystick() && <Joystick />}
     </>
   )
 }
