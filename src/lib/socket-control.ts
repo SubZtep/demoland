@@ -5,7 +5,7 @@ import netIcon from "/network-wired.svg?raw"
 let eventsEl: HTMLElement
 
 export class SocketControl implements IControl {
-  #map!: MapLibre
+  // #map!: MapLibre
   #container!: HTMLElement
   #button: HTMLButtonElement
 
@@ -20,10 +20,10 @@ export class SocketControl implements IControl {
   }
 
   onAdd(map: MapLibre) {
-    this.#map = map
-    eventsEl = document.querySelector("socket-events")!
-    // @ts-expect-error
-    eventsEl.addEventListener("player", this.onPlayerEvent)
+  //   this.#map = map
+  //   eventsEl = document.querySelector("socket-events")!
+  //   // @ts-expect-error
+  //   eventsEl.addEventListener("player", this.onPlayerEvent)
     return this.#container
   }
 

@@ -26,7 +26,7 @@
   position: absolute;
   bottom: 0;
   width: var(--max-size);
-  height: var(--max-size);q 1`
+  height: var(--max-size);
 }
 
 .device-screen {

@@ -6,10 +6,10 @@ class SocketEvents extends HTMLElement {
   /** Player, aka the current Client ID */
   #player!: string
   /** Player position */
-  #position?: LngLatTuple
+  // #position?: LngLatTuple
 
   static get observedAttributes() {
-    return ["position"]
+    return ["player", "position"]
   }
 
   constructor() {
@@ -18,12 +18,12 @@ class SocketEvents extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!this.hasAttribute("player")) {
-      throw new Error("Missing required attribute `player`")
-    }
-    this.#player = this.getAttribute("player")!
+    // if (!this.hasAttribute("player")) {
+    //   throw new Error("Missing required attribute `player`")
+    // }
+    // this.#player = this.getAttribute("player")!
     this.#socket = io()
-    this.#socket.emit("player", { player: this.#player, event: "connect" } as PlayerEventDetail)
+    // this.#socket.emit("player", { player: this.#player, event: "connect" } as PlayerEventDetail)
 
     this.#socket.on("playerx", (player: PlayerEventDetail) => {
       console.log("DRAW ME i am client player from server", player)
@@ -34,21 +34,30 @@ class SocketEvents extends HTMLElement {
     this.#socket.close()
   }
 
-  attributeChangedCallback(_name: "position", _old: string, v: string) {
-    this.#position = v.split(",").map(Number) as LngLatTuple
-    this.#socket.emit("player", {
-      player: this.#player,
-      event: "update",
-      position: this.#position
-    } as PlayerEventDetail)
+  attributeChangedCallback(name: "player" | "position", old: string, v: string) {
+    switch (name) {
+      case "player":
+        if (old) {
+          this.#socket.emit("player", { player: old, event: "disconnect" } as PlayerEventDetail)
+        }
+        this.#socket.emit("player", { player: v, event: "connect" } as PlayerEventDetail)
+        break
+      case "position":
+        const position = v.split(",").map(Number) as LngLatTuple
+        this.#socket.emit("player", {
+          player: this.#player,
+          event: "update",
+          position
+        } as PlayerEventDetail)
+    }
   }
 }
 
 export default SocketEvents
 
-export function createSocketEventsElement() {
-  customElements.define("socket-events", SocketEvents)
-  const el = document.createElement("socket-events")
-  el.setAttribute("player", initPlayerID())
-  return el
-}
+// export function createSocketEventsElement() {
+//   customElements.define("socket-events", SocketEvents)
+//   const el = document.createElement("socket-events")
+//   el.setAttribute("player", initPlayerID())
+//   return el
+// }
