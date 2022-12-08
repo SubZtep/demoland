@@ -5,9 +5,9 @@
 import "./lib/socket-events"
 import "./components/world-map"
 import "./components/touch-joystick"
-import "./index.css"
+import "./main.css"
 
-document.body.classList.add(`sky-gradient-${new Date().getHours()}`)
+// document.body.classList.add(`sky-gradient-${new Date().getHours()}`)
 // document.body.prepend(createSocketEventsElement())
 
 // render(() => <App />, document.getElementById("root"))

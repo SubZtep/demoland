@@ -6,17 +6,18 @@
     <meta name="theme-color" content="#8a0303" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <meta name="viewport" content="user-scalable=no" />
+    <link rel="stylesheet" href="css/sky.css" />
   </head>
   <body>
     <noscript>No JS: no app</noscript>
+    <script>
+      document.body.classList.add(`sky-gradient-${new Date().getHours()}`)
+    </script>
     <div id="root"></div>
-    <script src="/src/main.ts" type="module"></script>
+    <script src="src/main.ts" type="module"></script>
     <socket-events></socket-events>
-    
-    <!-- <template id="maplibre-css">
-      @import "maplibre-gl.css"
-    </template> -->
+
     <world-map></world-map>
-    <!-- <touch-joystick></touch-joystick> -->
+    <touch-joystick></touch-joystick>
   </body>
 </html>

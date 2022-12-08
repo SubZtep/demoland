@@ -36,13 +36,13 @@ class WorldMap extends HTMLElement {
   }
 
   connectedCallback() {
-    fetch("./maplibre-gl.css")
+    fetch("css/maplibre-gl.css")
       .then(style => style.text())
       .then(css => this.#style.insertAdjacentText("beforeend", css))
 
     map = new MapLibre({
       container: this.#el,
-      style: "style.json",
+      style: "map/style.json",
       attributionControl: false
     })
 

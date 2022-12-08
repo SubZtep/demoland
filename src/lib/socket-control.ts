@@ -35,7 +35,7 @@ export class SocketControl implements IControl {
 
   createContainerElement() {
     const container = document.createElement("div")
-    container.className = "maplibregl-ctrl maplibregl-ctrl-group"
+    container.classList.add("maplibregl-ctrl", "maplibregl-ctrl-group")
     container.style.opacity = "0.6"
     return container
   }
@@ -48,5 +48,9 @@ export class SocketControl implements IControl {
     button.setAttribute("disabled", "")
     button.style.fill = "green"
     return button
+  }
+
+  getDefaultPosition(): ControlPosition {
+    return "bottom-right"
   }
 }
