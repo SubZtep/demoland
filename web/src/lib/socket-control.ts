@@ -1,5 +1,4 @@
-import { type ControlPosition, type IControl, type Map as MapLibre } from "maplibre-gl"
-import { setAttribute } from "solid-js/web"
+import type { ControlPosition, IControl, Map as MapLibre } from "maplibre-gl"
 import netIcon from "/network-wired.svg?raw"
 
 let eventsEl: HTMLElement
@@ -20,10 +19,10 @@ export class SocketControl implements IControl {
   }
 
   onAdd(map: MapLibre) {
-  //   this.#map = map
-  //   eventsEl = document.querySelector("socket-events")!
-  //   // @ts-expect-error
-  //   eventsEl.addEventListener("player", this.onPlayerEvent)
+    //   this.#map = map
+    //   eventsEl = document.querySelector("socket-events")!
+    //   // @ts-expect-error
+    //   eventsEl.addEventListener("player", this.onPlayerEvent)
     return this.#container
   }
 

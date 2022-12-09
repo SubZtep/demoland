@@ -1,0 +1,112 @@
+@font-face {
+  font-family: "Mona Sans";
+  src: url("fonts/Mona-Sans.woff2") format("woff2 supports variations"),
+    url("fonts/Mona-Sans.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
+  font-family: "Hubot Sans";
+  src: url("fonts/Hubot-Sans.woff2") format("woff2 supports variations"),
+    url("fonts/Hubot-Sans.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+/*
+** RESET CSS
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+html {
+  color-scheme: dark light;
+  /* font-family: "Hubot Sans"; */
+  font-family: "Mona Sans";
+}
+
+body {
+  min-height: 100vh;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+textarea,
+button,
+select {
+  font: inherit;
+}
+
+body {
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; */
+
+  /* disable pinch zoom gestures and and double-tap to zoom */
+  /* touch-action: pan-x pan-y; */
+
+  /* disable panning */
+  /* touch-action: none; */
+}
+
+/*
+** TYPOGRAPHY
+*/
+
+h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+/*
+** ETC
+*/
+
+.socket-btn {
+  padding: 5px 3px 3px 3px !important;
+}
+
+.socket-btn > svg {
+  opacity: 0.9;
+}
+
+.debug {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  text-align: left;
+  font-size: 0.8rem;
+  pointer-events: none;
+  color: #ff0;
+  padding: 0 0.5rem;
+  text-shadow: -1px -1px #111d, -1px 1px #111d, 1px -1px #111d, 1px 1px #111d;
+  font-family: "Arial Black";
+  letter-spacing: 0.2px;
+}

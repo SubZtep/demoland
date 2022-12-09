@@ -1,39 +1,131 @@
-import { createSignal, onMount, batch } from "solid-js"
 import Hammer from "hammerjs"
 import debounce from "lodash/debounce"
 import throttle from "lodash/throttle"
-import { lngLatSignal } from "../store"
-import "./Joystick.css"
+import VanillaTilt from "vanilla-tilt"
 
 // @ts-expect-error
 delete Hammer.defaults.cssProps.userSelect
 
-let eventsEl: HTMLElement
+const html = `
+<div class="device-wrapper">
+  <div class="device">
+    <div class="device-screen">
+      <div id="hitarea"></div>
+    </div>
+  </div>
+</div>
+`
 
-export default function () {
-  const [startX, setStartX] = createSignal(0)
-  const [startY, setStartY] = createSignal(0)
-  const [hammerev, setHammerev] = createSignal("")
-  const [, setLngLat] = lngLatSignal
-
-  const setStartPos = () => {
-    const { x, y } = startPos()
-    batch(() => {
-      setStartX(x)
-      setStartY(y)
-    })
+const css = `
+  :host {
+    --max-size: min(100vw, 100vh);
+    --pointer-size: min(calc(var(--max-size) / 2), 150px);
   }
 
-  onMount(() => {
-    eventsEl = document.querySelector("socket-events")!
-    const joyEl = document.querySelector<HTMLElement>("#hitarea")!
-    setStartPos()
+  .device-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .device > * {
+    box-sizing: inherit;
+  }
+
+  .device {
+    box-sizing: border-box;
+    overflow: hidden;
+    pointer-events: none;
+    background: rgba(0 0 0 / 0.5);
+    border-radius: 20px;
+    padding: 30px;
+    position: absolute;
+    bottom: 0;
+    width: var(--max-size);
+    height: var(--max-size);
+  }
+
+  .device-screen {
+    clip-path: inset(1px);
+    box-shadow: inset -5px 5px 40px #000d;
+    background: rgba(190 226 234 / 0.5);
+    position: relative;
+    border-radius: 12px;
+    perspective: 500px;
+    height: 100%;
+    width: 100%;
+  }
+  #hitarea {
+    box-shadow: 4px -4px 12px #3336, inset 1px -1px 2px #eeea;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--pointer-size);
+    height: var(--pointer-size);
+    pointer-events: auto;
+    background: rebeccapurple;
+    cursor: move;
+    -ms-touch-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+  }
+  @media (orientation: portrait) {
+    .device {
+      border-radius: 20px 20px 0 0;
+    }
+  }
+  @media (orientation: landscape) {
+    .device {
+      border-radius: 20px 0 0 20px;
+    }
+  }
+  #hitarea.animate {
+    transition: all 0.3s;
+  }
+`
+
+let eventsEl: HTMLElement
+let startX: number = 0
+let startY: number = 0
+
+class TouchJoystick extends HTMLElement {
+  static get observedAttributes() {
+    return ["tilt"]
+  }
+
+  constructor() {
+    super()
+    const style = document.createElement("style")
+    style.textContent = css
+    const wrapper = document.createElement("div")
+    wrapper.classList.add("device-wrapper")
+    wrapper.innerHTML = html
+    this.attachShadow({ mode: "open" }).append(style, wrapper)
+  }
+
+  connectedCallback() {
+    const shadowRoot = this.shadowRoot!
+    // eventsEl = shadowRoot.querySelector("socket-events")!
+    const joyEl = shadowRoot.querySelector<HTMLElement>("#hitarea")!
+    const setStartPos = setStartPosShadow(shadowRoot)
     window.addEventListener("resize", debounce(setStartPos, 100))
+
+    VanillaTilt.init(shadowRoot.querySelector<HTMLElement>(".device-screen")!, {
+      max: 5,
+      speed: 250,
+      glare: true,
+      "max-glare": 0.5
+    })
 
     // hammerweb from here
     let ticking = false
     let transform: CSSRuleList | any
     let timer: NodeJS.Timeout
+    const norm = normShadow(shadowRoot)
 
     const hammer = new Hammer.Manager(joyEl)
 
@@ -62,9 +154,10 @@ export default function () {
         } else {
           const x = norm(ev.deltaX) * 10
           const y = -norm(ev.deltaY) * 10
-          eventsEl.setAttribute("position", `${x},${y}`)
+          // eventsEl.setAttribute("position", `${x},${y}`)
         }
-        setHammerev(JSON.stringify(ev, null, 2))
+        // console.log(ev)
+        // setHammerev(JSON.stringify(ev, null, 2))
       }, 1_000 / 30)
     )
 
@@ -76,7 +169,7 @@ export default function () {
     function resetElement() {
       joyEl.className = "animate"
       transform = {
-        translate: { x: startX(), y: startY() },
+        translate: { x: startX, y: startY },
         scale: 1,
         angle: 0,
         rx: 0,
@@ -110,8 +203,8 @@ export default function () {
     function onPan(ev) {
       joyEl.className = ""
       transform.translate = {
-        x: startX() + ev.deltaX,
-        y: startY() + ev.deltaY
+        x: startX + ev.deltaX,
+        y: startY + ev.deltaY
       }
 
       logEvent(ev)
@@ -187,36 +280,31 @@ export default function () {
     }
 
     resetElement()
-  })
-
-  return (
-    <>
-      <div class="device-wrapper">
-        <div class="device">
-          <div class="device-screen">
-            <div id="hitarea"></div>
-          </div>
-        </div>
-      </div>
-      <pre class="debug">{hammerev}</pre>
-    </>
-  )
-}
-
-function startPos() {
-  const screen = document.querySelector<HTMLElement>(".device-screen")
-  const el = document.querySelector<HTMLElement>("#hitarea")
-  let x = 0
-  let y = 0
-  if (screen && el) {
-    x = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
-    y = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
   }
-  return { x, y }
 }
 
-function norm(v: number) {
-  const screen = document.querySelector<HTMLElement>(".device-screen")
-  const size = screen ? Math.min(screen.offsetWidth, screen.offsetHeight) : 800
-  return +((v / size) * 2) // .toFixed(5)
+customElements.define("touch-joystick", TouchJoystick)
+
+export {}
+
+function setStartPosShadow(doc: ShadowRoot) {
+  return () => {
+    const screen = doc.querySelector<HTMLElement>(".device-screen")
+    const el = doc.querySelector<HTMLElement>("#hitarea")
+    // let x = 0
+    // let y = 0
+    if (screen && el) {
+      startX = Math.round((screen.offsetWidth - el.offsetWidth) / 2)
+      startY = Math.round((screen.offsetHeight - el.offsetHeight) / 2)
+    }
+    // return { x, y }
+  }
+}
+
+function normShadow(doc: ShadowRoot) {
+  return (v: number) => {
+    const screen = doc.querySelector<HTMLElement>(".device-screen")
+    const size = screen ? Math.min(screen.offsetWidth, screen.offsetHeight) : 800
+    return +((v / size) * 2) // .toFixed(5)
+  }
 }

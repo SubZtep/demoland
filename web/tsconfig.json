@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+    "lib": ["DOM", "ES2015"]
+  },
+  "include": ["src/**/*"]
+}

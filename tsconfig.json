@@ -1,18 +1,13 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "checkJs": false,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "noEmit": true,
-    "isolatedModules": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "server"],
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./packages/vite-plugin-sky"
+    },
+    {
+      "path": "./web"
+    }
+  ]
 }

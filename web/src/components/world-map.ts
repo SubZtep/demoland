@@ -7,13 +7,14 @@ const css = `
     width: 100vw;
     height: 100vh;
   }
-
   .fade {
     transition: opacity 300ms;
   }
-
   .unvisible {
     opacity: 0;
+  }
+  .maplibregl-ctrl-bottom-left {
+    display: flex;
   }
 `
 
@@ -65,9 +66,9 @@ class WorldMap extends HTMLElement {
       // })
 
       map
-        .addControl(new FullscreenControl({ container: document.body }))
-        .addControl(geolocate)
-        .addControl(new SocketControl())
+        .addControl(new FullscreenControl({ container: document.body }), "top-left")
+        .addControl(new SocketControl(), "bottom-left")
+        .addControl(geolocate, "bottom-left")
     })
   }
 }
