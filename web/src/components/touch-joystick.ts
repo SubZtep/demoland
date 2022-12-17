@@ -21,7 +21,6 @@ const css = `
     --max-size: min(100vw, 100vh);
     --pointer-size: min(calc(var(--max-size) / 2), 150px);
   }
-
   .device-wrapper {
     position: absolute;
     width: 100%;
@@ -30,11 +29,9 @@ const css = `
     justify-content: flex-end;
     pointer-events: none;
   }
-
   .device > * {
     box-sizing: inherit;
   }
-
   .device {
     box-sizing: border-box;
     overflow: hidden;
@@ -47,7 +44,6 @@ const css = `
     width: var(--max-size);
     height: var(--max-size);
   }
-
   .device-screen {
     clip-path: inset(1px);
     box-shadow: inset -5px 5px 40px #000d;
