@@ -18,8 +18,8 @@ const html = `
 
 const css = `
   :host {
-    --max-size: min(100vw, 100vh);
-    --pointer-size: min(calc(var(--max-size) / 2), 150px);
+    --max-size: min(min(100vw, 100vh), 400px);
+    --pointer-size: calc(var(--max-size) / 4);
   }
   .device-wrapper {
     position: absolute;
@@ -108,12 +108,15 @@ class TouchJoystick extends HTMLElement {
     // eventsEl = shadowRoot.querySelector("socket-events")!
     const joyEl = shadowRoot.querySelector<HTMLElement>("#hitarea")!
     const setStartPos = setStartPosShadow(shadowRoot)
+    setStartPos()
     window.addEventListener("resize", debounce(setStartPos, 100))
 
     VanillaTilt.init(shadowRoot.querySelector<HTMLElement>(".device-screen")!, {
       max: 5,
       speed: 250,
       glare: true,
+      reset: false,
+      reverse: true,
       "max-glare": 0.5
     })
 
