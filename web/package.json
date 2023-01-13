@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "author": "Andras Serfozo <subztep@gmail.com>",
-  "repository": "github:SubZtep/depth",
   "license": "Unlicense",
   "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SubZtep/nasi.git",
+    "directory": "web"
+  },
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -14,6 +18,7 @@
   "dependencies": {
     "@0b5vr/tweakpane-plugin-profiler": "^0.3.0",
     "@nasi/vite-plugin-sky": "workspace:*",
+    "@trpc/client": "^10.9.0",
     "express": "^4.18.2",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.21",
@@ -22,15 +27,22 @@
     "socket.io-client": "^4.5.4",
     "tweakpane": "^3.1.1",
     "uuid": "^9.0.0",
-    "vanilla-tilt": "^1.8.0"
+    "vanilla-tilt": "^1.8.0",
+    "ws": "^8.12.0"
   },
   "devDependencies": {
+    "@nasi/server": "workspace:*",
+    "@trpc/server": "^10.9.0",
     "@tweakpane/core": "^1.1.1",
     "@types/hammerjs": "^2.0.41",
     "@types/lodash": "^4.14.191",
-    "@types/node": "^18.11.16",
+    "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0",
+    "@types/ws": "^8.5.4",
     "typescript": "^4.9.4",
-    "vite": "^4.0.1"
+    "vite": "^4.0.4"
+  },
+  "peerDependencies": {
+    "@trpc/server": "^10.9.0"
   }
 }

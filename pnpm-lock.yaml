@@ -27,20 +27,37 @@ importers:
   packages/vite-plugin-sky:
     specifiers:
       tsup: ^6.5.0
-      vite: ^4.0.1
+      vite: ^4.0.4
     devDependencies:
       tsup: 6.5.0
-      vite: 4.0.1
+      vite: 4.0.4
+
+  server:
+    specifiers:
+      '@trpc/server': ^10.9.0
+      '@types/ws': ^8.5.4
+      ws: ^8.12.0
+      zod: ^3.20.2
+    dependencies:
+      '@trpc/server': 10.9.0
+      ws: 8.12.0
+      zod: 3.20.2
+    devDependencies:
+      '@types/ws': 8.5.4
 
   web:
     specifiers:
       '@0b5vr/tweakpane-plugin-profiler': ^0.3.0
+      '@nasi/server': workspace:*
       '@nasi/vite-plugin-sky': workspace:*
+      '@trpc/client': ^10.9.0
+      '@trpc/server': ^10.9.0
       '@tweakpane/core': ^1.1.1
       '@types/hammerjs': ^2.0.41
       '@types/lodash': ^4.14.191
-      '@types/node': ^18.11.16
+      '@types/node': ^18.11.18
       '@types/uuid': ^9.0.0
+      '@types/ws': ^8.5.4
       express: ^4.18.2
       hammerjs: ^2.0.8
       lodash: ^4.17.21
@@ -51,10 +68,12 @@ importers:
       typescript: ^4.9.4
       uuid: ^9.0.0
       vanilla-tilt: ^1.8.0
-      vite: ^4.0.1
+      vite: ^4.0.4
+      ws: ^8.12.0
     dependencies:
       '@0b5vr/tweakpane-plugin-profiler': 0.3.0_tweakpane@3.1.1
       '@nasi/vite-plugin-sky': link:../packages/vite-plugin-sky
+      '@trpc/client': 10.9.0_@trpc+server@10.9.0
       express: 4.18.2
       hammerjs: 2.0.8
       lodash: 4.17.21
@@ -64,14 +83,18 @@ importers:
       tweakpane: 3.1.1
       uuid: 9.0.0
       vanilla-tilt: 1.8.0
+      ws: 8.12.0
     devDependencies:
+      '@nasi/server': link:../server
+      '@trpc/server': 10.9.0
       '@tweakpane/core': 1.1.1
       '@types/hammerjs': 2.0.41
       '@types/lodash': 4.14.191
-      '@types/node': 18.11.16
+      '@types/node': 18.11.18
       '@types/uuid': 9.0.0
+      '@types/ws': 8.5.4
       typescript: 4.9.4
-      vite: 4.0.1_@types+node@18.11.16
+      vite: 4.0.4_@types+node@18.11.18
 
 packages:
 
@@ -749,6 +772,17 @@ packages:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
     dev: false
 
+  /@trpc/client/10.9.0_@trpc+server@10.9.0:
+    resolution: {integrity: sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==}
+    peerDependencies:
+      '@trpc/server': 10.9.0
+    dependencies:
+      '@trpc/server': 10.9.0
+    dev: false
+
+  /@trpc/server/10.9.0:
+    resolution: {integrity: sha512-5psyZgbvy29pJND32hwkWTMbv6s86IbsPOeDopsgNF0VegZT6Dsijmb7Ub/TDhuJVQVq5u4u5briMXi3SxmBkw==}
+
   /@tweakpane/core/1.1.1:
     resolution: {integrity: sha512-bCywfumcPHiaPLzskFrkB5+hw070UHwxPI45e04TmWW/iIyMwFSJlRvKtbN5cX8Xq1VZedxCgBFoJIici0OyKA==}
     dev: true
@@ -832,10 +866,6 @@ packages:
       '@types/pbf': 3.0.2
     dev: false
 
-  /@types/node/18.11.16:
-    resolution: {integrity: sha512-6T7P5bDkRhqRxrQtwj7vru+bWTpelgtcETAZEUSdq0YISKz8WKdoBukQLYQQ6DFHvU9JRsbFq0JH5C51X2ZdnA==}
-    dev: true
-
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
 
@@ -849,6 +879,12 @@ packages:
 
   /@types/uuid/9.0.0:
     resolution: {integrity: sha512-kr90f+ERiQtKWMz5rP32ltJ/BtULDI5RVO0uavn1HQUOwjx0R1h0rnDYNL0CepF1zL5bSY6FISAfd9tOdDhU5Q==}
+    dev: true
+
+  /@types/ws/8.5.4:
+    resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
+    dependencies:
+      '@types/node': 18.11.18
     dev: true
 
   /accepts/1.3.8:
@@ -2705,7 +2741,7 @@ packages:
       picocolors: 1.0.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.0.1_@types+node@18.11.18
+      vite: 4.0.4_@types+node@18.11.18
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -2716,75 +2752,75 @@ packages:
       - terser
     dev: true
 
-  /vite/4.0.1:
-    resolution: {integrity: sha512-kZQPzbDau35iWOhy3CpkrRC7It+HIHtulAzBhMqzGHKRf/4+vmh8rPDDdv98SWQrFWo6//3ozwsRmwQIPZsK9g==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      esbuild: 0.16.8
-      postcss: 8.4.20
-      resolve: 1.22.1
-      rollup: 3.7.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
-  /vite/4.0.1_@types+node@18.11.16:
-    resolution: {integrity: sha512-kZQPzbDau35iWOhy3CpkrRC7It+HIHtulAzBhMqzGHKRf/4+vmh8rPDDdv98SWQrFWo6//3ozwsRmwQIPZsK9g==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.11.16
-      esbuild: 0.16.8
-      postcss: 8.4.20
-      resolve: 1.22.1
-      rollup: 3.7.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /vite/4.0.1_@types+node@18.11.18:
     resolution: {integrity: sha512-kZQPzbDau35iWOhy3CpkrRC7It+HIHtulAzBhMqzGHKRf/4+vmh8rPDDdv98SWQrFWo6//3ozwsRmwQIPZsK9g==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 18.11.18
+      esbuild: 0.16.8
+      postcss: 8.4.20
+      resolve: 1.22.1
+      rollup: 3.7.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/4.0.4:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      esbuild: 0.16.8
+      postcss: 8.4.20
+      resolve: 1.22.1
+      rollup: 3.7.0
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/4.0.4_@types+node@18.11.18:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -2914,6 +2950,19 @@ packages:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
 
+  /ws/8.12.0:
+    resolution: {integrity: sha512-kU62emKIdKVeEIOIKVegvqpXMSTAMLJozpHZaJNDYqBjzlSYXQGviYwN1osDLJ9av68qHd4a2oSjd7yD4pacig==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
+
   /ws/8.2.3:
     resolution: {integrity: sha512-wBuoj1BDpC6ZQ1B7DWQBYVLphPWkm8i9Y0/3YdHjHKHiohOJ1ws+3OccDWtH+PoC9DZD5WOTrJvNbWvjS6JWaA==}
     engines: {node: '>=10.0.0'}
@@ -2940,3 +2989,7 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
     dev: true
+
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false
