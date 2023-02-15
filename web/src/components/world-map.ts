@@ -1,4 +1,11 @@
-import maplibgegl, { Map as MapLibre, GeolocateControl, FullscreenControl, type GeolocateOptions } from "maplibre-gl"
+// @ts-nocheck
+import maplibgegl, {
+  Map as MapLibre,
+  GeolocateControl,
+  FullscreenControl,
+  type GeolocateOptions,
+  LayerSpecification
+} from "maplibre-gl"
 import { SocketControl } from "../lib/socket-control"
 
 const css = `
@@ -43,8 +50,9 @@ class WorldMap extends HTMLElement {
 
     map = new MapLibre({
       container: this.#el,
-      style: "map/style.json",
-      attributionControl: false
+      style: "https://api.maptiler.com/maps/fd4b92a2-66ef-4be1-afe7-c17ce466c45a/style.json?key=heAbRi5uv37OZtIz5txX",
+      attributionControl: false,
+      scrollZoom: true
     })
 
     map.once("load", () => {
@@ -57,7 +65,6 @@ class WorldMap extends HTMLElement {
         showUserLocation: true,
         fitBoundsOptions: {
           padding: 30,
-          maxZoom: 5
         }
       } as GeolocateOptions)
 
@@ -69,6 +76,7 @@ class WorldMap extends HTMLElement {
         .addControl(new FullscreenControl({ container: document.body }), "top-left")
         .addControl(new SocketControl(), "bottom-left")
         .addControl(geolocate, "bottom-left")
+        .removeLayerByType("symbol")
     })
   }
 }
@@ -78,5 +86,16 @@ customElements.define("world-map", WorldMap)
 export {}
 
 function nextTick(callback: Fn) {
-  setTimeout(callback, 1)
+  setTimeout(callback, 0)
+}
+
+MapLibre.prototype.removeLayerByType = function (type: LayerSpecification["type"]) {
+  // console.log("map", map.getStyle().layers
+  this
+    .getStyle()
+    .layers.filter(v => v.type === type)
+    .forEach(v => {
+      map.removeLayer(v.id)
+    })
+  return this
 }

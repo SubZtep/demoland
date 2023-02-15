@@ -1,6 +1,6 @@
 import { defineConfig } from "vite"
 import mapsocketPlugin from "./src/lib/socket-server"
-import skyPlugin from "@nasi/vite-plugin-sky"
+import skyPlugin from "@demoland/vite-plugin-sky"
 import { Server } from "socket.io"
 
 export default defineConfig({
