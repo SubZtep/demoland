@@ -114,7 +114,7 @@ export default () => {
               WebSocket.
             </li>
           </ul>
-          Source code is available on <a href="https://github.com/SubZtep/kaja">GitHub</a>.
+          Source code is available on <a href="https://github.com/SubZtep/demoland">GitHub</a>.
         </fieldset>
       </Show>
     </>
