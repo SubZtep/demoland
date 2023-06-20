@@ -1,4 +1,6 @@
 node_modules
-/server/build
+tsconfig.tsbuildinfo
+/server/dist
+/web/dist
 /web/public/models
 /web/public/wasm
