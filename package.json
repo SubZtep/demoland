@@ -13,11 +13,9 @@
   ],
   "scripts": {
     "dev": "pnpm --parallel --if-present dev",
-    "web": "pnpm --filter @demoland/web dev",
-    "build": "pnpm -r run build",
-    "server": "node server.js",
-    "lint": "tsc --noEmit && eslint web/src",
-    "ncu": "pnpm recursive exec -- ncu -u --packageFile package.json & ncu -u --packageFile package.json"
+    "build": "pnpm --recursive --if-present run build",
+    "build:server": "pnpm --filter server run build",
+    "lint": "pnpm -r run lint"
   },
   "dependencies": {
     "lodash": "^4.17.21"
