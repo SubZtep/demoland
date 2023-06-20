@@ -22,8 +22,7 @@
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "importsNotUsedAsValues": "error"
+    "skipLibCheck": true
   },
   "exclude": ["node_modules"]
 }

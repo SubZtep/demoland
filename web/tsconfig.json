@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "rootDir": "src",
     "outDir": "dist",
-    "lib": ["DOM"]
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
   },
   "include": ["src/**/*"]
 }

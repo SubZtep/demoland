@@ -4,9 +4,6 @@
   "include": [],
   "references": [
     {
-      "path": "./packages/vite-plugin-sky"
-    },
-    {
       "path": "./web"
     }
   ]

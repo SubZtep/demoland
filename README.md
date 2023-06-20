@@ -1,12 +1,14 @@
-# :earth_africa: Map 3D — dev playground
+# demo.land
 
-## :milky_way: Solid Game Of Life
+Perform a real-time comparison of multiple hand gestures using Web Socket.
 
-```sh
-        _,--',   _._.--._____
- .--.--';_'-.', ";_      _.,-'
-.'--'.  _.'    {`'-;_ .-.>.'
-      '-:_      )  / `' '=.
-        ) >     {_/,     /~)
-snd     |/               `^ .'
-```
+## Links
+
+- [Hand landmarks detection guide](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/index)
+
+  ![hand joints](web/public/images/hand-landmarks.png)
+
+
+## Legal
+
+- [images/no-signal.jpg](https://unsplash.com/photos/0W4XLGITrHg)
