@@ -1,8 +1,11 @@
 {
-  "exclude": ["node_modules", "server"],
+  "exclude": ["node_modules"],
   "files": [],
   "include": [],
   "references": [
+    {
+      "path": "./server"
+    },
     {
       "path": "./web"
     }

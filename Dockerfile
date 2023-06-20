@@ -5,15 +5,14 @@ WORKDIR /home/node
 COPY --chown=node:node . .
 ENV NODE_ENV=development
 RUN pnpm install && \
-    pnpm run build && \
-    pnpm prune --prod && \
-    rm -rf src tsconfig.json
+    pnpm run build:server && \
+    pnpm prune --prod
 
 FROM node:current-alpine
 USER node
 WORKDIR /home/node
-COPY --chown=node:node --from=builder ["/home/node", "."]
+COPY --chown=node:node --from=builder ["/home/node/server", "."]
 ENV NODE_ENV=production
 
 EXPOSE $PORT
-CMD ["node", "build/server.js"]
+CMD ["node", "dist/server.js"]

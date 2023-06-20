@@ -15,6 +15,7 @@
     "dev": "pnpm --parallel --if-present dev",
     "build": "pnpm --recursive --if-present run build",
     "build:server": "pnpm --filter server run build",
+    "build:web": "pnpm --filter web run build",
     "lint": "pnpm -r run lint"
   },
   "dependencies": {
