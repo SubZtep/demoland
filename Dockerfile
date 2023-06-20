@@ -11,8 +11,8 @@ RUN pnpm install && \
 FROM node:current-alpine
 USER node
 WORKDIR /home/node
-COPY --chown=node:node --from=builder ["/home/node/server", "."]
+COPY --chown=node:node --from=builder ["/home/node", "."]
 ENV NODE_ENV=production
 
 EXPOSE $PORT
-CMD ["node", "dist/server.js"]
+CMD ["node", "server/dist/server.js"]
