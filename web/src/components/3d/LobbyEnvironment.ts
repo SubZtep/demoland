@@ -21,12 +21,12 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene, controls: CameraControls
     light.position.set(-5, 10, 0)
     light.target.position.set(0, 5, 0)
     helper = new THREE.DirectionalLightHelper(light)
-    grid = new THREE.GridHelper(1, 1)
-    box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
+    grid = new THREE.GridHelper(20, 20)
+    // box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
     
-    runForever.add(deltaTime => { // TODO: remove this function on cleanup
-      box.rotation.y += 0.05 * deltaTime
-    })
+    // runForever.add(deltaTime => { // TODO: remove this function on cleanup
+    //   box.rotation.y += 0.05 * deltaTime
+    // })
     
     props.scene.add(light, helper, grid, box)
   })
