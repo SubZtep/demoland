@@ -1,6 +1,6 @@
 import { For, Show, Switch, Match } from "solid-js"
-import { state } from "../state"
 import { HAND_ANGLES } from "../const"
+import { state } from "../state"
 import styles from "./App.module.css"
 import Finger from "./Finger"
 import CameraStream from "./CameraStream"
@@ -29,18 +29,6 @@ export default () => {
         <Switch>
           <Match when={state.broadcast}>
             <Lobby />
-            {/* <For each={state.playerIds}>
-              {pid => (
-                <ThreeScene pid={pid} colour={players.get(pid)?.colour}>
-                  {scene => (
-                    <>
-                      <HandEnvironment scene={scene} />
-                      <HandModel pid={pid} scene={scene} />
-                    </>
-                  )}
-                </ThreeScene>
-              )}
-            </For> */}
           </Match>
           <Match when={!state.broadcast}>
             <Home />
@@ -48,7 +36,8 @@ export default () => {
         </Switch>
       </div>
 
-      <CameraStream class={`${styles.monitor}${state.isDesktop ? " grid-col-span-2" : ""}`} />
+      {/* <CameraStream class={`${styles.monitor}${state.isDesktop ? " grid-col-span-2" : ""}`} /> */}
+      <CameraStream />
 
       <OptionsFieldset />
 
