@@ -11,17 +11,25 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
   let box: THREE.Mesh
 
   onMount(() => {
-    props.controls.setLookAt(-5, -2, 0, 0, 0, 0, false)
+    props.controls.setLookAt(-10, 2, 0, 0, 0, 0, false)
 
     loadSkybox(4).then(texture => {
       props.scene.background = texture
     })
 
     light = new THREE.DirectionalLight()
+    light.castShadow = true
     light.position.set(-5, 10, 0)
     light.target.position.set(0, 5, 0)
     helper = new THREE.DirectionalLightHelper(light)
     grid = new THREE.GridHelper(20, 20)
+
+    const geometry = new THREE.PlaneGeometry(10, 10)
+    const material = new THREE.MeshLambertMaterial({ color: 0xffff00 })
+    const plane = new THREE.Mesh(geometry, material)
+    plane.receiveShadow = true
+    plane.rotation.x = (Math.PI / 180) * -90
+
     // box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
 
     // runForever.add(deltaTime => { // TODO: remove this function on cleanup
@@ -32,6 +40,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
       light,
       helper,
       grid,
+      plane,
       // box
     )
   })

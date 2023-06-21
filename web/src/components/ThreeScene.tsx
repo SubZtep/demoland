@@ -38,6 +38,7 @@ const ThreeScene: Component<{
   onMount(() => {
     renderer = new THREE.WebGLRenderer({ alpha: props.alpha, antialias: true, canvas })
     renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.shadowMap.enabled = true
 
     controls = new CameraControls(camera, canvas)
     controls.setLookAt(...props.lookAt, false)
@@ -61,7 +62,7 @@ const ThreeScene: Component<{
         renderer.setSize(w, h)
         camera.aspect = w / h
         camera.updateProjectionMatrix()
-      }, 200)
+      }, 200),
     )
 
     resizer.observe(wrapper!, { box: "content-box" })
@@ -74,7 +75,6 @@ const ThreeScene: Component<{
   return (
     <div ref={wrapper} data-pid={props.pid} style={`--colour: ${props.colour}`} class={props.class}>
       <canvas ref={canvas}></canvas>
-      {/* {props.children({ scene, controls: controls! })} */}
     </div>
   )
 }
