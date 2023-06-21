@@ -1,16 +1,9 @@
-import { createSignal, createEffect, Switch, Match } from "solid-js"
 import { startMessageLoop, stopMessageLoop } from "../lib/loop"
 import { sendMessage } from "../lib/websocket"
 import { state, setState } from "../state"
 import styles from "./App.module.css"
 
 export default () => {
-  const [cameraEnabled, setCameraEnabled] = createSignal(false)
-
-  createEffect(() => {
-    setState({ cameraEnabled: cameraEnabled() })
-  })
-
   return (
     <fieldset class={styles.options}>
       <legend>Options</legend>
@@ -31,13 +24,6 @@ export default () => {
         <span class="landscape">Your colour</span>
         <span class="portrait">Colour</span>
       </label>
-
-      <button class={cameraEnabled() ? "" : "pulse"} onClick={() => setCameraEnabled(!cameraEnabled())}>
-        <Switch>
-          <Match when={!cameraEnabled()}>Enable camera</Match>
-          <Match when={cameraEnabled()}>Disable camera</Match>
-        </Switch>
-      </button>
 
       <label>
         <input

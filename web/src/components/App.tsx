@@ -97,9 +97,7 @@ export default () => {
         </Switch>
       </div>
 
-      <div class={`${styles.monitor}${state.isDesktop ? " grid-col-span-2" : ""}`}>
-        <CameraStream />
-      </div>
+      <CameraStream class={`${styles.monitor}${state.isDesktop ? " grid-col-span-2" : ""}`} />
 
       <OptionsFieldset />
 

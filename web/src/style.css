@@ -66,16 +66,6 @@ button:enabled {
   cursor: pointer;
 }
 
-video {
-  background-color: #123;
-  box-shadow: var(--box-shadow-inset);
-}
-
-/* canvas {
-  background-color: var(--colour);
-  box-shadow: var(--box-shadow-inset);
-} */
-
 progress {
   accent-color: var(--colour);
 }
@@ -89,11 +79,6 @@ video {
 fieldset > legend {
   font-weight: 745;
   font-stretch: 112%;
-}
-
-.no-signal {
-  background: url("/images/no-signal.jpg") no-repeat center center;
-  background-size: cover;
 }
 
 .bg-colour {

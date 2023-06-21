@@ -26,7 +26,6 @@ export const [state, setState] = createStore({
   id,
   colour,
   isDesktop: !isMobile,
-  cameraEnabled: false,
   handDetection: false,
   broadcast: false,
   connected: false,
