@@ -1,15 +1,12 @@
-import * as THREE from "three"
 import { For, Show, Switch, Match } from "solid-js"
-import { state, players } from "../state"
+import { state } from "../state"
 import { HAND_ANGLES } from "../const"
 import styles from "./App.module.css"
-import ThreeScene from "./ThreeScene"
 import Finger from "./Finger"
 import CameraStream from "./CameraStream"
 import OptionsFieldset from "./OptionsFieldset"
-import HandEnvironment from "./3d/HandEnvironment"
-import HandSkeleton from "./3d/HandSkeleton"
 import Lobby from "./Lobby"
+import Home from "./Home"
 
 export default () => {
   return (
@@ -46,53 +43,7 @@ export default () => {
             </For> */}
           </Match>
           <Match when={!state.broadcast}>
-            <ThreeScene
-              colour="#009900"
-              background={new THREE.Color(0x00cd00)}
-              lookAt={[0, 1.2, 0, 0, 0, 0]}
-              class="bg-colour"
-            >
-              {scene => (
-                <>
-                  <HandEnvironment scene={scene} />
-                  <HandSkeleton scene={scene} />
-                </>
-              )}
-            </ThreeScene>
-            <ThreeScene colour={state.colour} class="bg-colour" rotate alpha>
-              {scene => (
-                <>
-                  <HandEnvironment scene={scene} />
-                  <HandSkeleton scene={scene} />
-                </>
-              )}
-            </ThreeScene>
-            <ThreeScene
-              colour="#000099"
-              background={new THREE.Color(0x0000cd)}
-              lookAt={[0, 0, 1.2, 0, 0, 0]}
-              class="bg-colour"
-            >
-              {scene => (
-                <>
-                  <HandEnvironment scene={scene} />
-                  <HandSkeleton scene={scene} />
-                </>
-              )}
-            </ThreeScene>
-            <ThreeScene
-              colour="#990000"
-              background={new THREE.Color(0xcd0000)}
-              lookAt={[1.2, 0, 0, 0, 0, 0]}
-              class="bg-colour"
-            >
-              {scene => (
-                <>
-                  <HandEnvironment scene={scene} />
-                  <HandSkeleton scene={scene} />
-                </>
-              )}
-            </ThreeScene>
+            <Home />
           </Match>
         </Switch>
       </div>

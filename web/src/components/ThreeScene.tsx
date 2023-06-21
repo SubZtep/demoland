@@ -16,6 +16,7 @@ const ThreeScene: Component<{
   /** CSS class name */
   class?: string
   rotate?: boolean
+  border?: boolean
   children: (scene: THREE.Scene) => JSX.Element
 }> = rawProps => {
   const props = mergeProps({ colour: "#f3f6f9", lookAt: [1, 1, 1, 0, 0, 0] as LookAt, alpha: false }, rawProps)
@@ -54,8 +55,8 @@ const ThreeScene: Component<{
 
     resizer = new ResizeObserver(
       throttle(() => {
-        const w = wrapper!.clientWidth - 4
-        const h = wrapper!.clientHeight - 4
+        const w = wrapper!.clientWidth - (props.border ? 4 : 0)
+        const h = wrapper!.clientHeight - (props.border ? 4 : 0)
         renderer.setSize(w, h)
         camera.aspect = w / h
         camera.updateProjectionMatrix()
