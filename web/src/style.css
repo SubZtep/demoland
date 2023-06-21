@@ -81,6 +81,11 @@ fieldset > legend {
   font-stretch: 112%;
 }
 
+legend + ul {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
 .bg-colour {
   background-color: var(--colour);
 }

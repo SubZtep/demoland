@@ -23,15 +23,15 @@ export default () => {
       </Show>
 
       <div
-        class={`${styles.scenes}${state.broadcast ? ` ${styles.lobby}` : ""} ${
+        class={`${styles.scenes}${state.lobby ? ` ${styles.lobby}` : ""} ${
           state.isDesktop ? "grid-col-span-5" : "grid-col-span-2"
         }`}
       >
         <Switch>
-          <Match when={state.broadcast}>
+          <Match when={state.lobby}>
             <Lobby />
           </Match>
-          <Match when={!state.broadcast}>
+          <Match when={!state.lobby}>
             <Home />
           </Match>
         </Switch>

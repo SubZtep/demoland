@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { For, Show, type Component } from "solid-js"
+import { For, type Component } from "solid-js"
 import { state } from "../state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
 import HandSkeleton from "./3d/HandSkeleton"

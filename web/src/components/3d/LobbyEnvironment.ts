@@ -4,7 +4,7 @@ import { createEffect, onMount, onCleanup, type Component } from "solid-js"
 import { runForever, runOnce } from "../../lib/loop"
 import { geometries, materials } from "../../assets"
 
-const LobbyEnvironment: Component<{ scene: THREE.Scene, controls: CameraControls }> = props => {
+const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls }> = props => {
   let light: THREE.DirectionalLight
   let helper: THREE.DirectionalLightHelper
   let grid: THREE.GridHelper
@@ -13,7 +13,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene, controls: CameraControls
   onMount(() => {
     props.controls.setLookAt(-5, -2, 0, 0, 0, 0, false)
 
-    loadSkybox(4).then((texture) => {
+    loadSkybox(4).then(texture => {
       props.scene.background = texture
     })
 
@@ -23,16 +23,26 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene, controls: CameraControls
     helper = new THREE.DirectionalLightHelper(light)
     grid = new THREE.GridHelper(20, 20)
     // box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
-    
+
     // runForever.add(deltaTime => { // TODO: remove this function on cleanup
     //   box.rotation.y += 0.05 * deltaTime
     // })
-    
-    props.scene.add(light, helper, grid, box)
+
+    props.scene.add(
+      light,
+      helper,
+      grid,
+      // box
+    )
   })
 
   onCleanup(() => {
-    props.scene.remove(light, helper, grid, box)
+    props.scene.remove(
+      light,
+      helper,
+      grid,
+      // box
+    )
   })
 
   return null
@@ -49,7 +59,7 @@ async function loadSkybox(nr = 1): Promise<THREE.CubeTexture> {
     const onError = (err: ErrorEvent) => reject(err)
     const onLoad = (texture: THREE.CubeTexture) => resolve(texture)
     const path = `/textures/skybox/${String(nr).padStart(2, "0")}/`
-    const urls = ["RT", "LF", "UP", "DN", "BK", "FR"].map((side) => `sky${nr}_${side}.webp`)
+    const urls = ["RT", "LF", "UP", "DN", "BK", "FR"].map(side => `sky${nr}_${side}.webp`)
     loader.setPath(path).load(urls, onLoad, undefined, onError)
   })
 }

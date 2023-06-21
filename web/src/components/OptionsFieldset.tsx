@@ -36,7 +36,7 @@ export default () => {
             } else {
               stopMessageLoop()
             }
-            setState({ broadcast })
+            setState({ lobby: broadcast })
           }}
         />
         Go to lobby
