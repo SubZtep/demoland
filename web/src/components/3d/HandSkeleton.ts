@@ -1,10 +1,10 @@
 import * as THREE from "three"
 import { createEffect, on, onMount, onCleanup, type Component } from "solid-js"
-import { geometries, materials } from "../assets"
-import { HAND_CONNECTIONS } from "../const"
-import { state, players, myLandmarks } from "../state"
+import { geometries, materials } from "../../assets"
+import { HAND_CONNECTIONS } from "../../const"
+import { state, players, myLandmarks } from "../../state"
 
-const HandModel: Component<{ pid?: string; scene: THREE.Scene }> = props => {
+const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene }> = props => {
   const dots = new Map<number, THREE.Mesh>()
   const lines = new Map<number, THREE.Line>()
   let hand: THREE.Group
@@ -76,4 +76,4 @@ const HandModel: Component<{ pid?: string; scene: THREE.Scene }> = props => {
   return null
 }
 
-export default HandModel
+export default HandSkeleton

@@ -1,8 +1,8 @@
 import * as THREE from "three"
 import { For, type ParentComponent, type Component } from "solid-js"
 import { state, players } from "../state"
-import HandEnvironment from "./HandEnvironment"
-import HandModel from "./HandModel"
+import HandEnvironment from "./3d/HandEnvironment"
+import HandSkeleton from "./3d/HandSkeleton"
 import ThreeScene from "./ThreeScene"
 import styles from "./App.module.css"
 import { unwrap } from "solid-js/store"
@@ -21,7 +21,7 @@ const Lobby: Component = () => {
           <HandEnvironment scene={scene} />
           {/* <Hands scene={scene} /> */}
           {/* {Hands(scene)} */}
-          <HandModel pid="bfcec10a-5005-4495-afa5-84ff1e04a986" scene={scene} />
+          <HandSkeleton pid="bfcec10a-5005-4495-afa5-84ff1e04a986" scene={scene} />
           {/* <For each={unwrap(state.playerIds)}>
           {pid => (
             <HandModel pid={pid} scene={scene} />

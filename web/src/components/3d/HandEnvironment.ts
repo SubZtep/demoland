@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { onMount, onCleanup, type Component } from "solid-js"
-import { runForever } from "../lib/loop"
-import { geometries, materials } from "../assets"
+import { runForever } from "../../lib/loop"
+import { geometries, materials } from "../../assets"
 
 const HandEnvironment: Component<{ scene: THREE.Scene }> = props => {
   let light: THREE.DirectionalLight

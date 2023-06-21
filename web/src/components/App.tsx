@@ -7,8 +7,8 @@ import ThreeScene from "./ThreeScene"
 import Finger from "./Finger"
 import CameraStream from "./CameraStream"
 import OptionsFieldset from "./OptionsFieldset"
-import HandEnvironment from "./HandEnvironment"
-import HandModel from "./HandModel"
+import HandEnvironment from "./3d/HandEnvironment"
+import HandSkeleton from "./3d/HandSkeleton"
 import Lobby from "./Lobby"
 
 export default () => {
@@ -55,7 +55,7 @@ export default () => {
               {scene => (
                 <>
                   <HandEnvironment scene={scene} />
-                  <HandModel scene={scene} />
+                  <HandSkeleton scene={scene} />
                 </>
               )}
             </ThreeScene>
@@ -63,7 +63,7 @@ export default () => {
               {scene => (
                 <>
                   <HandEnvironment scene={scene} />
-                  <HandModel scene={scene} />
+                  <HandSkeleton scene={scene} />
                 </>
               )}
             </ThreeScene>
@@ -76,7 +76,7 @@ export default () => {
               {scene => (
                 <>
                   <HandEnvironment scene={scene} />
-                  <HandModel scene={scene} />
+                  <HandSkeleton scene={scene} />
                 </>
               )}
             </ThreeScene>
@@ -89,7 +89,7 @@ export default () => {
               {scene => (
                 <>
                   <HandEnvironment scene={scene} />
-                  <HandModel scene={scene} />
+                  <HandSkeleton scene={scene} />
                 </>
               )}
             </ThreeScene>
