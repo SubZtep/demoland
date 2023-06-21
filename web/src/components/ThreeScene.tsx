@@ -17,7 +17,7 @@ const ThreeScene: Component<{
   class?: string
   rotate?: boolean
   border?: boolean
-  children: (scene: THREE.Scene) => JSX.Element
+  children: ({ scene, controls }: { scene: THREE.Scene; controls: CameraControls }) => JSX.Element
 }> = rawProps => {
   const props = mergeProps({ colour: "#f3f6f9", lookAt: [1, 1, 1, 0, 0, 0] as LookAt, alpha: false }, rawProps)
 
@@ -52,6 +52,8 @@ const ThreeScene: Component<{
       renderer.render(scene, camera)
     })
 
+    props.children({ scene, controls: controls! })
+
     resizer = new ResizeObserver(
       throttle(() => {
         const w = wrapper!.clientWidth - (props.border ? 4 : 0)
@@ -72,7 +74,7 @@ const ThreeScene: Component<{
   return (
     <div ref={wrapper} data-pid={props.pid} style={`--colour: ${props.colour}`} class={props.class}>
       <canvas ref={canvas}></canvas>
-      {props.children(scene)}
+      {/* {props.children({ scene, controls: controls! })} */}
     </div>
   )
 }

@@ -14,7 +14,7 @@ const App = () => {
         class="bg-colour"
         border={state.isDesktop}
       >
-        {scene => (
+        {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
             <HandSkeleton scene={scene} />
@@ -22,7 +22,7 @@ const App = () => {
         )}
       </ThreeScene>
       <ThreeScene colour={state.colour} class="bg-colour" border={state.isDesktop} rotate alpha>
-        {scene => (
+        {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
             <HandSkeleton scene={scene} />
@@ -36,7 +36,7 @@ const App = () => {
         class="bg-colour"
         border={state.isDesktop}
       >
-        {scene => (
+        {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
             <HandSkeleton scene={scene} />
@@ -50,7 +50,7 @@ const App = () => {
         class="bg-colour"
         border={state.isDesktop}
       >
-        {scene => (
+        {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
             <HandSkeleton scene={scene} />

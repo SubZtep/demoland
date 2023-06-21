@@ -9,10 +9,10 @@ export const materials = new Map<string, THREE.Material>([
   [
     "box",
     new THREE.MeshPhongMaterial({
-      color: 0x000000,
-      opacity: 0.12,
-      transparent: true,
-      side: THREE.DoubleSide,
+      color: 0xff0000,
+      // opacity: 0.8,
+      // transparent: true,
+      // side: THREE.DoubleSide,
     }),
   ],
   ["dot", new THREE.MeshPhongMaterial({ color: 0xff0000 })],
