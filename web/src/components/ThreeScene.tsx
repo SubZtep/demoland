@@ -21,16 +21,14 @@ const ThreeScene: Component<{
 }> = rawProps => {
   const props = mergeProps({ colour: "#f3f6f9", lookAt: [1, 1, 1, 0, 0, 0] as LookAt, alpha: false }, rawProps)
 
-  const scene = new THREE.Scene()
   let camera: THREE.PerspectiveCamera
   let renderer: THREE.WebGLRenderer
   let controls: CameraControls
   let resizer: ResizeObserver
   let wrapper: HTMLDivElement | undefined
+  let canvas: HTMLCanvasElement | undefined
 
-  renderer = new THREE.WebGLRenderer({ alpha: props.alpha, antialias: true })
-  renderer.setPixelRatio(window.devicePixelRatio)
-
+  const scene = new THREE.Scene()
   if (props.background) {
     scene.background = props.background
   }
@@ -38,7 +36,8 @@ const ThreeScene: Component<{
   camera = new THREE.PerspectiveCamera(60, undefined, 0.01, 100)
 
   onMount(() => {
-    const canvas = wrapper?.appendChild(renderer.domElement)
+    renderer = new THREE.WebGLRenderer({ alpha: props.alpha, antialias: true, canvas })
+    renderer.setPixelRatio(window.devicePixelRatio)
 
     controls = new CameraControls(camera, canvas)
     controls.setLookAt(...props.lookAt, false)
@@ -72,6 +71,7 @@ const ThreeScene: Component<{
 
   return (
     <div ref={wrapper} data-pid={props.pid} style={`--colour: ${props.colour}`} class={props.class}>
+      <canvas ref={canvas}></canvas>
       {props.children(scene)}
     </div>
   )
