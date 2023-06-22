@@ -1,10 +1,11 @@
 import * as THREE from "three"
-import { onMount, onCleanup, type Component } from "solid-js"
+import { onMount, onCleanup, mergeProps, type Component } from "solid-js"
 import { runForever } from "../../lib/loop"
 
 const Box: Component<{ scene: THREE.Scene; color: THREE.Color, position: [number, number, number] }> = props => {
   let box: THREE.Mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: props.color }))
   box.position.set(...props.position)
+  box.scale.set(1, 0.5, 1)
   box.castShadow = true
 
   runForever.add(deltaTime => { // TODO: remove this function on cleanup

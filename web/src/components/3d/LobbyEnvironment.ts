@@ -2,7 +2,7 @@ import * as THREE from "three"
 import type CameraControls from "camera-controls"
 import { onMount, onCleanup, type Component } from "solid-js"
 
-const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls }> = props => {
+const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls, planeWidth: number }> = props => {
   let light: THREE.DirectionalLight
   let helper: THREE.DirectionalLightHelper
   let grid: THREE.GridHelper
@@ -22,7 +22,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
     helper = new THREE.DirectionalLightHelper(light)
     grid = new THREE.GridHelper(50, 50)
 
-    const geometry = new THREE.PlaneGeometry(10, 10)
+    const geometry = new THREE.PlaneGeometry(props.planeWidth, props.planeWidth)
     const material = new THREE.MeshLambertMaterial({ color: 0xffff00 })
     const plane = new THREE.Mesh(geometry, material)
     plane.rotateX((Math.PI / 180) * -90)
