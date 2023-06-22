@@ -1,6 +1,6 @@
 import { createEffect, createSignal, on, For, Show, type Component, type ParentComponent } from "solid-js"
 import { unwrap } from "solid-js/store"
-import { state, players } from "../state"
+import { state, players } from "../app/state"
 import styles from "./App.module.css"
 
 const DisplayFinger: Component<{ pid: string; name: string }> = props => {

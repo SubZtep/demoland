@@ -1,6 +1,6 @@
 import { For, Show, Switch, Match } from "solid-js"
-import { HAND_ANGLES } from "../const"
-import { state } from "../state"
+import { HAND_ANGLES } from "../app/const"
+import { state } from "../app/state"
 import styles from "./App.module.css"
 import Finger from "./Finger"
 import CameraStream from "./CameraStream"

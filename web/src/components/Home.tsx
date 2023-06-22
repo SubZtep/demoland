@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { state } from "../state"
+import { state } from "../app/state"
 import ThreeScene from "./ThreeScene"
 import HandEnvironment from "./3d/HandEnvironment"
 import HandSkeleton from "./3d/HandSkeleton"

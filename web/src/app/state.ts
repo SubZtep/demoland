@@ -1,7 +1,7 @@
 import mobile from "is-mobile"
 import { v4 as uuid } from "uuid"
 import { createStore } from "solid-js/store"
-import { createRandomColour } from "./lib/misc"
+import { createRandomColour } from "../lib/misc"
 import { HAND_LANDMARKS } from "./const"
 
 let id = window.localStorage.getItem("id")

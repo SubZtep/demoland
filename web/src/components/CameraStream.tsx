@@ -1,6 +1,6 @@
 import { createEffect, createSignal, type Component, Switch, Match } from "solid-js"
 import { startHandLoop, stopHandLoop } from "../app/mediapipe"
-import { state } from "../state"
+import { state } from "../app/state"
 import styles from "./App.module.css"
 
 const CameraStream: Component = _props => {

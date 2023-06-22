@@ -1,6 +1,6 @@
 import { startMessageLoop, stopMessageLoop } from "../app/message"
 import { sendMessage } from "../lib/websocket"
-import { state, setState } from "../state"
+import { state, setState } from "../app/state"
 import styles from "./App.module.css"
 
 export default () => {

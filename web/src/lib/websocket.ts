@@ -1,4 +1,4 @@
-import { setState } from "../state"
+import { setState } from "../app/state"
 
 export function createWebSocketConnection() {
   const socket = new WebSocket(import.meta.env.VITE_WSPP)

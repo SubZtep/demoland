@@ -1,4 +1,4 @@
-import { setState, myLandmarks } from "../state"
+import { setState, myLandmarks } from "../app/state"
 import { predictCamera } from "../app/mediapipe"
 
 /** Run a function */

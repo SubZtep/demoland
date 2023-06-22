@@ -1,5 +1,5 @@
 import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision"
-import { state, myLandmarks, setState } from "../state"
+import { state, myLandmarks, setState } from "./state"
 
 export let landmarker: HandLandmarker
 let lastPredictTime = 0

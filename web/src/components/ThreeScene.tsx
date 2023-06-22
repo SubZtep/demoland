@@ -3,7 +3,7 @@ import throttle from "lodash/throttle"
 import CameraControls from "camera-controls"
 import { type Component, type JSX, onMount, onCleanup, mergeProps } from "solid-js"
 import { runForever } from "../lib/loop"
-import { state } from "../state"
+import { state } from "../app/state"
 
 CameraControls.install({ THREE })
 type LookAt = [number, number, number, number, number, number]
