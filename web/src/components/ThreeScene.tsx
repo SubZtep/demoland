@@ -3,6 +3,7 @@ import throttle from "lodash/throttle"
 import CameraControls from "camera-controls"
 import { type Component, type JSX, onMount, onCleanup, mergeProps } from "solid-js"
 import { runForever } from "../lib/loop"
+import { state } from "../state"
 
 CameraControls.install({ THREE })
 type LookAt = [number, number, number, number, number, number]
@@ -36,9 +37,15 @@ const ThreeScene: Component<{
   camera = new THREE.PerspectiveCamera(60, undefined, 0.01, 100)
 
   onMount(() => {
-    renderer = new THREE.WebGLRenderer({ alpha: props.alpha, antialias: true, canvas })
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: props.alpha,
+      antialias: state.isDesktop,
+      logarithmicDepthBuffer: state.isDesktop,
+    })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.shadowMap.enabled = true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
     controls = new CameraControls(camera, canvas)
     controls.setLookAt(...props.lookAt, false)
@@ -55,16 +62,15 @@ const ThreeScene: Component<{
 
     props.children({ scene, controls: controls! })
 
-    resizer = new ResizeObserver(
-      throttle(() => {
-        const w = wrapper!.clientWidth - (props.border ? 4 : 0)
-        const h = wrapper!.clientHeight - (props.border ? 4 : 0)
-        renderer.setSize(w, h)
-        camera.aspect = w / h
-        camera.updateProjectionMatrix()
-      }, 200),
-    )
+    const resizeRenderer = () => {
+      const w = wrapper!.clientWidth - (props.border ? 4 : 0)
+      const h = wrapper!.clientHeight - (props.border ? 4 : 0)
+      renderer.setSize(w, h)
+      camera.aspect = w / h
+      camera.updateProjectionMatrix()
+    }
 
+    resizer = new ResizeObserver(throttle(resizeRenderer, 200))
     resizer.observe(wrapper!, { box: "content-box" })
   })
 

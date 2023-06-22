@@ -1,15 +1,30 @@
 import { produce, unwrap } from "solid-js/store"
-import { socket } from "../lib/websocket"
+import { socket, sendMessage } from "../lib/websocket"
 import { startConfetti, stopConfetti } from "../lib/confetti"
-import { state, setState, players } from "../state"
+import { state, setState, players, myLandmarks } from "../state"
 
+const anglesWorker = new Worker("/workers/angles.js")
 const compareWorker = new Worker("/workers/compare.js")
-let lastMessageTime = 0
+let lastMessageReceivedTime = 0
+let lastMessageSentTime = 0
+let messageInterval: NodeJS.Timer
+
+anglesWorker.onmessage = ({ data: message }) => {
+  sendMessage(message)
+}
+
+compareWorker.addEventListener("message", ({ data: isSimilar }) => {
+  if (isSimilar) {
+    startConfetti()
+  } else {
+    stopConfetti()
+  }
+})
 
 socket.addEventListener("message", ({ data }) => {
   const message = JSON.parse(data) as Player & { time: number }
-  if (message.time <= lastMessageTime) return
-  lastMessageTime = message.time
+  if (message.time <= lastMessageReceivedTime) return
+  lastMessageReceivedTime = message.time
 
   if (!message.colour) {
     // remove player
@@ -47,10 +62,25 @@ socket.addEventListener("message", ({ data }) => {
   }
 })
 
-compareWorker.addEventListener("message", ({ data: isSimilar }) => {
-  if (isSimilar) {
-    startConfetti()
-  } else {
-    stopConfetti()
-  }
-})
+export const startMessageLoop = (fps = 30) => {
+  messageInterval = setInterval(() => {
+    if (state.lastLandmarksUpdate <= lastMessageSentTime) return
+
+    const message: Record<string, any> = {
+      id: state.id,
+      colour: state.colour,
+      time: Date.now(),
+    }
+
+    if (myLandmarks.size > 0) {
+      anglesWorker.postMessage({ message, landmarks: myLandmarks })
+    }
+
+    lastMessageSentTime = Date.now()
+  }, 1_000 / fps)
+}
+
+export const stopMessageLoop = () => {
+  clearInterval(messageInterval)
+  sendMessage({ id: state.id, time: Date.now() })
+}

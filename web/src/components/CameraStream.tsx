@@ -1,5 +1,5 @@
 import { createEffect, createSignal, type Component, Switch, Match } from "solid-js"
-import { startHandLoop, stopHandLoop } from "../lib/loop"
+import { startHandLoop, stopHandLoop } from "../app/mediapipe"
 import { state } from "../state"
 import styles from "./App.module.css"
 

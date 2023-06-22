@@ -1,4 +1,4 @@
-import { startMessageLoop, stopMessageLoop } from "../lib/loop"
+import { startMessageLoop, stopMessageLoop } from "../app/message"
 import { sendMessage } from "../lib/websocket"
 import { state, setState } from "../state"
 import styles from "./App.module.css"

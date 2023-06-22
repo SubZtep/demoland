@@ -1,8 +1,6 @@
 import * as THREE from "three"
 import type CameraControls from "camera-controls"
-import { createEffect, onMount, onCleanup, type Component } from "solid-js"
-import { runForever, runOnce } from "../../lib/loop"
-import { geometries, materials } from "../../assets"
+import { onMount, onCleanup, type Component } from "solid-js"
 
 const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls }> = props => {
   let light: THREE.DirectionalLight
@@ -22,36 +20,19 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
     light.position.set(-5, 10, 0)
     light.target.position.set(0, 5, 0)
     helper = new THREE.DirectionalLightHelper(light)
-    grid = new THREE.GridHelper(20, 20)
+    grid = new THREE.GridHelper(50, 50)
 
     const geometry = new THREE.PlaneGeometry(10, 10)
     const material = new THREE.MeshLambertMaterial({ color: 0xffff00 })
     const plane = new THREE.Mesh(geometry, material)
+    plane.rotateX((Math.PI / 180) * -90)
     plane.receiveShadow = true
-    plane.rotation.x = (Math.PI / 180) * -90
 
-    // box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
-
-    // runForever.add(deltaTime => { // TODO: remove this function on cleanup
-    //   box.rotation.y += 0.05 * deltaTime
-    // })
-
-    props.scene.add(
-      light,
-      helper,
-      grid,
-      plane,
-      // box
-    )
+    props.scene.add(light, helper, grid, plane)
   })
 
   onCleanup(() => {
-    props.scene.remove(
-      light,
-      helper,
-      grid,
-      // box
-    )
+    props.scene.remove(light, helper, grid)
   })
 
   return null

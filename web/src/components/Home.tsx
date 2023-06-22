@@ -46,7 +46,7 @@ const App = () => {
       <ThreeScene
         colour="#990000"
         background={new THREE.Color(0xcd0000)}
-        lookAt={[1.2, 0, 0, 0, 0, 0]}
+        lookAt={[-1.2, 0, 0, 0, 0, 0]}
         class="bg-colour"
         border={state.isDesktop}
       >
