@@ -46,6 +46,7 @@ const ThreeScene: Component<{
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    
 
     controls = new CameraControls(camera, canvas)
     controls.setLookAt(...props.lookAt, false)

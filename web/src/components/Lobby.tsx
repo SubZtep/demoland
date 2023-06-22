@@ -1,6 +1,7 @@
 import * as THREE from "three"
+import { produce } from "solid-js/store"
 import { For, type Component } from "solid-js"
-import { state } from "../app/state"
+import { state, setState } from "../app/state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
 // import HandSkeleton from "./3d/HandSkeleton"
 // import HandModel from "./3d/HandModel"
@@ -9,6 +10,11 @@ import ThreeScene from "./ThreeScene"
 
 const Lobby: Component = () => {
   const planeWidth = 10
+
+  setInterval(() => {
+    setState(produce(s => s.playerIds.push(String(Math.random()))))
+  }, 1000)
+
   return (
     <ThreeScene colour="#8a0303" background={new THREE.Color(0x000000)} lookAt={[1.2, 0, 0, 0, 0, 0]} class="bg-colour">
       {({ scene, controls }) => (

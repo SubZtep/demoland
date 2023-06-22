@@ -7,9 +7,10 @@ const Box: Component<{ scene: THREE.Scene; color: THREE.Color, position: [number
   box.position.set(...props.position)
   box.scale.set(1, 0.5, 1)
   box.castShadow = true
+  const rotate = Math.random() - 0.5
 
   runForever.add(deltaTime => { // TODO: remove this function on cleanup
-    box.rotation.y += 0.1 * deltaTime
+    box.rotateY(rotate * deltaTime)
   })
 
   onMount(() => {

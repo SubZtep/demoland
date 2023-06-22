@@ -38,14 +38,14 @@ const Finger: ParentComponent<{ name: string }> = props => {
       <legend>{props.name.replace("_", " ")}</legend>
 
       <div class={`flex-row ${styles.fingerMeters}`}>
-        <For each={state.playerIds}>
+        {/* <For each={state.playerIds}>
           {pid => (
             <div class="flex-col">
               <small>{pid}</small>
               <DisplayFinger pid={pid} name={props.name} />
             </div>
           )}
-        </For>
+        </For> */}
         <Show when={state.playerIds.length === 0}>
           <progress class="opacity-10"></progress>
         </Show>

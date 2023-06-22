@@ -17,8 +17,12 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
 
     light = new THREE.DirectionalLight()
     light.castShadow = true
-    light.position.set(-5, 10, 0)
+    light.position.set(-5, 15, 10)
     light.target.position.set(0, 5, 0)
+    light.shadow.camera.left = -10
+    light.shadow.camera.right = 10
+    light.shadow.camera.top = 10
+    light.shadow.camera.bottom = -10
     helper = new THREE.DirectionalLightHelper(light)
     grid = new THREE.GridHelper(50, 50)
 
