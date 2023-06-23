@@ -56,7 +56,7 @@ socket.addEventListener("message", ({ data }) => {
   if (player) {
     players.set(player.id, players.has(player.id) ? { ...players.get(player.id)!, ...player } : (player as Player))
     setState({ lastPlayersUpdate: Date.now() })
-  
+
     if (player.colour && players.get(player.id)!.colour !== player.colour) {
       document.querySelectorAll<HTMLElement>(`[data-pid="${player.id}"]`).forEach(el => {
         el.style.setProperty("--colour", player.colour!)

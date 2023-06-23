@@ -3,6 +3,7 @@ import { unwrap } from "solid-js/store"
 import { state, players } from "../app/state"
 import styles from "./App.module.css"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DisplayFinger: Component<{ pid: string; name: string }> = props => {
   const [angles, setAngles] = createSignal<number[]>()
 
@@ -12,8 +13,8 @@ const DisplayFinger: Component<{ pid: string; name: string }> = props => {
       () => {
         const v = players.get(props.pid)?.angles?.[props.name]
         if (v) setAngles(unwrap(v))
-      }
-    )
+      },
+    ),
   )
 
   return (

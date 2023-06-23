@@ -1,6 +1,3 @@
-import { setState, myLandmarks } from "../app/state"
-import { predictCamera } from "../app/mediapipe"
-
 /** Run a function */
 export const runOnce = new Set<TickFn>()
 

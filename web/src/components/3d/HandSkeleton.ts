@@ -49,7 +49,7 @@ const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene }> = props => {
           new THREE.Vector3(...dots.get(join[0])!.position.toArray()),
           new THREE.Vector3(...dots.get(join[1])!.position.toArray()),
         ]),
-        materials.get("line")
+        materials.get("line"),
       )
       line.scale.set(-5, -5, -5)
       lines?.set(i, line)
@@ -61,15 +61,15 @@ const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene }> = props => {
     createEffect(
       on(
         () => state.lastPlayersUpdate,
-        () => updateLandmarks(players.get(props.pid!)?.landmarks)
-      )
+        () => updateLandmarks(players.get(props.pid!)?.landmarks),
+      ),
     )
   } else {
     createEffect(
       on(
         () => state.lastLandmarksUpdate,
-        () => updateLandmarks(Array.from(myLandmarks.values()))
-      )
+        () => updateLandmarks(Array.from(myLandmarks.values())),
+      ),
     )
   }
 

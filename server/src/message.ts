@@ -5,8 +5,8 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, ws: WebSocke
   const { cmd, player } = JSON.parse(data.toString()) as Message
 
   if (player) {
-    const isExists = players.has(player.id)
-    players.set(player.id, isExists ? { ...players.get(player.id)!, ...player } : (player as Player))
+    const isExists = players.has(ws)
+    players.set(ws, isExists ? { ...players.get(ws)!, ...player } : (player as Player))
 
     if (!isExists) {
       wss.clients.forEach(client => {
@@ -27,7 +27,7 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, ws: WebSocke
         ws.send(JSON.stringify({ players: Array.from(players.values()) }))
         return
       case "bye":
-        players.delete(player.id)
+        players.delete(ws)
         break
     }
   }

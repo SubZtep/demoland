@@ -1,9 +1,7 @@
 import * as THREE from "three"
-import { unwrap } from "solid-js/store"
-import { createEffect, on, onMount, onCleanup, type Component } from "solid-js"
-import { state, players, myLandmarks } from "../../app/state"
-import { geometries, materials } from "../../app/assets"
-import { HAND_CONNECTIONS } from "../../app/const"
+import { createEffect, on, onCleanup, type Component } from "solid-js"
+import { state, players } from "../../app/state"
+import { geometries } from "../../app/assets"
 
 const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   let player = players.get(props.pid)!
@@ -38,10 +36,10 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
         //   // @ts-ignore
         //   box.material.color.set(player.colour)
         // }
-        
+
         player = newPlayer
-      }
-    )
+      },
+    ),
   )
 
   onCleanup(() => {

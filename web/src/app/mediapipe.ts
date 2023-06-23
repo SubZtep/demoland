@@ -30,8 +30,8 @@ export const predictCamera = async () => {
 const handLoop = async () => {
   rafId = requestAnimationFrame(handLoop)
   const now = Date.now()
-  
-  if (now - lastPredictTime < 1000 / state.broadcastFPS) return  
+
+  if (now - lastPredictTime < 1000 / state.broadcastFPS) return
 
   const landmarks = await predictCamera()
   lastPredictTime = now

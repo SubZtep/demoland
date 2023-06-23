@@ -12,10 +12,11 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "dev": "pnpm run build && pnpm run start",
+    "dev": "pnpm run dev:build && pnpm run start",
     "dev:watch": "pnpm run \"/^watch:.*/\"",
     "start": "node -r dotenv/config dist/index.js",
-    "build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js",
+    "build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js --drop:console",
+    "dev:build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js",
     "watch:build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js --watch",
     "watch:start": "node --watch -r dotenv/config dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

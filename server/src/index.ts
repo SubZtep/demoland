@@ -3,7 +3,7 @@ import { WebSocketServer } from "ws"
 import express from "express"
 import { setViews } from "./view"
 import { onMessage } from "./message"
-import { connections } from "./state"
+import { connections, players } from "./state"
 
 const app = express()
 setViews(app)
