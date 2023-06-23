@@ -1,6 +1,6 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
-    /** WebSocket port */
+    /** Express server port */
     PORT: string
   }
 }

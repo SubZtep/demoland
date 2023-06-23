@@ -20,12 +20,3 @@ type Landmark = import("@mediapipe/tasks-vision").NormalizedLandmark
 type Angles = Record<string, number[]>
 
 type State = typeof import("./state").state
-
-interface Player {
-  id: string
-  x: number
-  y: number
-  colour: string
-  landmarks?: Landmark[]
-  angles?: Angles
-}

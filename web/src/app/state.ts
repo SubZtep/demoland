@@ -35,7 +35,6 @@ export const [state, setState] = createStore({
   lastLandmarksUpdate: Date.now(),
   lastPlayersUpdate: Date.now(),
   playerIds: [] as string[],
-  players: [] as Player[],
 })
 
 export const players = new Map<string, Player>()

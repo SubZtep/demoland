@@ -1,33 +1,50 @@
 import * as THREE from "three"
+import { unwrap } from "solid-js/store"
 import { createEffect, on, onMount, onCleanup, type Component } from "solid-js"
 import { state, players, myLandmarks } from "../../app/state"
 import { geometries, materials } from "../../app/assets"
 import { HAND_CONNECTIONS } from "../../app/const"
 
 const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
+  let player = players.get(props.pid)!
+  if (!player) {
+    throw new Error(`Player ${props.pid} not found`)
+  }
+  // console.log("player", player)
   const hand = new THREE.Group()
-  let box: THREE.Mesh
+  props.scene.add(hand)
 
-  // createEffect(
-  //   on(
-  //     () => state.lastPlayersUpdate,
-  //     () => {
-  //       const v = players.get(props.pid)?.angles?.[props.name]
-  //       if (v) setAngles(unwrap(v))
-  //     }
-  //   )
-  // )
+  const material = new THREE.MeshPhongMaterial({ color: player.colour })
+  const box: THREE.Mesh = new THREE.Mesh(geometries.get("box"), material)
+  hand.add(box)
 
-  onMount(() => {
-    console.log("HandModel onMount", props.pid)
-    box = new THREE.Mesh(geometries.get("box"), materials.get("box"))
-    hand.add(box)
-    props.scene.add(hand)
-  })
+  box.position.set(player.x, 0.25, player.y)
+  box.scale.set(1, 0.5, 1)
+  box.castShadow = true
+  // const rotate = Math.random() - 0.5
+
+  createEffect(
+    on(
+      () => state.lastPlayersUpdate,
+      () => {
+        const newPlayer = players.get(props.pid)
+        if (!newPlayer) {
+          console.log("player not found", props.pid)
+          return
+        }
+        // @ts-ignore
+        box.material.color.set(player.colour)
+        // if (player.colour && player.colour !== newPlayer.colour) {
+        //   // @ts-ignore
+        //   box.material.color.set(player.colour)
+        // }
+        
+        player = newPlayer
+      }
+    )
+  )
 
   onCleanup(() => {
-    console.log("HandModel onCleanup", props.pid)
-    // props.scene.remove(box)
     props.scene.remove(hand)
   })
 

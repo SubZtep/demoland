@@ -12,13 +12,17 @@ export default () => {
         <input
           type="color"
           value={/*@once*/ state.colour}
-          disabled={state.lobby}
           onInput={ev => {
             setState({ colour: ev.target.value })
+          }}
+          onChange={ev => {
+            setState({ colour: ev.target.value })
             sendMessage({
-              id: state.id,
-              colour: state.colour,
               time: Date.now(),
+              player: {
+                id: state.id,
+                colour: state.colour,
+              },
             })
           }}
         />
@@ -37,15 +41,21 @@ export default () => {
               startMessageLoop(state.broadcastFPS)
               sendMessage({
                 cmd: "list",
-                id: state.id,
-                colour: state.colour,
                 time: Date.now(),
+                player: {
+                  id: state.id,
+                  colour: state.colour,
+                  x: state.x,
+                  y: state.y,
+                },
               })
             } else {
               sendMessage({
                 cmd: "bye",
-                id: state.id,
                 time: Date.now(),
+                player: {
+                  id: state.id,
+                },
               })
               stopMessageLoop()
             }
