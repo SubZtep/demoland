@@ -2,11 +2,23 @@ import * as THREE from "three"
 import type CameraControls from "camera-controls"
 import { onMount, onCleanup, type Component } from "solid-js"
 
-const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls, planeWidth: number }> = props => {
-  let light: THREE.DirectionalLight
-  let helper: THREE.DirectionalLightHelper
-  let grid: THREE.GridHelper
-  let box: THREE.Mesh
+const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls; planeWidth: number }> = props => {
+  const light = new THREE.DirectionalLight()
+  const helper = new THREE.DirectionalLightHelper(light)
+  const grid = new THREE.GridHelper(50, 50)
+
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(props.planeWidth, props.planeWidth),
+    new THREE.MeshLambertMaterial({ color: 0xffc26f }),
+  )
+
+  light.castShadow = true
+  light.position.set(-5, 15, 10)
+  light.target.position.set(0, 5, 0)
+  light.shadow.camera.left = -10
+  light.shadow.camera.right = 10
+  light.shadow.camera.top = 10
+  light.shadow.camera.bottom = -10
 
   onMount(() => {
     props.controls.setLookAt(-10, 2, 0, 0, 0, 0, false)
@@ -15,20 +27,6 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
       props.scene.background = texture
     })
 
-    light = new THREE.DirectionalLight()
-    light.castShadow = true
-    light.position.set(-5, 15, 10)
-    light.target.position.set(0, 5, 0)
-    light.shadow.camera.left = -10
-    light.shadow.camera.right = 10
-    light.shadow.camera.top = 10
-    light.shadow.camera.bottom = -10
-    helper = new THREE.DirectionalLightHelper(light)
-    grid = new THREE.GridHelper(50, 50)
-
-    const geometry = new THREE.PlaneGeometry(props.planeWidth, props.planeWidth)
-    const material = new THREE.MeshLambertMaterial({ color: 0xffff00 })
-    const plane = new THREE.Mesh(geometry, material)
     plane.rotateX((Math.PI / 180) * -90)
     plane.receiveShadow = true
 
@@ -36,7 +34,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
   })
 
   onCleanup(() => {
-    props.scene.remove(light, helper, grid)
+    props.scene.remove(light, helper, grid, plane)
   })
 
   return null

@@ -8,10 +8,11 @@ export default () => {
     <fieldset class={styles.options}>
       <legend>Options</legend>
 
-      <label>
+      <label classList={{ disabled: state.lobby }}>
         <input
           type="color"
           value={/*@once*/ state.colour}
+          disabled={state.lobby}
           onInput={ev => {
             setState({ colour: ev.target.value })
             sendMessage({
@@ -25,15 +26,27 @@ export default () => {
         <span class="portrait">Colour</span>
       </label>
 
-      <label>
+      <label classList={{ disabled: !state.connected }}>
         <input
           type="checkbox"
           disabled={!state.connected}
+          checked={state.lobby}
           onChange={ev => {
             const broadcast = ev.target.checked
             if (broadcast) {
               startMessageLoop(state.broadcastFPS)
+              sendMessage({
+                cmd: "list",
+                id: state.id,
+                colour: state.colour,
+                time: Date.now(),
+              })
             } else {
+              sendMessage({
+                cmd: "bye",
+                id: state.id,
+                time: Date.now(),
+              })
               stopMessageLoop()
             }
             setState({ lobby: broadcast })

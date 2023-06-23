@@ -2,7 +2,7 @@ import mobile from "is-mobile"
 import { v4 as uuid } from "uuid"
 import { createStore } from "solid-js/store"
 import { createRandomColour } from "../lib/misc"
-import { HAND_LANDMARKS } from "./const"
+import { HAND_LANDMARKS, PLANE_SIZE } from "./const"
 
 let id = window.localStorage.getItem("id")
 if (!id) {
@@ -25,6 +25,8 @@ if (isMobile) {
 export const [state, setState] = createStore({
   id,
   colour,
+  x: Math.random() * PLANE_SIZE - PLANE_SIZE / 2,
+  y: Math.random() * PLANE_SIZE - PLANE_SIZE / 2,
   isDesktop: !isMobile,
   lobby: false,
   connected: false,
@@ -33,6 +35,7 @@ export const [state, setState] = createStore({
   lastLandmarksUpdate: Date.now(),
   lastPlayersUpdate: Date.now(),
   playerIds: [] as string[],
+  players: [] as Player[],
 })
 
 export const players = new Map<string, Player>()

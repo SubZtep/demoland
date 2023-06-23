@@ -3,7 +3,7 @@ import { createHandLandmarker } from "./app/mediapipe"
 import { render } from "solid-js/web"
 import { Loop } from "./lib/loop"
 import App from "./components/App"
-import "cursor-bee"
+// import "cursor-bee"
 import "./style.css"
 
 render(() => <App />, document.getElementById("app")!)

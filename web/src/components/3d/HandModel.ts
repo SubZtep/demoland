@@ -4,9 +4,19 @@ import { state, players, myLandmarks } from "../../app/state"
 import { geometries, materials } from "../../app/assets"
 import { HAND_CONNECTIONS } from "../../app/const"
 
-const HandModel: Component<{ pid?: string; scene: THREE.Scene }> = props => {
+const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   const hand = new THREE.Group()
   let box: THREE.Mesh
+
+  // createEffect(
+  //   on(
+  //     () => state.lastPlayersUpdate,
+  //     () => {
+  //       const v = players.get(props.pid)?.angles?.[props.name]
+  //       if (v) setAngles(unwrap(v))
+  //     }
+  //   )
+  // )
 
   onMount(() => {
     console.log("HandModel onMount", props.pid)

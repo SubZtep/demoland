@@ -23,6 +23,8 @@ type State = typeof import("./state").state
 
 interface Player {
   id: string
+  x: number
+  y: number
   colour: string
   landmarks?: Landmark[]
   angles?: Angles

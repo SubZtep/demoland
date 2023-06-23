@@ -1,3 +1,5 @@
+export const PLANE_SIZE = 10
+
 /** values are identical to `HAND_CONNECTIONS` values (indices) */
 export const HAND_ANGLES = [
   [

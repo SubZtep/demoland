@@ -14,9 +14,9 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "dev:build": "tsc --watch",
-    "dev:start": "node --watch -r dotenv/config dist/server.js",
-    "dev:watch": "npm run dev:build & npm run dev:start",
+    "devx": "tsc && pnpm run \"/^watch:.*/\"",
+    "watch:build": "tsc --watch",
+    "watch:start": "node --watch -r dotenv/config dist/server.js",
     "dev": "tsc && node -r dotenv/config dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

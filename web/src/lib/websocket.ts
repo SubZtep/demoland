@@ -8,7 +8,7 @@ export function createWebSocketConnection() {
   })
 
   socket.addEventListener("close", () => {
-    setState({ connected: false })
+    setState({ connected: false, lobby: false })
   })
 
   const sendMessage = (msg: Record<string, any>) => {

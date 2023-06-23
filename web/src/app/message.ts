@@ -9,48 +9,57 @@ let lastMessageReceivedTime = 0
 let lastMessageSentTime = 0
 let messageInterval: NodeJS.Timer
 
-anglesWorker.onmessage = ({ data: message }) => {
+anglesWorker.addEventListener("message", ({ data: message }) => {
   sendMessage(message)
-}
+})
 
 compareWorker.addEventListener("message", ({ data: isSimilar }) => {
-  if (isSimilar) {
-    startConfetti()
-  } else {
-    stopConfetti()
-  }
+  // if (isSimilar) {
+  //   startConfetti()
+  // } else {
+  //   stopConfetti()
+  // }
 })
 
 socket.addEventListener("message", ({ data }) => {
-  const message = JSON.parse(data) as Player & { time: number }
-  if (message.time <= lastMessageReceivedTime) return
-  lastMessageReceivedTime = message.time
+  const { time, players: remotePlayers, ...player } = JSON.parse(data) as Player & { time: number, players?: Player[] }
+  if (time <= lastMessageReceivedTime) return
+  lastMessageReceivedTime = time
 
-  if (!message.colour) {
-    // remove player
-    setState({
-      playerIds: state.playerIds.filter(id => id !== message.id),
-      lastPlayersUpdate: Date.now(),
-      lastLandmarksUpdate: Date.now(),
+  if (remotePlayers) {
+    remotePlayers.forEach(player => {
+      if (player.id === state.id) return
+      players.set(player.id, player)
     })
-    players.delete(message.id)
+    setState({ lastPlayersUpdate: Date.now(), players: Array.from(players.values()) })
     return
   }
 
-  if (!players.has(message.id)) {
-    players.set(message.id, message)
+  if (!player.colour) {
+    // remove player
+    setState({
+      playerIds: state.playerIds.filter(id => id !== player.id),
+      lastPlayersUpdate: Date.now(),
+      lastLandmarksUpdate: Date.now(),
+    })
+    players.delete(player.id)
+    return
+  }
+
+  if (!players.has(player.id)) {
+    players.set(player.id, player)
     setState(
       produce(state => {
-        state.playerIds.push(message.id)
+        state.playerIds.push(player.id)
       })
     )
-  } else if (players.get(message.id)!.colour !== message.colour) {
-    document.querySelectorAll<HTMLElement>(`[data-pid="${message.id}"]`).forEach(el => {
-      el.style.setProperty("--colour", message.colour)
+  } else if (players.get(player.id)!.colour !== player.colour) {
+    document.querySelectorAll<HTMLElement>(`[data-pid="${player.id}"]`).forEach(el => {
+      el.style.setProperty("--colour", player.colour)
     })
   }
 
-  players.set(message.id, message)
+  players.set(player.id, player)
   setState({ lastPlayersUpdate: Date.now() })
 
   // find similar poses
@@ -69,6 +78,8 @@ export const startMessageLoop = (fps = 30) => {
     const message: Record<string, any> = {
       id: state.id,
       colour: state.colour,
+      x: state.x,
+      y: state.y,
       time: Date.now(),
     }
 

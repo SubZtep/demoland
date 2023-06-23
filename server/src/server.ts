@@ -6,8 +6,10 @@ import WebSocket, { WebSocketServer } from "ws"
 
 let connections = {
   active: 0,
-  top: 0
+  top: 0,
 }
+
+const players = new Map<string, Player>()
 
 const app = express()
 app.set("view engine", "pug")
@@ -17,12 +19,10 @@ app.get("/", (_req, res) => {
   res.render("index", {
     title: "Stats",
     connections,
+    players: Array.from(players.values()),
     mem: Object.fromEntries(
-      Object.entries(process.memoryUsage()).map(([key, value]) => [
-        key,
-        `${(value / 1_000_000).toFixed(2)} MB`
-      ])
-    )
+      Object.entries(process.memoryUsage()).map(([key, value]) => [key, `${(value / 1_000_000).toFixed(2)} MB`]),
+    ),
   })
 })
 
@@ -38,13 +38,26 @@ wss.on("connection", ws => {
   ws.on("error", ev => console.log("WS Error", ev))
 
   ws.on("message", (data, binary) => {
-    console.log("RECEIVED", data.toString())
-    wss.clients.forEach(async client => {
+    const { cmd, ...player } = JSON.parse(data.toString())
+    players.set(player.id, player)
+    
+    console.log("RECEIVED:", { cmd, player })
+
+    if (cmd) {
+      switch (cmd) {
+        case "list":
+          console.log("SENDING:", JSON.stringify({ players: Array.from(players.values()) }))
+          ws.send(JSON.stringify({ players: Array.from(players.values()) }))
+          return
+        case "bye":
+          players.delete(player.id)
+          break
+      }
+    }
+
+    wss.clients.forEach(client => {
       // const isSender = client === ws
       if (client.readyState === WebSocket.OPEN) {
-        if (false) {
-          await sleep(Math.random() * 1_000)
-        }
         client.send(data, { binary })
       }
     })
@@ -64,7 +77,3 @@ wss.on("error", err => console.log("WSS Error", err))
 server.listen(Number(process.env.PORT), () => {
   console.log("Server is running on port", process.env.PORT)
 })
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}

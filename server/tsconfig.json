@@ -7,6 +7,6 @@
   },
   "include": ["src"],
   "watchOptions": {
-    "excludeDirectories": ["**/node_modules", "dist", "."],
+    "excludeDirectories": ["**/node_modules", "dist", "."]
   }
 }

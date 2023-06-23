@@ -5,4 +5,9 @@ declare namespace NodeJS {
   }
 }
 
-export {}
+interface Player {
+  id: string
+  colour: string
+  x: number
+  y: number
+}
