@@ -1,5 +1,5 @@
 import { createServer } from "node:http"
-import { WebSocketServer } from "ws"
+import WebSocket, { WebSocketServer } from "ws"
 import express from "express"
 import { setViews } from "./view"
 import { onMessage } from "./message"
@@ -17,6 +17,14 @@ wss.on("connection", ws => {
   })
 
   ws.on("close", () => {
+    if (players.has(ws)) {
+      const { id } = players.get(ws)!
+      players.delete(ws)
+      wss.clients.forEach(client => {
+        client.send(JSON.stringify({ cmd: "bye", player: { id }, time: Date.now() } as Message))
+      })
+    }
+
     connections.active = wss.clients.size
   })
 

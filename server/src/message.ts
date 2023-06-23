@@ -1,21 +1,19 @@
 import WebSocket from "ws"
 import { players } from "./state"
 
-export function onMessage(data: WebSocket.RawData, binary: boolean, ws: WebSocket, wss: WebSocket.Server) {
+export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const { cmd, player } = JSON.parse(data.toString()) as Message
 
   if (player) {
-    const isExists = players.has(ws)
-    players.set(ws, isExists ? { ...players.get(ws)!, ...player } : (player as Player))
-
+    const isExists = players.has(client)
     if (!isExists) {
-      wss.clients.forEach(client => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({ cmd: "hi", player, time: Date.now() } as Message), { binary })
-          // client.send(data, { binary })
+      server.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({ cmd: "hi", player, time: Date.now() } as Message))
         }
       })
     }
+    players.set(client, isExists ? { ...players.get(client)!, ...player } : (player as Player))
   }
 
   console.log("RECEIVED:", { cmd, player })
@@ -24,17 +22,16 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, ws: WebSocke
     switch (cmd) {
       case "list":
         // console.log("SENDING:", JSON.stringify({ players: Array.from(players.values()) }))
-        ws.send(JSON.stringify({ players: Array.from(players.values()) }))
+        client.send(JSON.stringify({ players: Array.from(players.values()) }))
         return
       case "bye":
-        players.delete(ws)
+        players.delete(client)
         break
     }
   }
 
   // broadcast to all clients
-  wss.clients.forEach(client => {
-    // const isSender = client === ws
+  server.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data, { binary })
     }
