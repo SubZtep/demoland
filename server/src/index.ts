@@ -4,9 +4,11 @@ import express from "express"
 import { setViews } from "./view"
 import { onMessage } from "./message"
 import { connections, players } from "./state"
+import { initPhysics } from "./physics"
 
 const app = express()
 setViews(app)
+initPhysics()
 
 const server = createServer(app)
 const wss = new WebSocketServer({ server })

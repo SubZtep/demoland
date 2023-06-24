@@ -2,7 +2,7 @@ import * as THREE from "three"
 
 export const geometries = new Map<string, THREE.BufferGeometry>([
   ["box", new THREE.BoxGeometry()],
-  ["dot", new THREE.SphereGeometry(0.0065, 4, 3)],
+  ["dot", new THREE.SphereGeometry(0.0065)],
 ])
 
 export const materials = new Map<string, THREE.Material>([

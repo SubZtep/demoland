@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { For, type Component } from "solid-js"
 import { state } from "../app/state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
-import HandSkeleton from "./3d/HandSkeleton"
+// import HandSkeleton from "./3d/HandSkeleton"
 import HandModel from "./3d/HandModel"
 // import Box from "./3d/Box"
 import ThreeScene from "./ThreeScene"
@@ -17,7 +17,7 @@ const Lobby: Component = () => {
           <For each={state.playerIds}>
             {pid => (
               <>
-                <HandSkeleton pid={pid} scene={scene} />
+                {/* <HandSkeleton pid={pid} scene={scene} /> */}
                 <HandModel pid={pid} scene={scene} />
                 {/* <Box
                   scene={scene}
