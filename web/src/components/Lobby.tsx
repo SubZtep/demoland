@@ -1,37 +1,23 @@
 import * as THREE from "three"
-import { createEffect, on, For, type Component } from "solid-js"
+import { For, type Component } from "solid-js"
 import { state } from "../app/state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
-// import HandSkeleton from "./3d/HandSkeleton"
+import HandSkeleton from "./3d/HandSkeleton"
 import HandModel from "./3d/HandModel"
 // import Box from "./3d/Box"
 import ThreeScene from "./ThreeScene"
+import { PLANE_SIZE } from "../app/const"
 
 const Lobby: Component = () => {
-  const planeWidth = 10
-
-  // setInterval(() => {
-  //   setState(produce(s => s.playerIds.push(String(Math.random()))))
-  // }, 1000)
-
-  createEffect(
-    on(
-      () => state.playerIds,
-      () => {
-        // console.log(unwrap(state.playerIds))
-      },
-    ),
-  )
-
   return (
     <ThreeScene background={new THREE.Color(0x606060)} lookAt={[1.2, 0, 0, 0, 0, 0]}>
       {({ scene, controls }) => (
         <>
-          <LobbyEnvironment scene={scene} controls={controls} planeWidth={planeWidth} />
+          <LobbyEnvironment scene={scene} controls={controls} planeWidth={PLANE_SIZE} />
           <For each={state.playerIds}>
             {pid => (
               <>
-                {/* <HandSkeleton pid={pid} scene={scene} /> */}
+                <HandSkeleton pid={pid} scene={scene} />
                 <HandModel pid={pid} scene={scene} />
                 {/* <Box
                   scene={scene}

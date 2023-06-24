@@ -1,5 +1,5 @@
 import { createServer } from "node:http"
-import WebSocket, { WebSocketServer } from "ws"
+import { WebSocketServer } from "ws"
 import express from "express"
 import { setViews } from "./view"
 import { onMessage } from "./message"

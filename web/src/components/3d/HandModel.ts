@@ -1,10 +1,10 @@
 import * as THREE from "three"
 import { createEffect, on, onCleanup, type Component } from "solid-js"
-import { state, players } from "../../app/state"
+import { state, getPlayer } from "../../app/state"
 import { geometries } from "../../app/assets"
 
 const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
-  let player = players.get(props.pid)!
+  let player = getPlayer(props.pid)!
   const hand = new THREE.Group()
   props.scene.add(hand)
 
@@ -16,8 +16,8 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   hand.add(box)
 
   const updateModel = () => {
-    player = players.get(props.pid)!
-    if (player.updated && player.updated < Date.now() - state.messageDelay) return
+    player = getPlayer(props.pid, true)!
+    if (!player) return
 
     // @ts-ignore
     box.material.color.set(player.colour)

@@ -40,3 +40,11 @@ export const [state, setState] = createStore({
 export const players = new Map<string, Player>()
 
 export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
+
+export function getPlayer(id: string, onlyUpdated = false) {
+  const player = players.get(id)
+  if (onlyUpdated && player?.updated && player.updated < Date.now() - state.messageDelay) {
+    return undefined
+  }
+  return player
+}

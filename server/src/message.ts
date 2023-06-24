@@ -16,12 +16,9 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
     players.set(client, isExists ? { ...players.get(client)!, ...player } : (player as Player))
   }
 
-  console.log("RECEIVED:", { cmd, player })
-
   if (cmd) {
     switch (cmd) {
       case "list":
-        // console.log("SENDING:", JSON.stringify({ players: Array.from(players.values()) }))
         client.send(JSON.stringify({ players: Array.from(players.values()) }))
         return
       case "bye":
