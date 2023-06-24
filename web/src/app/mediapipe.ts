@@ -39,7 +39,7 @@ const handLoop = async () => {
   if (landmarks) {
     myLandmarks.clear()
     landmarks.forEach(landmark => myLandmarks.add(landmark))
-    setState({ lastLandmarksUpdate: Date.now() })
+    setState({ lastLandmarksUpdate: now })
   }
 }
 

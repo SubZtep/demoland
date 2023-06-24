@@ -1,3 +1,4 @@
+// import { unwrap } from "solid-js/store"
 import { socket, sendMessage } from "../lib/websocket"
 import { startConfetti, stopConfetti } from "../lib/confetti"
 import { state, setState, players, myLandmarks } from "./state"
@@ -9,6 +10,7 @@ let lastMessageSentTime = 0
 let messageInterval: NodeJS.Timer
 
 anglesWorker.addEventListener("message", ({ data: message }) => {
+  // console.log("send", message)
   sendMessage(message)
 })
 
@@ -21,6 +23,7 @@ compareWorker.addEventListener("message", ({ data: isSimilar }) => {
 })
 
 socket.addEventListener("message", ({ data }) => {
+  // console.log("received", data)
   const { cmd, time, players: msgPlayers, player } = JSON.parse(data) as Message
   if (time <= lastMessageReceivedTime) return
   lastMessageReceivedTime = time
@@ -60,6 +63,7 @@ socket.addEventListener("message", ({ data }) => {
     })
     setState({ lastPlayersUpdate: Date.now() })
 
+    // update html ui elements with new colour
     if (player.colour && players.get(player.id)!.colour !== player.colour) {
       document.querySelectorAll<HTMLElement>(`[data-pid="${player.id}"]`).forEach(el => {
         el.style.setProperty("--colour", player.colour!)

@@ -40,11 +40,15 @@ const HAND_ANGLES = [
 ]
 
 self.onmessage = function ({ data: { message, landmarks } }) {
-  message.landmarks = Array.from(landmarks.values())
-  message.angles = {}
+  message.player.landmarks = Array.from(landmarks.values())
+  message.player.angles = {}
   for (const [name, values] of HAND_ANGLES) {
-    message.angles[name] = values.map(angle => {
-      return angleBetween3DCoords(message.landmarks[angle[0]], message.landmarks[angle[1]], message.landmarks[angle[2]])
+    message.player.angles[name] = values.map(angle => {
+      return angleBetween3DCoords(
+        message.player.landmarks[angle[0]],
+        message.player.landmarks[angle[1]],
+        message.player.landmarks[angle[2]],
+      )
     })
   }
 

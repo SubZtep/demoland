@@ -38,7 +38,6 @@ export default () => {
           onChange={ev => {
             const broadcast = ev.target.checked
             if (broadcast) {
-              startMessageLoop()
               sendMessage({
                 cmd: "list",
                 time: Date.now(),
@@ -49,6 +48,7 @@ export default () => {
                   y: state.y,
                 },
               })
+              startMessageLoop()
             } else {
               sendMessage({
                 cmd: "bye",
