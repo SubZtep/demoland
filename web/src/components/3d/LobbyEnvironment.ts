@@ -3,8 +3,8 @@ import type CameraControls from "camera-controls"
 import { onMount, onCleanup, type Component } from "solid-js"
 
 const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls; planeWidth: number }> = props => {
-  const light = new THREE.DirectionalLight()
-  const helper = new THREE.DirectionalLightHelper(light)
+  const ambient = new THREE.AmbientLight(0xffffff, 0.4)
+  const light = new THREE.DirectionalLight(0xffffff, 0.5)
   const grid = new THREE.GridHelper(50, 50)
 
   const plane = new THREE.Mesh(
@@ -15,10 +15,13 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
   light.castShadow = true
   light.position.set(-5, 15, 10)
   light.target.position.set(0, 5, 0)
-  light.shadow.camera.left = -10
-  light.shadow.camera.right = 10
-  light.shadow.camera.top = 10
-  light.shadow.camera.bottom = -10
+  light.shadow.camera.near = 10
+  light.shadow.camera.far = 25
+  const side = 10
+  light.shadow.camera.top = side
+  light.shadow.camera.bottom = -side
+  light.shadow.camera.left = side
+  light.shadow.camera.right = -side
 
   onMount(() => {
     props.controls.setLookAt(-10, 2, 0, 0, 0, 0, false)
@@ -30,11 +33,18 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
     plane.rotateX((Math.PI / 180) * -90)
     plane.receiveShadow = true
 
-    props.scene.add(light, helper, grid, plane)
+    props.scene.add(
+      ambient,
+      light,
+      grid,
+      plane,
+      // new THREE.DirectionalLightHelper(light),
+      // new THREE.CameraHelper(light.shadow.camera)
+    )
   })
 
   onCleanup(() => {
-    props.scene.remove(light, helper, grid, plane)
+    props.scene.remove(ambient, light, grid, plane)
   })
 
   return null

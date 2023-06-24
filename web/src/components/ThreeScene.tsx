@@ -13,6 +13,7 @@ const ThreeScene: Component<{
   colour?: string
   background?: THREE.Color
   alpha?: boolean
+  /** Camera position and rotation */
   lookAt?: LookAt
   /** CSS class name */
   class?: string

@@ -5,7 +5,7 @@ import { geometries, materials } from "../../app/assets"
 import usePlayer from "../../hooks/usePlayer"
 import { HAND_CONNECTIONS } from "../../app/const"
 
-const HandModel: Component<{ pid: string; scene: THREE.Scene; position: [number, number, number] }> = props => {
+const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   const { player, isPlayerUpdated } = usePlayer(props.pid)
   const dots = new Map<number, THREE.Mesh>()
   const lines = new Map<number, THREE.Line>()
