@@ -54,7 +54,10 @@ socket.addEventListener("message", ({ data }) => {
   }
 
   if (player) {
-    players.set(player.id, players.has(player.id) ? { ...players.get(player.id)!, ...player } : (player as Player))
+    players.set(player.id, {
+      ...(players.has(player.id) ? { ...players.get(player.id)!, ...player } : (player as Player)),
+      updated: Date.now(),
+    })
     setState({ lastPlayersUpdate: Date.now() })
 
     if (player.colour && players.get(player.id)!.colour !== player.colour) {
@@ -73,7 +76,7 @@ socket.addEventListener("message", ({ data }) => {
   // }
 })
 
-export const startMessageLoop = (fps = 30) => {
+export const startMessageLoop = () => {
   messageInterval = setInterval(() => {
     if (state.lastLandmarksUpdate <= lastMessageSentTime) return
 
@@ -92,7 +95,7 @@ export const startMessageLoop = (fps = 30) => {
     }
 
     lastMessageSentTime = Date.now()
-  }, 1_000 / fps)
+  }, state.messageDelay)
 }
 
 export const stopMessageLoop = () => {

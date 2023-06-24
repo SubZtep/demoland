@@ -30,7 +30,7 @@ export const [state, setState] = createStore({
   isDesktop: !isMobile,
   lobby: false,
   connected: false,
-  broadcastFPS: 15,
+  messageDelay: 1_000 / 30,
   angleThreshold: 30,
   lastLandmarksUpdate: Date.now(),
   lastPlayersUpdate: Date.now(),

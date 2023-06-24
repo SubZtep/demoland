@@ -38,7 +38,7 @@ export default () => {
           onChange={ev => {
             const broadcast = ev.target.checked
             if (broadcast) {
-              startMessageLoop(state.broadcastFPS)
+              startMessageLoop()
               sendMessage({
                 cmd: "list",
                 time: Date.now(),

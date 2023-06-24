@@ -5,6 +5,7 @@ interface Player {
   colour: string
   landmarks?: Landmark[]
   angles?: Angles
+  updated?: number
 }
 
 interface Message {
