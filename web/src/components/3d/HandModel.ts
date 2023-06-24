@@ -5,15 +5,15 @@ import { geometries, materials } from "../../app/assets"
 import usePlayer from "../../hooks/usePlayer"
 import { HAND_CONNECTIONS } from "../../app/const"
 
-const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
+const HandModel: Component<{ pid: string; scene: THREE.Scene; position: [number, number, number] }> = props => {
   const { player, isPlayerUpdated } = usePlayer(props.pid)
   const dots = new Map<number, THREE.Mesh>()
   const lines = new Map<number, THREE.Line>()
   const hand = new THREE.Group()
 
-  props.scene.add(hand)
+  hand.position.set(player().x, 0.5, player().x)
   hand.scale.set(-5, -5, -5)
-  hand.translateY(0.5)
+  props.scene.add(hand)
 
   // create joint dots
   const material = new THREE.MeshPhongMaterial({ color: player().colour })
@@ -35,7 +35,7 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
     })
 
     // remove old lines
-    lines.forEach(line => props.scene.remove(line))
+    lines.forEach(line => hand.remove(line))
 
     // create new lines
     for (let i = 0; i < HAND_CONNECTIONS.length; i++) {
@@ -48,10 +48,8 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
         ]),
         materials.get("line"),
       )
-      line.scale.set(-5, -5, -5)
-      line.translateY(0.5)
+      hand.add(line)
       lines?.set(i, line)
-      props.scene.add(line)
     }
   }
 
@@ -63,8 +61,8 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   )
 
   onCleanup(() => {
-    lines.forEach(line => props.scene.remove(line))
-    dots.forEach(dot => props.scene.remove(dot))
+    lines.forEach(line => hand.remove(line))
+    dots.forEach(dot => hand.remove(dot))
     props.scene.remove(hand)
     material.dispose()
   })
