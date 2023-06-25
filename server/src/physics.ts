@@ -11,11 +11,12 @@ export async function initPhysics(server: WebSocket.Server) {
 
   const world = new RAPIER.World(gravity)
 
-  // Create the ground
-  const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0)
+  // create the ground
+  const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0).setTranslation(0.0, -0.1, 0.0)
   world.createCollider(groundColliderDesc)
 
-  const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0.0, 100.0, 0.0)
+  // create the box
+  const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0.0, 10.0, 0.0)
   const rigidBody = world.createRigidBody(rigidBodyDesc)
 
   const colliderDesc = RAPIER.ColliderDesc.cuboid(0.5, 0.5, 0.5)

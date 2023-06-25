@@ -11,14 +11,14 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   const lines = new Map<number, THREE.Line>()
   const hand = new THREE.Group()
 
-  hand.position.set(player().x, 1, player().x)
-  hand.scale.set(-10, -10, -10)
+  hand.position.set(player().x, 0, player().x)
   props.scene.add(hand)
 
   // create joint dots
   const material = new THREE.MeshPhongMaterial({ color: player().colour })
   for (let i = 0; i < new Set(HAND_CONNECTIONS.flat()).size; i++) {
-    const dot = new THREE.Mesh(geometries.get("dot"), material)
+    const dot = new THREE.Mesh(geometries.get("sphere"), material)
+    dot.receiveShadow = true
     dot.castShadow = true
     dots.set(i, dot)
     hand.add(dot)

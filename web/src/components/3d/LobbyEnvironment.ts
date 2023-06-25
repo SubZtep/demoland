@@ -3,7 +3,7 @@ import type CameraControls from "camera-controls"
 import { onMount, onCleanup, type Component } from "solid-js"
 
 const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls; planeWidth: number }> = props => {
-  const ambient = new THREE.AmbientLight(0xffffff, 0.4)
+  const ambient = new THREE.AmbientLight(0xffffff, 0.35)
   const light = new THREE.DirectionalLight(0xffffff, 0.5)
   const grid = new THREE.GridHelper(50, 50)
 
@@ -21,7 +21,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
   onMount(() => {
     props.controls.setLookAt(-10, 2, 0, 0, 0, 0, false)
 
-    loadSkybox(4).then(texture => {
+    loadSkybox().then(texture => {
       props.scene.background = texture
     })
 
@@ -43,7 +43,7 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
 
 export default LobbyEnvironment
 
-async function loadSkybox(nr = 1): Promise<THREE.CubeTexture> {
+async function loadSkybox(nr = 4): Promise<THREE.CubeTexture> {
   return new Promise((resolve, reject) => {
     if (nr < 1 || nr > 15) {
       return reject("a valid skybox number is between 1 and 15")

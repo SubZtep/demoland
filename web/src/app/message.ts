@@ -1,4 +1,4 @@
-// import { unwrap } from "solid-js/store"
+import { unwrap } from "solid-js/store"
 import { socket, sendMessage } from "../lib/websocket"
 import { startConfetti, stopConfetti } from "../lib/confetti"
 import { state, setState, players, myLandmarks, obstacles } from "./state"
@@ -73,22 +73,19 @@ socket.addEventListener("message", ({ data }) => {
   }
 
   // find similar poses
-  // if (players.size > 1) {
-  //   const { playerIds, angleThreshold: threshold } = unwrap(state)
-  //   compareWorker.postMessage({ playerIds, threshold, players })
-  // } else {
-  //   stopConfetti()
-  // }
+  if (players.size > 1) {
+    const { playerIds, angleThreshold: threshold } = unwrap(state)
+    compareWorker.postMessage({ playerIds, threshold, players })
+  } else {
+    stopConfetti()
+  }
 
   if (msgObstacles) {
-    msgObstacles.forEach(obstacle => {
-      if (obstacles.has(obstacle.id)) {
-        console.log("qwewq", obstacle)
-        const obj = obstacles.get(obstacle.id)!
-        obj.position.set(obstacle.position.x, obstacle.position.y, obstacle.position.z)
-        obj.rotation.setFromQuaternion(
-          new Quaternion(obstacle.rotation.x, obstacle.rotation.y, obstacle.rotation.z, obstacle.rotation.w),
-        )
+    msgObstacles.forEach(({ id, position, rotation }) => {
+      if (obstacles.has(id)) {
+        const obj = obstacles.get(id)!
+        obj.position.set(position.x, position.y, position.z)
+        obj.rotation.setFromQuaternion(new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w))
       }
     })
   }
