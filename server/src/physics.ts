@@ -1,33 +1,49 @@
 import RAPIER from "@dimforge/rapier3d-compat"
+import WebSocket from "ws"
 
-export async function initPhysics() {
+const gravity = { x: 0.0, y: -9.81, z: 0.0 }
+const frameLimit = 1000 / 30
+const obstacles = new Map<string, any>()
+const message: any = {}
+
+export async function initPhysics(server: WebSocket.Server) {
   await RAPIER.init()
 
-  const gravity = { x: 0.0, y: -9.81, z: 0.0 }
   const world = new RAPIER.World(gravity)
 
   // Create the ground
   const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0)
   world.createCollider(groundColliderDesc)
 
-  // Create a dynamic rigid-body.
-  const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0.0, 1.0, 0.0)
+  const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0.0, 100.0, 0.0)
   const rigidBody = world.createRigidBody(rigidBodyDesc)
 
-  // Create a cuboid collider attached to the dynamic rigidBody.
   const colliderDesc = RAPIER.ColliderDesc.cuboid(0.5, 0.5, 0.5)
   const collider = world.createCollider(colliderDesc, rigidBody)
 
-  // Game loop. Replace by your own game loop system.
+  obstacles.set("box", { rigidBody, collider })
+
   const gameLoop = () => {
-    // Set the simulation forward.
     world.step()
 
-    // Get and print the rigid-body's position.
-    const position = rigidBody.translation()
-    // console.log("Rigid-body position: ", position.x, position.y, position.z)
+    // generate message
+    message.obstacles = []
+    obstacles.forEach((obstacle, id) => {
+      message.obstacles.push({
+        id,
+        position: obstacle.rigidBody.translation(),
+        rotation: obstacle.rigidBody.rotation(),
+      })
+    })
 
-    setTimeout(gameLoop, 1000 / 30)
+    // broadcast to all clients
+    server.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(message))
+      }
+    })
+
+    setTimeout(gameLoop, frameLimit)
   }
 
   gameLoop()

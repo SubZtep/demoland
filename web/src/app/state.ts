@@ -1,3 +1,4 @@
+import * as THREE from "three"
 import mobile from "is-mobile"
 import { v4 as uuid } from "uuid"
 import { createStore } from "solid-js/store"
@@ -35,16 +36,12 @@ export const [state, setState] = createStore({
   lastLandmarksUpdate: Date.now(),
   lastPlayersUpdate: Date.now(),
   playerIds: [] as string[],
+  /** objects coming from server physics */
+  obstacleIds: [] as string[],
 })
 
 export const players = new Map<string, Player>()
 
 export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
 
-export function getPlayer(id: string, onlyUpdated = false) {
-  const player = players.get(id)
-  if (onlyUpdated && player?.updated && player.updated < Date.now() - state.messageDelay) {
-    return undefined
-  }
-  return player
-}
+export const obstacles = new Map<string, THREE.Object3D>()

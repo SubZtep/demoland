@@ -1,7 +1,8 @@
 // import { unwrap } from "solid-js/store"
 import { socket, sendMessage } from "../lib/websocket"
 import { startConfetti, stopConfetti } from "../lib/confetti"
-import { state, setState, players, myLandmarks } from "./state"
+import { state, setState, players, myLandmarks, obstacles } from "./state"
+import { Quaternion } from "three"
 
 const anglesWorker = new Worker("/workers/angles.js")
 const compareWorker = new Worker("/workers/compare.js")
@@ -24,7 +25,7 @@ compareWorker.addEventListener("message", ({ data: isSimilar }) => {
 
 socket.addEventListener("message", ({ data }) => {
   // console.log("received", data)
-  const { cmd, time, players: msgPlayers, player } = JSON.parse(data) as Message
+  const { cmd, time, player, players: msgPlayers, obstacles: msgObstacles } = JSON.parse(data) as Message
   if (time <= lastMessageReceivedTime) return
   lastMessageReceivedTime = time
 
@@ -78,6 +79,19 @@ socket.addEventListener("message", ({ data }) => {
   // } else {
   //   stopConfetti()
   // }
+
+  if (msgObstacles) {
+    msgObstacles.forEach(obstacle => {
+      if (obstacles.has(obstacle.id)) {
+        console.log("qwewq", obstacle)
+        const obj = obstacles.get(obstacle.id)!
+        obj.position.set(obstacle.position.x, obstacle.position.y, obstacle.position.z)
+        obj.rotation.setFromQuaternion(
+          new Quaternion(obstacle.rotation.x, obstacle.rotation.y, obstacle.rotation.z, obstacle.rotation.w),
+        )
+      }
+    })
+  }
 })
 
 export const startMessageLoop = () => {

@@ -1,24 +1,33 @@
 import * as THREE from "three"
-import { onMount, onCleanup, type Component } from "solid-js"
+import { onCleanup, type Component } from "solid-js"
+import { obstacles } from "../../app/state"
 
-const Box: Component<{ scene: THREE.Scene; color: THREE.Color; position: [number, number, number] }> = props => {
-  const box: THREE.Mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: props.color }))
-  box.position.set(...props.position)
-  box.scale.set(1, 0.5, 1)
-  box.castShadow = true
+const Box: Component<{
+  scene: THREE.Scene
+  color: THREE.Color
+  /** obstacle id */
+  oid: string
+  // position: [number, number, number]
+  // /** `[x, y, z, w]` */
+  // rotation: [number, number, number, number]
+}> = props => {
+  const geometry = new THREE.BoxGeometry()
+  const material = new THREE.MeshPhongMaterial({ color: props.color })
+  const box: THREE.Mesh = new THREE.Mesh(geometry, material)
+  // box.rotation.setFromQuaternion(new THREE.Quaternion(...props.rotation))
+  // box.position.set(...props.position)
+  // box.scale.set(1, 1, 1)
+  box.translateY(0.5)
   box.receiveShadow = true
-  // const rotate = Math.random() - 0.5
-
-  // runForever.add(deltaTime => { // TODO: remove this function on cleanup
-  //   box.rotateY(rotate * deltaTime)
-  // })
-
-  onMount(() => {
-    props.scene.add(box)
-  })
+  box.castShadow = true
+  props.scene.add(box)
+  obstacles.set(props.oid, box)
 
   onCleanup(() => {
     props.scene.remove(box)
+    geometry.dispose()
+    material.dispose()
+    obstacles.delete(props.oid)
   })
 
   return null

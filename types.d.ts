@@ -8,10 +8,17 @@ interface Player {
   updated?: number
 }
 
+interface Obstacle {
+  id: string
+  position: { x: number; y: number; z: number }
+  rotation: { x: number; y: number; z: number; w: number }
+}
+
 interface Message {
   cmd?: "list" | "hi" | "bye"
   player: RequireField<Partial<Player>, "id">
   players?: Player[]
+  obstacles?: Obstacle[]
   time: number
 }
 

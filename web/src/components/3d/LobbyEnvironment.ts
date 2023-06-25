@@ -7,15 +7,10 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
   const light = new THREE.DirectionalLight(0xffffff, 0.5)
   const grid = new THREE.GridHelper(50, 50)
 
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(props.planeWidth, props.planeWidth),
-    new THREE.MeshLambertMaterial({ color: 0xffc26f }),
-  )
-
   light.castShadow = true
-  light.position.set(-5, 15, 10)
-  light.target.position.set(0, 5, 0)
-  light.shadow.camera.near = 10
+  light.position.set(-8, 15, 1)
+  light.target.position.set(5, 10, -1)
+  light.shadow.camera.near = 5
   light.shadow.camera.far = 25
   const side = 10
   light.shadow.camera.top = side
@@ -30,21 +25,17 @@ const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls
       props.scene.background = texture
     })
 
-    plane.rotateX((Math.PI / 180) * -90)
-    plane.receiveShadow = true
-
     props.scene.add(
       ambient,
       light,
       grid,
-      plane,
       // new THREE.DirectionalLightHelper(light),
-      // new THREE.CameraHelper(light.shadow.camera)
+      // new THREE.CameraHelper(light.shadow.camera),
     )
   })
 
   onCleanup(() => {
-    props.scene.remove(ambient, light, grid, plane)
+    props.scene.remove(ambient, light, grid)
   })
 
   return null

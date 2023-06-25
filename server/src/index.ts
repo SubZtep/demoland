@@ -8,10 +8,10 @@ import { initPhysics } from "./physics"
 
 const app = express()
 setViews(app)
-initPhysics()
 
 const server = createServer(app)
 const wss = new WebSocketServer({ server })
+initPhysics(wss)
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {

@@ -4,6 +4,7 @@ import { state } from "../app/state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
 import HandModel from "./3d/HandModel"
 import Box from "./3d/Box"
+import Plane from "./3d/Plane"
 import ThreeScene from "./ThreeScene"
 import { PLANE_SIZE } from "../app/const"
 
@@ -20,7 +21,8 @@ const Lobby: Component = () => {
               </>
             )}
           </For>
-          <Box scene={scene} color={new THREE.Color("pink")} position={[-2, 1, -3]} />
+          <Box oid="box" scene={scene} color={new THREE.Color("pink")} />
+          <Plane oid="ground" scene={scene} color={new THREE.Color("#ffc26f")} />
         </>
       )}
     </ThreeScene>

@@ -11,8 +11,8 @@ const HandModel: Component<{ pid: string; scene: THREE.Scene }> = props => {
   const lines = new Map<number, THREE.Line>()
   const hand = new THREE.Group()
 
-  hand.position.set(player().x, 0.5, player().x)
-  hand.scale.set(-5, -5, -5)
+  hand.position.set(player().x, 1, player().x)
+  hand.scale.set(-10, -10, -10)
   props.scene.add(hand)
 
   // create joint dots
