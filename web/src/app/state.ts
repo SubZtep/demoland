@@ -44,4 +44,4 @@ export const players = new Map<string, Player>()
 
 export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
 
-export const obstacles = new Map<string, THREE.Object3D>()
+export const obstacles = new Map<string, Obstacle & { object3d?: THREE.Object3D }>()

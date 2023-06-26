@@ -5,17 +5,17 @@ import { obstacles } from "../../app/state"
 
 const Plane: Component<{
   scene: THREE.Scene
-  color: THREE.Color
   /** obstacle id */
   oid: string
 }> = props => {
+  const obstacle = obstacles.get(props.oid)!
   const geometry = new THREE.PlaneGeometry(PLANE_SIZE, PLANE_SIZE)
-  const material = new THREE.MeshLambertMaterial({ color: props.color })
+  const material = new THREE.MeshLambertMaterial({ color: obstacle.color })
   const plane = new THREE.Mesh(geometry, material)
   plane.rotateX((Math.PI / 180) * -90)
   plane.receiveShadow = true
   props.scene.add(plane)
-  obstacles.set(props.oid, plane)
+  obstacles.set(props.oid, { ...obstacle, object3d: plane })
 
   onCleanup(() => {
     props.scene.remove(plane)

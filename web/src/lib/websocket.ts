@@ -11,9 +11,9 @@ export function createWebSocketConnection() {
     setState({ connected: false, lobby: false })
   })
 
-  const sendMessage = (msg: Message) => {
-    // console.log("send", msg)
+  const sendMessage = (msg: ClientMessage) => {
     if (socket.readyState === WebSocket.OPEN) {
+      // console.log("sending", msg)
       socket.send(JSON.stringify(msg))
     }
   }

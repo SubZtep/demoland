@@ -4,16 +4,16 @@ import { obstacles } from "../../app/state"
 
 const Box: Component<{
   scene: THREE.Scene
-  color: THREE.Color
   /** obstacle id */
   oid: string
   // position: [number, number, number]
   // /** `[x, y, z, w]` */
   // rotation: [number, number, number, number]
 }> = props => {
+  const obstacle = obstacles.get(props.oid)!
   const geometry = new THREE.BoxGeometry()
-  const material = new THREE.MeshPhongMaterial({ color: props.color })
-  const box: THREE.Mesh = new THREE.Mesh(geometry, material)
+  const material = new THREE.MeshPhongMaterial({ color: obstacle.color })
+  const box = new THREE.Mesh(geometry, material)
   // box.rotation.setFromQuaternion(new THREE.Quaternion(...props.rotation))
   // box.position.set(...props.position)
   // box.scale.set(1, 1, 1)
@@ -21,7 +21,7 @@ const Box: Component<{
   box.receiveShadow = true
   box.castShadow = true
   props.scene.add(box)
-  obstacles.set(props.oid, box)
+  obstacles.set(props.oid, { ...obstacles.get(props.oid)!, object3d: box })
 
   onCleanup(() => {
     props.scene.remove(box)

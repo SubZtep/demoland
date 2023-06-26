@@ -1,10 +1,10 @@
 import * as THREE from "three"
 import { For, type Component } from "solid-js"
-import { state } from "../app/state"
+import { Dynamic } from "solid-js/web"
+import { state, obstacles } from "../app/state"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
 import HandModel from "./3d/HandModel"
-import Box from "./3d/Box"
-import Plane from "./3d/Plane"
+import * as obss from "./3d/"
 import ThreeScene from "./ThreeScene"
 import { PLANE_SIZE } from "../app/const"
 
@@ -21,8 +21,16 @@ const Lobby: Component = () => {
               </>
             )}
           </For>
-          <Box oid="box" scene={scene} color={new THREE.Color("pink")} />
-          <Plane oid="ground" scene={scene} color={new THREE.Color("#ffc26f")} />
+          <For each={state.obstacleIds}>
+            {oid => {
+              const obstacle = obstacles.get(oid)
+              if (!obstacle) {
+                console.log("Missing obstacle", [oid, obstacle])
+                return null
+              }
+              return <Dynamic component={obss[obstacle.component]} oid={oid} scene={scene} />
+            }}
+          </For>
         </>
       )}
     </ThreeScene>

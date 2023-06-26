@@ -1,4 +1,4 @@
-import { startMessageLoop, stopMessageLoop } from "../app/message"
+import { gotoLobby, leaveLobby } from "../app/lobby"
 import { sendMessage } from "../lib/websocket"
 import { state, setState } from "../app/state"
 import styles from "./App.module.css"
@@ -18,11 +18,12 @@ export default () => {
           onChange={ev => {
             setState({ colour: ev.target.value })
             sendMessage({
+              cmd: "update",
               time: Date.now(),
               player: {
                 id: state.id,
                 colour: state.colour,
-              },
+              } as Player,
             })
           }}
         />
@@ -36,30 +37,11 @@ export default () => {
           disabled={!state.connected}
           checked={state.lobby}
           onChange={ev => {
-            const broadcast = ev.target.checked
-            if (broadcast) {
-              sendMessage({
-                cmd: "list",
-                time: Date.now(),
-                player: {
-                  id: state.id,
-                  colour: state.colour,
-                  x: state.x,
-                  y: state.y,
-                },
-              })
-              startMessageLoop()
+            if (ev.target.checked) {
+              gotoLobby()
             } else {
-              sendMessage({
-                cmd: "bye",
-                time: Date.now(),
-                player: {
-                  id: state.id,
-                },
-              })
-              stopMessageLoop()
+              leaveLobby()
             }
-            setState({ lobby: broadcast })
           }}
         />
         Go to lobby

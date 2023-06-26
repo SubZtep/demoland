@@ -1,17 +1,11 @@
-import { createServer } from "node:http"
-import { WebSocketServer } from "ws"
-import express from "express"
 import { setViews } from "./view"
 import { onMessage } from "./message"
 import { connections, players } from "./state"
-import { initPhysics } from "./physics"
+import { app, server, wss, sendMessage } from "./init"
+// import { initPhysics } from "./physics"
 
-const app = express()
 setViews(app)
-
-const server = createServer(app)
-const wss = new WebSocketServer({ server })
-initPhysics(wss)
+// initPhysics(wss)
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {
@@ -22,18 +16,13 @@ wss.on("connection", ws => {
     if (players.has(ws)) {
       const { id } = players.get(ws)!
       players.delete(ws)
-      wss.clients.forEach(client => {
-        client.send(JSON.stringify({ cmd: "bye", player: { id }, time: Date.now() } as Message))
-      })
+      sendMessage({ cmd: "bye", player: { id } })
     }
 
     connections.active = wss.clients.size
   })
 
-  ws.on("upgrade", () => {
-    console.log("WS Upgrade")
-  })
-
+  ws.on("upgrade", req => console.log("WS Upgrade", req))
   ws.on("error", ev => console.log("WS Error", ev))
 
   connections.active = wss.clients.size

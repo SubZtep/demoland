@@ -1,3 +1,5 @@
+type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>
+
 interface Player {
   id: string
   x: number
@@ -10,16 +12,41 @@ interface Player {
 
 interface Obstacle {
   id: string
+  component: string
+  color: string
   position: { x: number; y: number; z: number }
   rotation: { x: number; y: number; z: number; w: number }
+  object3d?: THREE.Object3D
 }
 
-interface Message {
-  cmd?: "list" | "hi" | "bye"
-  player: RequireField<Partial<Player>, "id">
+//
+// MESSAGES
+//
+
+type HelloMessage = {
+  cmd: "hello"
+  player: Player
+}
+
+type CreateMessage = {
+  cmd: "create"
+  players?: Player[]
+  obstacles?: Obstacle[]
+}
+
+type ByeMessage = {
+  cmd: "bye"
+  player: Pick<Player, "id">
+}
+
+type UpdateMessage = {
+  cmd: "update"
+  player?: Player
   players?: Player[]
   obstacles?: Obstacle[]
   time: number
 }
 
-type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>
+type ServerMessage = CreateMessage | UpdateMessage | ByeMessage
+
+type ClientMessage = HelloMessage | UpdateMessage | ByeMessage

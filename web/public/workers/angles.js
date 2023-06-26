@@ -39,28 +39,24 @@ const HAND_ANGLES = [
   ],
 ]
 
-self.onmessage = function ({ data: { message, landmarks } }) {
+self.onmessage = function ({ data: { player, landmarks } }) {
   // scale landmarks to the physical world
   const scale = -10
-  message.player.landmarks = Array.from(landmarks.values()).map(v => ({
+  player.landmarks = Array.from(landmarks.values()).map(v => ({
     x: v.x * scale,
     y: v.y * scale + 1,
     z: v.z * scale,
   }))
 
   // calculate angles
-  message.player.angles = {}
+  player.angles = {}
   for (const [name, values] of HAND_ANGLES) {
-    message.player.angles[name] = values.map(angle => {
-      return angleBetween3DCoords(
-        message.player.landmarks[angle[0]],
-        message.player.landmarks[angle[1]],
-        message.player.landmarks[angle[2]],
-      )
+    player.angles[name] = values.map(angle => {
+      return angleBetween3DCoords(player.landmarks[angle[0]], player.landmarks[angle[1]], player.landmarks[angle[2]])
     })
   }
 
-  self.postMessage(message)
+  self.postMessage(player)
 }
 
 /**
