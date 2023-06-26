@@ -6,25 +6,22 @@ const Box: Component<{
   scene: THREE.Scene
   /** obstacle id */
   oid: string
-  // position: [number, number, number]
-  // /** `[x, y, z, w]` */
-  // rotation: [number, number, number, number]
 }> = props => {
-  const obstacle = obstacles.get(props.oid)!
-  const geometry = new THREE.BoxGeometry()
-  const material = new THREE.MeshPhongMaterial({ color: obstacle.color })
-  const box = new THREE.Mesh(geometry, material)
-  // box.rotation.setFromQuaternion(new THREE.Quaternion(...props.rotation))
-  // box.position.set(...props.position)
-  // box.scale.set(1, 1, 1)
-  box.translateY(0.5)
-  box.receiveShadow = true
-  box.castShadow = true
-  props.scene.add(box)
-  obstacles.set(props.oid, { ...obstacles.get(props.oid)!, object3d: box })
+  const box = obstacles.get(props.oid) as BoxObstacle
+  const geometry = new THREE.BoxGeometry(box.dimensions.width, box.dimensions.height, box.dimensions.depth)
+  const material = new THREE.MeshPhongMaterial({ color: box.color })
+  box.object3d = new THREE.Mesh(geometry, material)
+  box.object3d.rotation.setFromQuaternion(
+    new THREE.Quaternion(box.rotation.x, box.rotation.y, box.rotation.z, box.rotation.w),
+  )
+  box.object3d.position.set(box.position.x, box.position.y, box.position.z)
+  box.object3d.receiveShadow = true
+  box.object3d.castShadow = true
+  props.scene.add(box.object3d)
+  obstacles.set(props.oid, box)
 
   onCleanup(() => {
-    props.scene.remove(box)
+    props.scene.remove(box.object3d!)
     geometry.dispose()
     material.dispose()
     obstacles.delete(props.oid)

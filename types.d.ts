@@ -10,36 +10,52 @@ interface Player {
   updated?: number
 }
 
-interface Obstacle {
+//
+// OBSTACLES
+//
+
+interface BaseObstacle {
   id: string
-  component: string
   color: string
   position: { x: number; y: number; z: number }
-  rotation: { x: number; y: number; z: number; w: number }
+  /** client side has three.js object */
   object3d?: THREE.Object3D
 }
+
+interface PlaneObstacle extends BaseObstacle {
+  component: "Plane"
+  dimensions: { width: number; height: number }
+}
+
+interface BoxObstacle extends BaseObstacle {
+  component: "Box"
+  dimensions: { width: number; height: number; depth: number }
+  rotation: { x: number; y: number; z: number; w: number }
+}
+
+type Obstacle = PlaneObstacle | BoxObstacle
 
 //
 // MESSAGES
 //
 
-type HelloMessage = {
+interface HelloMessage {
   cmd: "hello"
   player: Player
 }
 
-type CreateMessage = {
+interface CreateMessage {
   cmd: "create"
   players?: Player[]
   obstacles?: Obstacle[]
 }
 
-type ByeMessage = {
+interface ByeMessage {
   cmd: "bye"
   player: Pick<Player, "id">
 }
 
-type UpdateMessage = {
+interface UpdateMessage {
   cmd: "update"
   player?: Player
   players?: Player[]

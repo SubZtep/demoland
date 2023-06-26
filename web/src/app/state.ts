@@ -1,4 +1,3 @@
-import * as THREE from "three"
 import mobile from "is-mobile"
 import { v4 as uuid } from "uuid"
 import { createStore } from "solid-js/store"
@@ -23,25 +22,25 @@ if (isMobile) {
   document.documentElement.style.setProperty("--app-rows", "1fr auto")
 }
 
+export const players = new Map<string, Player>()
+
+export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
+
+export const obstacles = new Map<string, Obstacle>()
+
 export const [state, setState] = createStore({
   id,
   colour,
-  x: Math.random() * PLANE_SIZE - PLANE_SIZE / 2,
+  x: Math.random() * PLANE_SIZE - PLANE_SIZE / 2, // TODO: pos from local storage
   y: Math.random() * PLANE_SIZE - PLANE_SIZE / 2,
   isDesktop: !isMobile,
   lobby: false,
   connected: false,
   messageDelay: 1_000 / 30,
-  angleThreshold: 30,
+  angleThreshold: 28,
   lastLandmarksUpdate: Date.now(),
   lastPlayersUpdate: Date.now(),
   playerIds: [] as string[],
   /** objects coming from server physics */
   obstacleIds: [] as string[],
 })
-
-export const players = new Map<string, Player>()
-
-export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
-
-export const obstacles = new Map<string, Obstacle & { object3d?: THREE.Object3D }>()
