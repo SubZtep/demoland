@@ -1,8 +1,12 @@
 import * as THREE from "three"
 import { unwrap } from "solid-js/store"
 import { createEffect, onCleanup, type Component } from "solid-js"
-import { geometries, materials } from "../../app/assets"
 import { HAND_CONNECTIONS } from "../../app/const"
+
+const dotGeometry = new THREE.SphereGeometry(0.0065, 4, 3)
+const bigDotGeometry = new THREE.SphereGeometry(0.06)
+const dotMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 })
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
 
 const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene; landmarks: Landmark[]; scale?: number }> = props => {
   const dots = new Map<number, THREE.Mesh>()
@@ -14,7 +18,9 @@ const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene; landmarks: Lan
 
   // create joint dots
   for (let i = 0; i < new Set(HAND_CONNECTIONS.flat()).size; i++) {
-    const dot = new THREE.Mesh(geometries.get(props.scale ? "dot" : "sphere"), materials.get("dot"))
+    const dot = new THREE.Mesh(props.scale ? dotGeometry : bigDotGeometry, dotMaterial)
+    dot.receiveShadow = true
+    dot.castShadow = true
     dots.set(i, dot)
     hand.add(dot)
   }
@@ -45,7 +51,7 @@ const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene; landmarks: Lan
           new THREE.Vector3(...dots.get(join[0])!.position.toArray()),
           new THREE.Vector3(...dots.get(join[1])!.position.toArray()),
         ]),
-        materials.get("line"),
+        lineMaterial,
       )
       lines.set(i, line)
       hand.add(line)
