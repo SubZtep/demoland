@@ -17,15 +17,15 @@ const App = () => {
         {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} />
+            <HandSkeleton scene={scene} landmarks={state.player.landmarks!} scale={-4} />
           </>
         )}
       </ThreeScene>
-      <ThreeScene colour={state.colour} class="bg-colour" border={state.isDesktop} rotate alpha>
+      <ThreeScene colour={state.player.colour} class="bg-colour" border={state.isDesktop} rotate alpha>
         {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} />
+            <HandSkeleton scene={scene} landmarks={state.player.landmarks!} scale={-4} />
           </>
         )}
       </ThreeScene>
@@ -39,7 +39,7 @@ const App = () => {
         {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} />
+            <HandSkeleton scene={scene} landmarks={state.player.landmarks!} scale={-4} />
           </>
         )}
       </ThreeScene>
@@ -53,7 +53,7 @@ const App = () => {
         {({ scene }) => (
           <>
             <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} />
+            <HandSkeleton scene={scene} landmarks={state.player.landmarks!} scale={-4} />
           </>
         )}
       </ThreeScene>

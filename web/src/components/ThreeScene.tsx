@@ -48,7 +48,7 @@ const ThreeScene: Component<{
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
     controls = new CameraControls(camera, canvas)
-    controls.minDistance = 1
+    controls.minDistance = 0.5
     controls.maxDistance = 80
     controls.setLookAt(...props.lookAt, false)
     if (props.rotate) {

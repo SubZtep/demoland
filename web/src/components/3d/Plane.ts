@@ -1,27 +1,19 @@
 import * as THREE from "three"
 import { onCleanup, type Component } from "solid-js"
-import { obstacles } from "../../app/state"
 
-const Plane: Component<{
-  scene: THREE.Scene
-  /** obstacle id */
-  oid: string
-}> = props => {
-  const plane = obstacles.get(props.oid) as PlaneObstacle
-  const geometry = new THREE.PlaneGeometry(plane.dimensions.width, plane.dimensions.height)
-  const material = new THREE.MeshLambertMaterial({ color: plane.color })
-  plane.object3d = new THREE.Mesh(geometry, material)
-  plane.object3d.position.set(plane.position.x, plane.position.y, plane.position.z)
-  plane.object3d.rotateX((Math.PI / 180) * -90)
-  plane.object3d.receiveShadow = true
-  props.scene.add(plane.object3d)
-  obstacles.set(props.oid, plane)
+const Plane: Component<{ scene: THREE.Scene; obstacle: PlaneObstacle }> = props => {
+  const geometry = new THREE.PlaneGeometry(props.obstacle.dimensions.width, props.obstacle.dimensions.height)
+  const material = new THREE.MeshLambertMaterial({ color: props.obstacle.color })
+  const plane = new THREE.Mesh(geometry, material)
+  plane.position.set(props.obstacle.position.x, props.obstacle.position.y, props.obstacle.position.z)
+  plane.rotateX((Math.PI / 180) * -90)
+  plane.receiveShadow = true
+  props.scene.add(plane)
 
   onCleanup(() => {
-    props.scene.remove(plane.object3d!)
+    props.scene.remove(plane!)
     geometry.dispose()
     material.dispose()
-    obstacles.delete(props.oid)
   })
 
   return null

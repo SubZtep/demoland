@@ -1,21 +1,21 @@
 import { createEffect, createSignal, on, For, Show, type Component, type ParentComponent } from "solid-js"
 import { unwrap } from "solid-js/store"
-import { state, players } from "../app/state"
+import { state } from "../app/state"
 import styles from "./App.module.css"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DisplayFinger: Component<{ pid: string; name: string }> = props => {
   const [angles, setAngles] = createSignal<number[]>()
 
-  createEffect(
-    on(
-      () => state.lastPlayersUpdate,
-      () => {
-        const v = players.get(props.pid)?.angles?.[props.name]
-        if (v) setAngles(unwrap(v))
-      },
-    ),
-  )
+  // createEffect(
+  //   on(
+  //     () => state.lastPlayersUpdate,
+  //     () => {
+  //       // const v = players.get(props.pid)?.angles?.[props.name]
+  //       // if (v) setAngles(unwrap(v))
+  //     },
+  //   ),
+  // )
 
   return (
     <div class={styles.fingerMeters}>
@@ -47,9 +47,9 @@ const Finger: ParentComponent<{ name: string }> = props => {
             </div>
           )}
         </For> */}
-        <Show when={state.playerIds.length === 0}>
+        {/* <Show when={state.playerIds.length === 0}>
           <progress class="opacity-10"></progress>
-        </Show>
+        </Show> */}
       </div>
     </fieldset>
   )

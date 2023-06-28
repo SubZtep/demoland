@@ -1,5 +1,6 @@
+import { produce } from "solid-js/store"
 import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision"
-import { state, myLandmarks, setState } from "./state"
+import { state, setState } from "./state"
 
 export let landmarker: HandLandmarker
 let lastPredictTime = 0
@@ -37,9 +38,12 @@ const handLoop = async () => {
   lastPredictTime = now
 
   if (landmarks) {
-    myLandmarks.clear()
-    landmarks.forEach(landmark => myLandmarks.add(landmark))
-    setState({ lastLandmarksUpdate: now })
+    setState(
+      produce(state => {
+        state.player.landmarks = landmarks
+        state.lastLandmarksUpdate = now
+      }),
+    )
   }
 }
 

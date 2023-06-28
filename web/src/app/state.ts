@@ -16,31 +16,29 @@ if (!colour) {
   window.localStorage.setItem("colour", colour)
 }
 
+const x = Math.random() * PLANE_SIZE - PLANE_SIZE / 2 // TODO: pos from local storage
+const y = Math.random() * PLANE_SIZE - PLANE_SIZE / 2
+
 const isMobile = mobile()
 if (isMobile) {
   document.documentElement.style.setProperty("--app-cols", "1fr 1fr")
   document.documentElement.style.setProperty("--app-rows", "1fr auto")
 }
 
-export const players = new Map<string, Player>()
-
-export const myLandmarks = new Set<Landmark>(HAND_LANDMARKS)
-
-export const obstacles = new Map<string, Obstacle>()
-
 export const [state, setState] = createStore({
-  id,
-  colour,
-  x: Math.random() * PLANE_SIZE - PLANE_SIZE / 2, // TODO: pos from local storage
-  y: Math.random() * PLANE_SIZE - PLANE_SIZE / 2,
+  player: {
+    id,
+    colour,
+    x,
+    y,
+    landmarks: HAND_LANDMARKS,
+  } as Player,
   isDesktop: !isMobile,
   lobby: false,
   connected: false,
   messageDelay: 1_000 / 30,
   angleThreshold: 28,
   lastLandmarksUpdate: Date.now(),
-  lastPlayersUpdate: Date.now(),
-  playerIds: [] as string[],
-  /** objects coming from server physics */
-  obstacleIds: [] as string[],
+  players: [] as Player[],
+  obstacles: [] as Obstacle[],
 })

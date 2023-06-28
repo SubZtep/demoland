@@ -2,7 +2,7 @@ import * as THREE from "three"
 import type CameraControls from "camera-controls"
 import { onMount, onCleanup, type Component } from "solid-js"
 
-const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls; planeWidth: number }> = props => {
+const LobbyEnvironment: Component<{ scene: THREE.Scene; controls: CameraControls }> = props => {
   const ambient = new THREE.AmbientLight(0xffffff, 0.35)
   const light = new THREE.DirectionalLight(0xffffff, 0.5)
   const grid = new THREE.GridHelper(50, 50)

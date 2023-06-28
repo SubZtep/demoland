@@ -1,4 +1,4 @@
-import { state, setState, players, obstacles } from "./state"
+import { state, setState } from "./state"
 import { startMessageLoop, stopMessageLoop } from "./message"
 import { sendMessage } from "../lib/websocket"
 
@@ -6,10 +6,10 @@ export function gotoLobby() {
   sendMessage({
     cmd: "hello",
     player: {
-      id: state.id,
-      colour: state.colour,
-      x: state.x,
-      y: state.y,
+      id: state.player.id,
+      colour: state.player.colour,
+      x: state.player.x,
+      y: state.player.y,
     },
   })
   startMessageLoop()
@@ -20,11 +20,9 @@ export function leaveLobby() {
   sendMessage({
     cmd: "bye",
     player: {
-      id: state.id,
+      id: state.player.id,
     },
   })
   stopMessageLoop()
-  setState({ lobby: false, playerIds: [], obstacleIds: [] })
-  players.clear()
-  obstacles.clear()
+  setState({ lobby: false, players: [], obstacles: [] })
 }

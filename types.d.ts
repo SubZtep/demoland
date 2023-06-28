@@ -60,7 +60,6 @@ interface UpdateMessage {
   player?: Player
   players?: Player[]
   obstacles?: Obstacle[]
-  time: number
 }
 
 type ServerMessage = CreateMessage | UpdateMessage | ByeMessage

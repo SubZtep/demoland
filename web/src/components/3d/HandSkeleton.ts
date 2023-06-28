@@ -1,44 +1,40 @@
 import * as THREE from "three"
-import { createEffect, on, onMount, onCleanup, type Component } from "solid-js"
-import { state, players, myLandmarks } from "../../app/state"
+import { unwrap } from "solid-js/store"
+import { createEffect, onCleanup, type Component } from "solid-js"
 import { geometries, materials } from "../../app/assets"
 import { HAND_CONNECTIONS } from "../../app/const"
 
-const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene }> = props => {
+const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene; landmarks: Landmark[]; scale?: number }> = props => {
   const dots = new Map<number, THREE.Mesh>()
   const lines = new Map<number, THREE.Line>()
-  let hand: THREE.Group
+  const hand = new THREE.Group()
+  if (props.scale) {
+    hand.scale.set(props.scale, props.scale, props.scale)
+  }
 
-  onMount(() => {
-    hand = new THREE.Group()
-    hand.scale.set(-5, -5, -5)
+  // create joint dots
+  for (let i = 0; i < new Set(HAND_CONNECTIONS.flat()).size; i++) {
+    const dot = new THREE.Mesh(geometries.get(props.scale ? "dot" : "sphere"), materials.get("dot"))
+    dots.set(i, dot)
+    hand.add(dot)
+  }
 
-    // create joint dots
-    for (let i = 0; i < new Set(HAND_CONNECTIONS.flat()).size; i++) {
-      const dot = new THREE.Mesh(geometries.get("dot"), materials.get("dot"))
-      dots.set(i, dot)
-      hand.add(dot)
-    }
-
-    props.scene.add(hand)
-  })
+  props.scene.add(hand)
 
   onCleanup(() => {
-    lines.forEach(line => props.scene.remove(line))
-    dots.forEach(dot => props.scene.remove(dot))
+    lines.forEach(line => hand.remove(line))
+    dots.forEach(dot => hand.remove(dot))
     props.scene.remove(hand)
   })
 
-  const updateLandmarks = (landmarks?: Landmark[]) => {
-    if (!landmarks) return
-
+  const updateLandmarks = (landmarks: Landmark[]) => {
     // move joint dots
     landmarks.forEach(({ x, y, z }, i) => {
-      dots.get(i)?.position.set(x, y, z)
+      dots.get(i)!.position.set(x, y, z)
     })
 
     // remove old lines
-    lines.forEach(line => props.scene.remove(line))
+    lines.forEach(line => hand.remove(line))
 
     // create new lines
     for (let i = 0; i < HAND_CONNECTIONS.length; i++) {
@@ -51,27 +47,12 @@ const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene }> = props => {
         ]),
         materials.get("line"),
       )
-      line.scale.set(-5, -5, -5)
-      lines?.set(i, line)
-      props.scene.add(line)
+      lines.set(i, line)
+      hand.add(line)
     }
   }
 
-  if (props.pid) {
-    createEffect(
-      on(
-        () => state.lastPlayersUpdate,
-        () => updateLandmarks(players.get(props.pid!)?.landmarks),
-      ),
-    )
-  } else {
-    createEffect(
-      on(
-        () => state.lastLandmarksUpdate,
-        () => updateLandmarks(Array.from(myLandmarks.values())),
-      ),
-    )
-  }
+  createEffect(() => updateLandmarks(unwrap(props.landmarks)))
 
   return null
 }
