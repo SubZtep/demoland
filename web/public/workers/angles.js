@@ -40,14 +40,6 @@ const HAND_ANGLES = [
 ]
 
 self.onmessage = function ({ data: { player } }) {
-  // scale landmarks to the physical world
-  const scale = -10
-  player.landmarks = player.landmarks.map(v => ({
-    x: v.x * scale,
-    y: v.y * scale + 1,
-    z: v.z * scale,
-  }))
-
   // calculate angles
   player.angles = {}
   for (const [name, values] of HAND_ANGLES) {

@@ -4,7 +4,7 @@ interface Player {
   id: string
   colour: string
   position: { x: number; y: number; z: number }
-  landmarks?: Landmark[]
+  landmarks: Landmark[]
   angles?: Angles
   updated?: number
 }

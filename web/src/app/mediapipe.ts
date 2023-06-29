@@ -38,9 +38,15 @@ const handLoop = async () => {
   lastPredictTime = now
 
   if (landmarks) {
+    // scale landmarks to the physical world
+    const scale = -10
     setState(
       produce(state => {
-        state.player.landmarks = landmarks
+        state.player.landmarks = landmarks.map(v => ({
+          x: v.x * scale,
+          y: v.y * scale + 1,
+          z: v.z * scale,
+        }))
         state.lastLandmarksUpdate = now
       }),
     )

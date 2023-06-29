@@ -61,8 +61,10 @@ socket.addEventListener("message", ({ data }) => {
         setState(
           produce(state => {
             for (const msgPlayer of msg.players!) {
-              const statePlayer = state.players.find(p => p.id === msgPlayer!.id)!
-              Object.assign(statePlayer, msgPlayer)
+              const statePlayer = state.players.find(p => p.id === msgPlayer!.id)
+              if (statePlayer) {
+                Object.assign(statePlayer, msgPlayer)
+              }
             }
           }),
         )

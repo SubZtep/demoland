@@ -1,3 +1,4 @@
+import { unwrap } from "solid-js/store"
 import { state, setState } from "./state"
 import { startMessageLoop, stopMessageLoop } from "./message"
 import { sendMessage } from "../lib/websocket"
@@ -5,11 +6,7 @@ import { sendMessage } from "../lib/websocket"
 export function gotoLobby() {
   sendMessage({
     cmd: "hello",
-    player: {
-      id: state.player.id,
-      colour: state.player.colour,
-      position: state.player.position,
-    },
+    player: unwrap(state.player),
   })
   startMessageLoop()
   setState({ lobby: true })
@@ -18,9 +15,7 @@ export function gotoLobby() {
 export function leaveLobby() {
   sendMessage({
     cmd: "bye",
-    player: {
-      id: state.player.id,
-    },
+    player: { id: state.player.id },
   })
   stopMessageLoop()
   setState({ lobby: false, players: [], obstacles: [] })
