@@ -17,7 +17,7 @@ if (!colour) {
 }
 
 const x = Math.random() * PLANE_SIZE - PLANE_SIZE / 2 // TODO: pos from local storage
-const y = Math.random() * PLANE_SIZE - PLANE_SIZE / 2
+const z = Math.random() * PLANE_SIZE - PLANE_SIZE / 2
 
 const isMobile = mobile()
 if (isMobile) {
@@ -29,8 +29,7 @@ export const [state, setState] = createStore({
   player: {
     id,
     colour,
-    x,
-    y,
+    position: { x, y: 0, z },
     landmarks: HAND_LANDMARKS,
   } as Player,
   isDesktop: !isMobile,

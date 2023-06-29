@@ -8,8 +8,7 @@ export function gotoLobby() {
     player: {
       id: state.player.id,
       colour: state.player.colour,
-      x: state.player.x,
-      y: state.player.y,
+      position: state.player.position,
     },
   })
   startMessageLoop()

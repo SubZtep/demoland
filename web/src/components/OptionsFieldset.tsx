@@ -11,20 +11,13 @@ export default () => {
       <label classList={{ disabled: state.lobby }}>
         <input
           type="color"
-          value={/*@once*/ state.colour}
+          value={/*@once*/ state.player.colour}
           onInput={ev => {
-            setState({ colour: ev.target.value })
+            setState("player", "colour", ev.target.value)
           }}
           onChange={ev => {
-            setState({ colour: ev.target.value })
-            sendMessage({
-              cmd: "update",
-              time: Date.now(),
-              player: {
-                id: state.id,
-                colour: state.colour,
-              } as Player,
-            })
+            setState("player", "colour", ev.target.value)
+            sendMessage({ cmd: "update", players: [state.player] })
           }}
         />
         <span class="landscape">Your colour</span>

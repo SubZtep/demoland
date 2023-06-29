@@ -10,7 +10,7 @@ let lastMessageSentTime = 0
 let messageInterval: NodeJS.Timer
 
 anglesWorker.addEventListener("message", ({ data: player }) => {
-  sendMessage({ cmd: "update", time: Date.now(), player } as ClientMessage)
+  sendMessage({ cmd: "update", time: Date.now(), players: [player] } as ClientMessage)
 })
 
 compareWorker.addEventListener("message", ({ data: isSimilar }) => {
@@ -57,16 +57,16 @@ socket.addEventListener("message", ({ data }) => {
         }
       })
 
-      setState(
-        produce(state => {
-          for (const player of [msg.player, ...(msg.players ?? [])].filter(
-            v => v!.id === msg.player?.id || msg.players?.includes(v!),
-          )) {
-            const p = state.players.find(p => p.id === player!.id)!
-            Object.assign(p, player)
-          }
-        }),
-      )
+      if (msg.players) {
+        setState(
+          produce(state => {
+            for (const msgPlayer of msg.players!) {
+              const statePlayer = state.players.find(p => p.id === msgPlayer!.id)!
+              Object.assign(statePlayer, msgPlayer)
+            }
+          }),
+        )
+      }
       break
   }
 

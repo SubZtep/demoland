@@ -2,9 +2,8 @@ type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>
 
 interface Player {
   id: string
-  x: number
-  y: number
   colour: string
+  position: { x: number; y: number; z: number }
   landmarks?: Landmark[]
   angles?: Angles
   updated?: number
@@ -12,6 +11,7 @@ interface Player {
 
 //
 // OBSTACLES
+// Server generated 3d objects with physics
 //
 
 interface BaseObstacle {
@@ -37,6 +37,7 @@ type Obstacle = PlaneObstacle | BoxObstacle
 
 //
 // MESSAGES
+// WebSocket
 //
 
 interface HelloMessage {
@@ -57,7 +58,6 @@ interface ByeMessage {
 
 interface UpdateMessage {
   cmd: "update"
-  player?: Player
   players?: Player[]
   obstacles?: Obstacle[]
 }
