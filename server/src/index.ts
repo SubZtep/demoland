@@ -1,10 +1,10 @@
-import { setViews } from "./view"
+import { setWebViews } from "./view"
 import { onMessage } from "./message"
 import { connections, players } from "./state"
 import { app, server, wss, sendMessage } from "./init"
 // import { initPhysics } from "./physics"
 
-setViews(app)
+setWebViews(app)
 // initPhysics(wss)
 
 wss.on("connection", ws => {
@@ -33,6 +33,6 @@ wss.on("connection", ws => {
 
 wss.on("error", err => console.log("WSS Error", err))
 
-server.listen(Number(process.env.PORT), () => {
+server.listen(+process.env.PORT, () => {
   console.log("Server is running on port", process.env.PORT)
 })
