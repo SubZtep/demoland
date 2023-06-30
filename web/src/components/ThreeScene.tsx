@@ -21,7 +21,7 @@ const ThreeScene: Component<{
   border?: boolean
   children: ({ scene, controls }: { scene: THREE.Scene; controls: CameraControls }) => JSX.Element
 }> = rawProps => {
-  const props = mergeProps({ colour: "#f3f6f9", lookAt: [1, 1, 1, 0, 0, 0] as LookAt, alpha: false }, rawProps)
+  const props = mergeProps({ colour: "#f3f6f9", lookAt: [0.5, 1, 1, 0, 0.5, 0] as LookAt, alpha: false }, rawProps)
 
   let renderer: THREE.WebGLRenderer
   let controls: CameraControls

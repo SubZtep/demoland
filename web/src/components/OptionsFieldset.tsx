@@ -1,5 +1,5 @@
 import { gotoLobby, leaveLobby } from "../app/lobby"
-import { sendMessage } from "../lib/websocket"
+import { sendMessage } from "../app/conn"
 import { state, setState } from "../app/state"
 import styles from "./App.module.css"
 

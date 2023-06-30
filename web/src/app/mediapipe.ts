@@ -1,6 +1,7 @@
 import { produce } from "solid-js/store"
 import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision"
 import { state, setState } from "./state"
+import { LANDMARK_SCALE } from "./const"
 
 export let landmarker: HandLandmarker
 let lastPredictTime = 0
@@ -38,14 +39,12 @@ const handLoop = async () => {
   lastPredictTime = now
 
   if (landmarks) {
-    // scale landmarks to the physical world
-    const scale = -10
     setState(
       produce(state => {
         state.player.landmarks = landmarks.map(v => ({
-          x: v.x * scale,
-          y: v.y * scale + 1,
-          z: v.z * scale,
+          x: v.x * LANDMARK_SCALE,
+          y: v.y * LANDMARK_SCALE + 1,
+          z: v.z * LANDMARK_SCALE,
         }))
         state.lastLandmarksUpdate = now
       }),

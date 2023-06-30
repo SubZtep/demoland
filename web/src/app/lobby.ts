@@ -1,7 +1,7 @@
 import { unwrap } from "solid-js/store"
 import { state, setState } from "./state"
 import { startMessageLoop, stopMessageLoop } from "./message"
-import { sendMessage } from "../lib/websocket"
+import { sendMessage } from "./conn"
 
 export function gotoLobby() {
   sendMessage({

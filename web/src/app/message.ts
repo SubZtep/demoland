@@ -1,6 +1,6 @@
 import * as THREE from "three"
 import { unwrap, produce } from "solid-js/store"
-import { socket, sendMessage } from "../lib/websocket"
+import { socket, sendMessage } from "./conn"
 import { startConfetti, stopConfetti } from "../lib/confetti"
 import { state, setState } from "./state"
 

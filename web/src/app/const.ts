@@ -1,3 +1,5 @@
+export const LANDMARK_SCALE = -10
+
 export const PLANE_SIZE = 10
 
 /** values are identical to `HAND_CONNECTIONS` values (indices) */

@@ -16,7 +16,8 @@
     "build": "pnpm --recursive --if-present run build",
     "build:server": "pnpm --filter server run build",
     "build:web": "pnpm --filter web run build",
-    "lint": "pnpm --recursive --if-present run lint"
+    "lint": "pnpm --recursive --if-present run lint",
+    "test": "vitest"
   },
   "dependencies": {
     "lodash": "^4.17.21"
