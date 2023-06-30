@@ -5,8 +5,8 @@ import { sendMessage } from "./conn"
 
 export function gotoLobby() {
   sendMessage({
-    cmd: "hello",
-    player: unwrap(state.player),
+    cmd: "create",
+    players: [unwrap(state.player)],
   })
   startMessageLoop()
   setState({ lobby: true })

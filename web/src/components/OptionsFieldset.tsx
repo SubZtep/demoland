@@ -1,3 +1,4 @@
+import { Switch, Match } from "solid-js"
 import { gotoLobby, leaveLobby } from "../app/lobby"
 import { sendMessage } from "../app/conn"
 import { state, setState } from "../app/state"
@@ -24,21 +25,16 @@ export default () => {
         <span class="portrait">Colour</span>
       </label>
 
-      <label classList={{ disabled: !state.connected }}>
-        <input
-          type="checkbox"
-          disabled={!state.connected}
-          checked={state.lobby}
-          onChange={ev => {
-            if (ev.target.checked) {
-              gotoLobby()
-            } else {
-              leaveLobby()
-            }
-          }}
-        />
-        Go to lobby
-      </label>
+      <Switch>
+        <Match when={!state.lobby}>
+          <button onClick={() => gotoLobby()} class="pulse" disabled={!state.connected}>
+            Go to lobby
+          </button>
+        </Match>
+        <Match when={state.lobby}>
+          <button onClick={() => leaveLobby()}>Leave lobby</button>
+        </Match>
+      </Switch>
     </fieldset>
   )
 }

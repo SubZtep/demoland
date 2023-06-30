@@ -7,7 +7,7 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   // console.log("received", msg)
 
   switch (msg.cmd) {
-    case "hello":
+    case "create":
       sendMessage(
         {
           cmd: "create",
@@ -16,12 +16,8 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
         },
         client,
       )
-      players.set(client, msg.player)
-      sendMessage({
-        cmd: "create",
-        players: [msg.player],
-      })
-      return
+      msg.players?.forEach(player => players.set(client, player))
+      break
 
     case "bye":
       players.delete(client)

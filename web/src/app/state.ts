@@ -30,6 +30,7 @@ export const [state, setState] = createStore({
     id,
     colour,
     position: { x, y: 0, z },
+    dimensions: { dotSize: 0.06 },
     landmarks: HAND_LANDMARKS,
   } as Player,
   isDesktop: !isMobile,

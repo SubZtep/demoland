@@ -44,8 +44,8 @@ const ThreeScene: Component<{
       logarithmicDepthBuffer: state.isDesktop,
     })
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.shadowMap.enabled = true
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.shadowMap.enabled = true
 
     controls = new CameraControls(camera, canvas)
     controls.minDistance = 0.5

@@ -3,6 +3,7 @@ type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>
 interface Player {
   id: string
   colour: string
+  dimensions: { dotSize: number }
   position: { x: number; y: number; z: number }
   landmarks: Landmark[]
   angles?: Angles
@@ -40,11 +41,6 @@ type Obstacle = PlaneObstacle | BoxObstacle
 // WebSocket
 //
 
-interface HelloMessage {
-  cmd: "hello"
-  player: Player
-}
-
 interface CreateMessage {
   cmd: "create"
   players?: Player[]
@@ -62,6 +58,8 @@ interface UpdateMessage {
   obstacles?: Obstacle[]
 }
 
+/** From server to client */
 type ServerMessage = CreateMessage | UpdateMessage | ByeMessage
 
-type ClientMessage = HelloMessage | UpdateMessage | ByeMessage
+/** From client to server */
+type ClientMessage = CreateMessage | UpdateMessage | ByeMessage
