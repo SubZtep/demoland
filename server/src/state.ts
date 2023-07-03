@@ -16,6 +16,7 @@ export const obstacles = new Map<string, Obstacle>([
       color: "#ffc26f",
       position: { x: 0, y: -0, z: 0 },
       dimensions: { width: 10, height: 10 },
+      rotation: { x: -Math.PI / 2, y: 0, z: 0, w: 1 },
     },
   ],
   [
@@ -24,7 +25,8 @@ export const obstacles = new Map<string, Obstacle>([
       id: "box1",
       component: "Box",
       color: "red",
-      position: { x: 0, y: 0.25, z: 0 },
+      position: { x: 0, y: 100, z: 0 },
+      // position: { x: 0, y: 0.25, z: 0 },
       rotation: { x: 0, y: 0, z: 0, w: 1 },
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
     },
@@ -52,3 +54,11 @@ export const obstacles = new Map<string, Obstacle>([
     },
   ],
 ])
+
+export function getSerializedObstacles(obs): BoxObstacle[] {
+  return (Array.from(obs.values()) as BoxObstacle[]).map(v => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { rigidBody, collider, ...rest } = v
+    return rest
+  })
+}

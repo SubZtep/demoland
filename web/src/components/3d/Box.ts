@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { onCleanup, type Component } from "solid-js"
+import { createEffect, onCleanup, type Component } from "solid-js"
 
 const Box: Component<{ scene: THREE.Scene; obstacle: BoxObstacle }> = props => {
   const geometry = new THREE.BoxGeometry(
@@ -26,6 +26,18 @@ const Box: Component<{ scene: THREE.Scene; obstacle: BoxObstacle }> = props => {
     props.scene.remove(box!)
     geometry.dispose()
     material.dispose()
+  })
+
+  createEffect(() => {
+    box.position.set(props.obstacle.position.x, props.obstacle.position.y, props.obstacle.position.z)
+    box.rotation.setFromQuaternion(
+      new THREE.Quaternion(
+        props.obstacle.rotation.x,
+        props.obstacle.rotation.y,
+        props.obstacle.rotation.z,
+        props.obstacle.rotation.w,
+      ),
+    )
   })
 
   return null

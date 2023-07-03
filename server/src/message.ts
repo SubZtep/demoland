@@ -1,5 +1,5 @@
 import WebSocket from "ws"
-import { players, obstacles } from "./state"
+import { players, obstacles, getSerializedObstacles } from "./state"
 import { sendMessage } from "./init"
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
@@ -12,7 +12,7 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
         {
           cmd: "create",
           players: Array.from(players.values()),
-          obstacles: Array.from(obstacles.values()),
+          obstacles: getSerializedObstacles(obstacles),
         },
         client,
       )
@@ -27,6 +27,7 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   // broadcast to all clients
   server.clients.forEach(v => {
     if (v.readyState === WebSocket.OPEN) {
+      console.log("sending (message.ts)", msg)
       v.send(data, { binary })
     }
   })

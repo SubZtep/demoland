@@ -2,10 +2,10 @@ import { setWebViews } from "./view"
 import { onMessage } from "./message"
 import { connections, players } from "./state"
 import { app, server, wss, sendMessage } from "./init"
-// import { initPhysics } from "./physics"
+import { initPhysics } from "./physics"
 
 setWebViews(app)
-// initPhysics(wss)
+initPhysics(wss)
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {
