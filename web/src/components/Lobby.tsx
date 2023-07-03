@@ -15,7 +15,7 @@ const Lobby: Component = () => {
           <LobbyEnvironment scene={scene} controls={controls} />
 
           <For each={state.players}>
-            {player => <HandSkeleton scene={scene} landmarks={player.landmarks} />}
+            {player => <HandSkeleton scene={scene} landmarks={player.landmarks} position={[0, 0, -0.7]} />}
           </For>
 
           <For each={state.obstacles}>

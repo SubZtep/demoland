@@ -15,18 +15,17 @@ export async function initPhysics(server: WebSocket.Server) {
   obstacles.forEach((obstacle, id) => {
     if (id === "ground") {
       // create the ground
-      const rigidBodyDesc = RAPIER.RigidBodyDesc.fixed()
-      obstacle.rigidBody = world.createRigidBody(rigidBodyDesc)
-
-      const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0).setTranslation(0.0, -0.1, 0.0)
-      world.createCollider(groundColliderDesc, obstacle.rigidBody)
-      obstacle.collider = groundColliderDesc
+      const { width, height } = obstacle.dimensions
+      const groundColliderDesc = RAPIER.ColliderDesc.cuboid(width / 2, 0.1, height / 2).setTranslation(0.0, -0.1, 0.0)
+      obstacle.collider = world.createCollider(groundColliderDesc)
     } else {
       // create the box
-      const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(0.0, 10.0, 0.0)
+      const { x, y, z } = (obstacle as BoxObstacle).position
+      const rigidBodyDesc = RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y, z)
       obstacle.rigidBody = world.createRigidBody(rigidBodyDesc)
 
-      const colliderDesc = RAPIER.ColliderDesc.cuboid(0.5, 0.5, 0.5).setDensity(2.0)
+      const { width, height, depth } = (obstacle as BoxObstacle).dimensions
+      const colliderDesc = RAPIER.ColliderDesc.cuboid(width / 2, height / 2, depth / 2)
       obstacle.collider = world.createCollider(colliderDesc, obstacle.rigidBody)
     }
   })
@@ -55,4 +54,17 @@ export async function initPhysics(server: WebSocket.Server) {
   }
 
   gameLoop()
+
+  setInterval(() => {
+    const keys = Array.from(obstacles.keys())
+    keys.forEach(key => {
+      if (key === "box1") {
+        const obstacle = obstacles.get(key)!
+        if (obstacle.rigidBody) {
+          obstacle.rigidBody.setTranslation(new RAPIER.Vector3(0.0, 3.0, 0.0), true)
+          // obstacle.rigidBody.applyImpulse({ x: 0, y: 1, z: 0 }, true)
+        }
+      }
+    })
+  }, 5000)
 }

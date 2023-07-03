@@ -9,10 +9,21 @@ const bigDotGeometry = new THREE.SphereGeometry(state.player.dimensions.dotSize)
 const dotMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 })
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
 
-const HandSkeleton: Component<{ pid?: string; scene: THREE.Scene; landmarks: Landmark[]; scale?: number }> = props => {
+const HandSkeleton: Component<{
+  pid?: string
+  scene: THREE.Scene
+  landmarks: Landmark[]
+  position?: [number, number, number]
+  scale?: number
+}> = props => {
   const dots = new Map<number, THREE.Mesh>()
   const lines = new Map<number, THREE.Line>()
   const hand = new THREE.Group()
+
+  if (props.position) {
+    hand.position.set(...props.position)
+  }
+
   if (props.scale) {
     hand.scale.set(props.scale, props.scale, props.scale)
   }

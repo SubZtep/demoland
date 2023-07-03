@@ -19,10 +19,11 @@ interface BaseObstacle {
   id: string
   color: string
   position: { x: number; y: number; z: number }
-  rotation: { x: number; y: number; z: number; w: number }
+  /** no rotation no rigid body */
+  rotation?: { x: number; y: number; z: number; w: number }
   /** client side has three.js object */
   object3d?: THREE.Object3D
-  /** server side has rapier rigid body */
+  /** server side can has rapier rigid body */
   rigidBody?: RAPIER.RigidBody
   /** server side has rapier collider */
   collider?: RAPIER.Collider
