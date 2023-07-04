@@ -5,6 +5,7 @@
   "author": "Andras Serfozo <subztep@gmail.com>",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/SubZtep/demoland.git",
@@ -12,13 +13,12 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "devx": "pnpm run dev:build && pnpm run start",
     "dev": "pnpm run \"/^watch:.*/\"",
     "start": "node -r dotenv/config dist/index.js",
-    "build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js --drop:console",
-    "dev:build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js",
-    "watch:build": "esbuild src/index.ts --platform=node --bundle --outfile=dist/index.js --watch",
+    "build": "node build.js",
+    "watch:build": "node build.js --watch",
     "watch:start": "node --watch -r dotenv/config dist/index.js",
+    "lint": "tsc --noEmit && eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@types/ws": "^8.5.5",
     "dotenv": "^16.3.1",
     "esbuild": "^0.18.11",
+    "globby": "^13.2.1",
     "typescript": "^5.1.6"
   }
 }

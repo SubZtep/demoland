@@ -53,6 +53,13 @@ export const obstacles = new Map<string, Obstacle>([
   ],
 ])
 
+export const updateStats = (wss: WebSocket.Server) => {
+  connections.active = wss.clients.size
+  if (connections.active > connections.top) {
+    connections.top = connections.active
+  }
+}
+
 export function getSerializedObstacles(obs): BoxObstacle[] {
   return (Array.from(obs.values()) as BoxObstacle[]).map(v => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

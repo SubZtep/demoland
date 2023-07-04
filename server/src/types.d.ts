@@ -4,10 +4,3 @@ declare namespace NodeJS {
     PORT: string
   }
 }
-
-interface Player {
-  id: string
-  colour: string
-  x: number
-  y: number
-}

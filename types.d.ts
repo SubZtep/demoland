@@ -7,7 +7,9 @@ interface Player {
   position: { x: number; y: number; z: number }
   landmarks: Landmark[]
   angles?: Angles
-  updated?: number
+  // updated?: number
+  /** server side has rapier collider */
+  collider?: import("./server/node_modules/@dimforge/rapier3d-compat").Collider
 }
 
 //
@@ -24,9 +26,9 @@ interface BaseObstacle {
   /** client side has three.js object */
   object3d?: THREE.Object3D
   /** server side can has rapier rigid body */
-  rigidBody?: RAPIER.RigidBody
+  rigidBody?: import("./server/node_modules/@dimforge/rapier3d-compat").RigidBody
   /** server side has rapier collider */
-  collider?: RAPIER.Collider
+  collider?: import("./server/node_modules/@dimforge/rapier3d-compat").Collider
 }
 
 interface PlaneObstacle extends BaseObstacle {

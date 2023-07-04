@@ -1,11 +1,9 @@
-import { setWebViews } from "./view"
-import { onMessage } from "./message"
-import { connections, players } from "./state"
-import { app, server, wss, sendMessage } from "./init"
-import { initPhysics } from "./physics"
+import { onMessage } from "./message.js"
+import { players, updateStats } from "./state.js"
+import { server, wss, sendMessage } from "./conn.js"
+import { startPhysics } from "./physics.js"
 
-setWebViews(app)
-initPhysics(wss)
+startPhysics(wss)
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {
@@ -19,19 +17,13 @@ wss.on("connection", ws => {
       sendMessage({ cmd: "bye", player: { id } })
     }
 
-    connections.active = wss.clients.size
+    updateStats(wss)
   })
 
   ws.on("upgrade", req => console.log("WS Upgrade", req))
   ws.on("error", ev => console.log("WS Error", ev))
-
-  connections.active = wss.clients.size
-  if (connections.active > connections.top) {
-    connections.top = connections.active
-  }
+  updateStats(wss)
 })
-
-wss.on("error", err => console.log("WSS Error", err))
 
 server.listen(+process.env.PORT, () => {
   console.log("Server is running on port", process.env.PORT)
