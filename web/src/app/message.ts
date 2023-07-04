@@ -37,7 +37,6 @@ socket.addEventListener("message", ({ data }) => {
       setState(
         produce(state => {
           if (msg.obstacles) {
-            console.log("create obstacles", msg.obstacles)
             state.obstacles.push(...msg.obstacles)
           }
           if (msg.players) {
@@ -48,7 +47,6 @@ socket.addEventListener("message", ({ data }) => {
       break
 
     case "update":
-      // console.log("update", state.obstacles.filter(v => msg.obstacles?.map(v => v.id).includes(v.id)).map(v => v.id))
       setState(
         produce(state => {
           state.obstacles
@@ -64,20 +62,6 @@ socket.addEventListener("message", ({ data }) => {
             })
         }),
       )
-      // console.log("update", [unwrap(msg)])
-      // msg.obstacles?.forEach(msgobs => {
-      //   const obs = state.obstacles.find(v => v.id === msgobs.id)
-      //   if (obs?.object3d) {
-      //     console.log("object3d update", [msgobs.position.x, msgobs.position.y, msgobs.position.z])
-      //     obs.object3d.position.set(msgobs.position.x, msgobs.position.y, msgobs.position.z)
-      //     if ("rotation" in msgobs) {
-      //       obs.object3d.rotation.setFromQuaternion(
-      //         new THREE.Quaternion(msgobs.rotation.x, msgobs.rotation.y, msgobs.rotation.z, msgobs.rotation.w),
-      //       )
-      //     }
-      //     obs.object3d.updateMatrixWorld(true)
-      //   }
-      // })
 
       if (msg.players) {
         setState(

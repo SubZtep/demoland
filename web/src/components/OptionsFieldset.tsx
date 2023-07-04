@@ -1,4 +1,4 @@
-import { Switch, Match } from "solid-js"
+import { Switch, Match, Show } from "solid-js"
 import { gotoLobby, leaveLobby } from "../app/lobby"
 import { sendMessage } from "../app/conn"
 import { state, setState } from "../app/state"
@@ -8,22 +8,6 @@ export default () => {
   return (
     <fieldset class={styles.options}>
       <legend>Options</legend>
-
-      <label classList={{ disabled: state.lobby }}>
-        <input
-          type="color"
-          value={/*@once*/ state.player.colour}
-          onInput={ev => {
-            setState("player", "colour", ev.target.value)
-          }}
-          onChange={ev => {
-            setState("player", "colour", ev.target.value)
-            sendMessage({ cmd: "update", players: [state.player] })
-          }}
-        />
-        <span class="landscape">Your colour</span>
-        <span class="portrait">Colour</span>
-      </label>
 
       <Switch>
         <Match when={!state.lobby}>
@@ -35,6 +19,34 @@ export default () => {
           <button onClick={() => leaveLobby()}>Leave lobby</button>
         </Match>
       </Switch>
+
+      <Show when={!state.lobby}>
+        <label classList={{ disabled: state.lobby }}>
+          <input
+            type="color"
+            value={/*@once*/ state.player.colour}
+            disabled={state.broadcast}
+            onInput={ev => {
+              setState("player", "colour", ev.target.value)
+            }}
+            onChange={ev => {
+              setState("player", "colour", ev.target.value)
+              sendMessage({ cmd: "update", players: [state.player] })
+            }}
+          />
+          <span class="landscape">Your colour</span>
+          <span class="portrait">Colour</span>
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            checked={/*@once*/ state.broadcast}
+            onChange={ev => setState("broadcast", ev.target.checked)}
+          />
+          Broadcast
+        </label>
+      </Show>
     </fieldset>
   )
 }

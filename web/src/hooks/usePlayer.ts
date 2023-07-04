@@ -1,17 +1,18 @@
-import { createSignal } from "solid-js"
-import { state, players } from "../app/state"
+// import { createSignal } from "solid-js"
+// import { state, players } from "../app/state"
 
-function usePlayer(id: string) {
-  const val = players.get(id)!
-  const [player, setPlayer] = createSignal(val)
-  setPlayer(val)
+// function usePlayer(id: string) {
+//   const val = players.get(id)!
+//   const [player, setPlayer] = createSignal(val)
+//   setPlayer(val)
 
-  const isPlayerUpdated = () => {
-    setPlayer(players.get(id)!)
-    return player().updated === undefined || player().updated! + state.messageDelay > Date.now()
-  }
+//   const isPlayerUpdated = () => {
+//     setPlayer(players.get(id)!)
+//     return player().updated === undefined || player().updated! + state.messageDelay > Date.now()
+//   }
 
-  return { player, isPlayerUpdated }
-}
+//   return { player, isPlayerUpdated }
+// }
 
-export default usePlayer
+// export default usePlayer
+export {}

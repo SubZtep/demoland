@@ -1,11 +1,19 @@
-import { createEffect, createSignal, on, For, Show, type Component, type ParentComponent } from "solid-js"
-import { unwrap } from "solid-js/store"
-import { state } from "../app/state"
+import {
+  // createEffect,
+  createSignal,
+  // on,
+  For,
+  // Show,
+  type Component,
+  type ParentComponent,
+} from "solid-js"
+// import { unwrap } from "solid-js/store"
+// import { state } from "../app/state"
 import styles from "./App.module.css"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const DisplayFinger: Component<{ pid: string; name: string }> = props => {
-  const [angles, setAngles] = createSignal<number[]>()
+  const [angles/*, setAngles*/] = createSignal<number[]>()
 
   // createEffect(
   //   on(
@@ -25,7 +33,7 @@ const DisplayFinger: Component<{ pid: string; name: string }> = props => {
             max="150"
             value={~~(item - 50)}
             data-pid={props.pid}
-            style={`--colour: ${players.get(props.pid)!.colour};`}
+            // style={`--colour: ${players.get(props.pid)!.colour};`}
           ></progress>
         )}
       </For>

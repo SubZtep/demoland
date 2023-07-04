@@ -9,17 +9,19 @@ const Box: Component<{ scene: THREE.Scene; obstacle: BoxObstacle }> = props => {
   )
   const material = new THREE.MeshPhongMaterial({ color: props.obstacle.color })
   const box = new THREE.Mesh(geometry, material)
-  box.rotation.setFromQuaternion(
-    new THREE.Quaternion(
-      props.obstacle.rotation.x,
-      props.obstacle.rotation.y,
-      props.obstacle.rotation.z,
-      props.obstacle.rotation.w,
-    ),
-  )
-  box.position.set(props.obstacle.position.x, props.obstacle.position.y, props.obstacle.position.z)
   box.receiveShadow = true
   box.castShadow = true
+  box.position.set(props.obstacle.position.x, props.obstacle.position.y, props.obstacle.position.z)
+  if (props.obstacle.rotation) {
+    box.rotation.setFromQuaternion(
+      new THREE.Quaternion(
+        props.obstacle.rotation.x,
+        props.obstacle.rotation.y,
+        props.obstacle.rotation.z,
+        props.obstacle.rotation.w,
+      ),
+    )
+  }
   props.scene.add(box)
 
   onCleanup(() => {
@@ -30,14 +32,19 @@ const Box: Component<{ scene: THREE.Scene; obstacle: BoxObstacle }> = props => {
 
   createEffect(() => {
     box.position.set(props.obstacle.position.x, props.obstacle.position.y, props.obstacle.position.z)
-    box.rotation.setFromQuaternion(
-      new THREE.Quaternion(
-        props.obstacle.rotation.x,
-        props.obstacle.rotation.y,
-        props.obstacle.rotation.z,
-        props.obstacle.rotation.w,
-      ),
-    )
+  })
+
+  createEffect(() => {
+    if (props.obstacle.rotation) {
+      box.rotation.setFromQuaternion(
+        new THREE.Quaternion(
+          props.obstacle.rotation.x,
+          props.obstacle.rotation.y,
+          props.obstacle.rotation.z,
+          props.obstacle.rotation.w,
+        ),
+      )
+    }
   })
 
   return null

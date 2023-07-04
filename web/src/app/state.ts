@@ -36,6 +36,8 @@ export const [state, setState] = createStore({
   isDesktop: !isMobile,
   lobby: false,
   connected: false,
+  /** Create player in lobby */
+  broadcast: true,
   messageDelay: 1_000 / 30,
   angleThreshold: 28,
   lastLandmarksUpdate: Date.now(),
