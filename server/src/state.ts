@@ -29,28 +29,28 @@ export const obstacles = new Map<string, Obstacle>([
       dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
     },
   ],
-  [
-    "box2",
-    {
-      id: "box2",
-      component: "Box",
-      color: "green",
-      position: { x: 0, y: 3, z: 0 },
-      rotation: { x: 0, y: 0.131, z: 0, w: 0.991 },
-      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-    },
-  ],
-  [
-    "box3",
-    {
-      id: "box3",
-      component: "Box",
-      color: "blue",
-      position: { x: 0, y: 1, z: 0 },
-      rotation: { x: 0, y: 0, z: 0, w: 1 },
-      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
-    },
-  ],
+  // [
+  //   "box2",
+  //   {
+  //     id: "box2",
+  //     component: "Box",
+  //     color: "green",
+  //     position: { x: 0, y: 3, z: 0 },
+  //     rotation: { x: 0, y: 0.131, z: 0, w: 0.991 },
+  //     dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+  //   },
+  // ],
+  // [
+  //   "box3",
+  //   {
+  //     id: "box3",
+  //     component: "Box",
+  //     color: "blue",
+  //     position: { x: 0, y: 1, z: 0 },
+  //     rotation: { x: 0, y: 0, z: 0, w: 1 },
+  //     dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+  //   },
+  // ],
 ])
 
 export const updateStats = (wss: WebSocket.Server) => {

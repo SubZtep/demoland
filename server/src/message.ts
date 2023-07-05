@@ -1,6 +1,8 @@
 import WebSocket from "ws"
 import { players, obstacles, getSerializedObstacles } from "./state.js"
 import { sendMessage } from "./conn.js"
+import { playerHandler } from "./player.js"
+import { createPlayerColliders } from "./physics.js"
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
@@ -16,10 +18,22 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
         },
         client,
       )
-      // add the new client(s) to the list of players
-      msg.players?.forEach(player => players.set(client, {
-        ...player,
-      }))
+
+      msg.players?.forEach(player => {
+        players.set(client, {
+          ...player,
+          colliders: createPlayerColliders(player),
+        })
+      })
+
+      // msg.players?.forEach(player => players.set(client, new Proxy(player, playerHandler)))
+      // msg.players?.forEach(player => players.set(client, {
+      //   ...player,
+      // }))
+      break
+
+    case "update":
+      // console.log("update")
       break
 
     case "bye":

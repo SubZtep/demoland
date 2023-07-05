@@ -7,6 +7,11 @@
   },
   "include": ["src/**/*"],
   "watchOptions": {
-    "excludeDirectories": ["**/node_modules", "dist", "."]
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriority",
+    "synchronousWatchDirectory": true,
+    "excludeDirectories": ["**/node_modules", "dist"],
+    "excludeFiles": ["tsconfig.tsbuildinfo"]
   }
 }

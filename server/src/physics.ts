@@ -6,10 +6,10 @@ const gravity = { x: 0.0, y: -9.81, z: 0.0 }
 const frameLimit = 1000 / 30
 const message: UpdateMessage = { cmd: "update" }
 
+await RAPIER.init()
+const world = new RAPIER.World(gravity)
 
 export async function startPhysics(server: WebSocket.Server) {
-  await RAPIER.init()
-  const world = new RAPIER.World(gravity)
   createObstacles(world, obstacles)
   const gameLoop = () => {
     world.step()
@@ -86,4 +86,18 @@ function createObstacles(world: RAPIER.World, obstacles: Map<string, Obstacle>) 
 export function createPlayerCollider() {
   // const colliderDesc = RAPIER.ColliderDesc.cuboid(width / 2, height / 2, depth / 2)
   // obstacle.collider = world.createCollider(colliderDesc, obstacle.rigidBody)
+}
+
+export const createPlayerColliders = (player: Player) => {
+  const colliders: RAPIER.Collider[] = []
+  const { x: px, y: py, z: pz } = player.position
+  console.log("player pos", [px, py, pz])
+  for (const { x, y, z } of player.landmarks) {
+    console.log("landmark pos", [x, y, z])
+    const groundColliderDesc = RAPIER.ColliderDesc.ball(0.06).setTranslation(x, y, z)
+    // const groundColliderDesc = RAPIER.ColliderDesc.ball(0.06).setTranslation(x + px, y + py, z + pz)
+    const collider = world.createCollider(groundColliderDesc)
+    colliders.push(collider)
+  }
+  return colliders
 }

@@ -1,5 +1,9 @@
 type RequireField<T, K extends keyof T> = T & Required<Pick<T, K>>
 
+type Landmark = import("./web/node_modules/@mediapipe/tasks-vision/").NormalizedLandmark
+type Collider = import("./server/node_modules/@dimforge/rapier3d-compat").Collider
+type RigidBody = import("./server/node_modules/@dimforge/rapier3d-compat").RigidBody
+
 interface Player {
   id: string
   colour: string
@@ -9,7 +13,7 @@ interface Player {
   angles?: Angles
   // updated?: number
   /** server side has rapier collider */
-  collider?: import("./server/node_modules/@dimforge/rapier3d-compat").Collider
+  colliders?: Collider[]
 }
 
 //
@@ -26,9 +30,9 @@ interface BaseObstacle {
   /** client side has three.js object */
   object3d?: THREE.Object3D
   /** server side can has rapier rigid body */
-  rigidBody?: import("./server/node_modules/@dimforge/rapier3d-compat").RigidBody
+  rigidBody?: RigidBody
   /** server side has rapier collider */
-  collider?: import("./server/node_modules/@dimforge/rapier3d-compat").Collider
+  collider?: Collider
 }
 
 interface PlaneObstacle extends BaseObstacle {

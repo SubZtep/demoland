@@ -13,9 +13,11 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "dev": "pnpm run \"/^watch:.*/\"",
+    "dev": "pnpm run \"/^dev:.*/\"",
     "start": "node -r dotenv/config dist/index.js",
-    "build": "node build.js",
+    "build": "node build.js --prod",
+    "dev:build": "node build.js",
+    "dev:start": "node -r dotenv/config dist/index.js",
     "watch:build": "node build.js --watch",
     "watch:start": "node --watch -r dotenv/config dist/index.js",
     "lint": "tsc --noEmit && eslint src",

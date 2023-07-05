@@ -13,7 +13,9 @@ const builder = await context({
 if (args.has("--watch")) {
   await builder.watch()
 } else {
-  builder.drop = ["console", "debugger"]
+  if (args.has("--prod")) {
+    builder.drop = ["console", "debugger"]
+  }
   await builder.rebuild()
 }
 
