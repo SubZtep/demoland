@@ -1,8 +1,8 @@
 import WebSocket from "ws"
+import RAPIER from "@dimforge/rapier3d-compat"
 import { players, obstacles, getSerializedObstacles } from "./state.js"
 import { sendMessage } from "./conn.js"
-import { playerHandler } from "./player.js"
-import { createPlayerColliders } from "./physics.js"
+import { createPlayerPhysics } from "./physics.js"
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
@@ -22,18 +22,18 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
       msg.players?.forEach(player => {
         players.set(client, {
           ...player,
-          colliders: createPlayerColliders(player),
+          ...createPlayerPhysics(player),
         })
       })
-
-      // msg.players?.forEach(player => players.set(client, new Proxy(player, playerHandler)))
-      // msg.players?.forEach(player => players.set(client, {
-      //   ...player,
-      // }))
       break
 
     case "update":
-      // console.log("update")
+      msg.players?.forEach(player => {
+        players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
+          const { x, y, z } = player.landmarks[i]
+          rigidBody.setTranslation(new RAPIER.Vector3(x, y, z), true)
+        })
+      })
       break
 
     case "bye":

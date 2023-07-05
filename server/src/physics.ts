@@ -109,16 +109,21 @@ export function createPlayerCollider() {
   // obstacle.collider = world.createCollider(colliderDesc, obstacle.rigidBody)
 }
 
-export const createPlayerColliders = (player: Player) => {
-  const colliders: RAPIER.Collider[] = []
+export const createPlayerPhysics = (player: Player) => {
+  const rigidBodies: RigidBody[] = []
+  const colliders: Collider[] = []
   const { x: px, y: py, z: pz } = player.position
   // console.log("player pos", [px, py, pz])
   for (const { x, y, z } of player.landmarks) {
     // console.log("landmark pos", [x, y, z])
+
+    const rigidBodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(x, y, z)
+    const rigidBody = world.createRigidBody(rigidBodyDesc)
+    rigidBodies.push(rigidBody)
+
     const groundColliderDesc = RAPIER.ColliderDesc.ball(0.06).setTranslation(x, y, z - 0.4)
-    // const groundColliderDesc = RAPIER.ColliderDesc.ball(0.06).setTranslation(x + px, y + py, z + pz)
-    const collider = world.createCollider(groundColliderDesc)
+    const collider = world.createCollider(groundColliderDesc, rigidBody)
     colliders.push(collider)
   }
-  return colliders
+  return { rigidBodies, colliders }
 }

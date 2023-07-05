@@ -12,7 +12,9 @@ interface Player {
   landmarks: Landmark[]
   angles?: Angles
   // updated?: number
-  /** server side has rapier collider */
+  /** server side can has rapier rigid bodies */
+  rigidBodies?: RigidBody[]
+  /** server side has rapier colliders */
   colliders?: Collider[]
 }
 
