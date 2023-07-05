@@ -13,7 +13,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "dev": "pnpm run \"/^dev:.*/\"",
+    "dev": "pnpm run build && pnpm run \"/^watch:.*/\"",
     "start": "node -r dotenv/config dist/index.js",
     "build": "node build.js --prod",
     "dev:build": "node build.js",
