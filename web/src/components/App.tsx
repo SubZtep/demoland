@@ -13,9 +13,7 @@ export default () => {
   return (
     <>
       <Show when={state.isDesktop}>
-        <For each={HAND_ANGLES}>
-          {item => <Finger name={item[0]} />}
-        </For>
+        <For each={HAND_ANGLES}>{item => <Finger name={item[0]} />}</For>
       </Show>
 
       <div

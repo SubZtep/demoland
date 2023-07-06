@@ -13,7 +13,9 @@ export function slowCalculation(times = 1) {
 }
 
 export function createRandomColour() {
-  return `#${Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "a")}`
+  return `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padEnd(6, "a")}`
 }
 
 export function isLandmarkList(value: any): value is Landmark[] {

@@ -2,9 +2,9 @@ import * as THREE from "three"
 import type CameraControls from "camera-controls"
 import { onCleanup, type Component } from "solid-js"
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.35)
-  const light = new THREE.DirectionalLight(0xffffff, 0.5)
-  const grid = new THREE.GridHelper(50, 50)
+const ambient = new THREE.AmbientLight(0xffffff, 0.35)
+const light = new THREE.DirectionalLight(0xffffff, 0.5)
+const grid = new THREE.GridHelper(50, 50)
 
 light.castShadow = true
 light.position.set(-8, 15, 1)

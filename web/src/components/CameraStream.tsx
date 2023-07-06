@@ -1,20 +1,52 @@
+import { css } from "@emotion/css"
 import { createEffect, createSignal, type Component, Switch, Match, Show } from "solid-js"
-import { startHandLoop, stopHandLoop } from "../app/mediapipe"
+import useMediapipe from "../hooks/useMediapipe"
 import { state } from "../app/state"
-import styles from "./App.module.css"
+
+const monitorClass = css`
+  position: relative;
+  background-color: #123;
+  box-shadow: var(--box-shadow-inset);
+  border-radius: var(--border-radius);
+
+  &.no-signal {
+    background:
+      radial-gradient(transparent 35%, #000) 50% calc(50% + 0.1rem),
+      url("/images/no-signal.jpg") no-repeat center center;
+    background-size: cover;
+  }
+
+  &:not(.no-signal) button {
+    opacity: 0.8;
+  }
+
+  & > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  & > video {
+    width: 100%;
+    height: 100%;
+    box-shadow: var(--box-shadow-inset);
+  }
+`
 
 const CameraStream: Component = _props => {
-  const [cameraEnabled, setCameraEnabled] = createSignal(false)
+  const [active, setActive] = createSignal(false)
+  const { init, start, stop } = useMediapipe()
   let video: HTMLVideoElement | undefined
   let mediaStream: MediaStream | null = null
 
   createEffect(async () => {
-    if (cameraEnabled()) {
+    if (active()) {
       mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       video!.srcObject = mediaStream
-      setTimeout(() => startHandLoop(), 500)
+      await init(video!)
+      await start()
     } else {
-      stopHandLoop()
+      stop()
       video!.srcObject = null
       mediaStream?.getTracks().forEach(track => {
         if (track.readyState === "live") {
@@ -27,19 +59,19 @@ const CameraStream: Component = _props => {
 
   createEffect(() => {
     if (!state.broadcast) {
-      setCameraEnabled(false)
+      setActive(false)
     }
   })
 
   return (
-    <div classList={{ "no-signal": !cameraEnabled(), [styles.monitor]: true, "grid-col-span-2": state.isDesktop }}>
+    <div classList={{ "no-signal": !active(), [monitorClass]: true, "grid-col-span-2": state.isDesktop }}>
       <video ref={video} playsinline autoplay muted></video>
       <Show when={state.broadcast}>
-        <button classList={{ pulse: cameraEnabled() }} onClick={() => setCameraEnabled(!cameraEnabled())}>
+        <button classList={{ pulse: active() }} onClick={() => setActive(!active())}>
           🎥{" "}
           <Switch>
-            <Match when={!cameraEnabled()}>On</Match>
-            <Match when={cameraEnabled()}>Off</Match>
+            <Match when={!active()}>On</Match>
+            <Match when={active()}>Off</Match>
           </Switch>
         </button>
       </Show>
