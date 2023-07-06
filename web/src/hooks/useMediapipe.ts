@@ -13,6 +13,7 @@ function useMediapipe() {
   let video: HTMLVideoElement
 
   const init = async (videoRef: HTMLVideoElement) => {
+    setLoading(true)
     video = videoRef
     const vision = await FilesetResolver.forVisionTasks(import.meta.env.VITE_WASM)
     landmarker = await HandLandmarker.createFromOptions(vision, {
@@ -57,7 +58,7 @@ function useMediapipe() {
   }
 
   const start = async () => {
-    setLoading(true)
+    await Promise.resolve()
     await handLoop()
     setLoading(false)
   }

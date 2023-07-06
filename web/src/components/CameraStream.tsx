@@ -10,8 +10,7 @@ const monitorClass = css`
   border-radius: var(--border-radius);
 
   &.no-signal {
-    background:
-      radial-gradient(transparent 35%, #000) 50% calc(50% + 0.1rem),
+    background: radial-gradient(transparent 35%, #000) 50% calc(50% + 0.1rem),
       url("/images/no-signal.jpg") no-repeat center center;
     background-size: cover;
   }
@@ -33,9 +32,17 @@ const monitorClass = css`
   }
 `
 
+const loadingClass = css`
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #ff0;
+  font-size: 2rem;
+`
+
 const CameraStream: Component = _props => {
   const [active, setActive] = createSignal(false)
-  const { init, start, stop } = useMediapipe()
+  const { init, start, stop, loading } = useMediapipe()
   let video: HTMLVideoElement | undefined
   let mediaStream: MediaStream | null = null
 
@@ -67,6 +74,9 @@ const CameraStream: Component = _props => {
     <div classList={{ "no-signal": !active(), [monitorClass]: true, "grid-col-span-2": state.isDesktop }}>
       <video ref={video} playsinline autoplay muted></video>
       <Show when={state.broadcast}>
+        <Show when={loading()}>
+          <div class={loadingClass}>Loading</div>
+        </Show>
         <button classList={{ pulse: active() }} onClick={() => setActive(!active())}>
           🎥{" "}
           <Switch>
