@@ -6,6 +6,7 @@ import { LANDMARK_SCALE } from "../app/const"
 
 function useMediapipe() {
   const [loading, setLoading] = createSignal(false)
+  let createLandmarker = true
   let landmarker: HandLandmarker
   let lastPredictTime = 0
   let lastVideoTime = -1
@@ -14,16 +15,19 @@ function useMediapipe() {
 
   const init = async (videoRef: HTMLVideoElement) => {
     setLoading(true)
-    video = videoRef
-    const vision = await FilesetResolver.forVisionTasks(import.meta.env.VITE_WASM)
-    landmarker = await HandLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath: import.meta.env.VITE_TASK,
-        delegate: "GPU",
-      },
-      runningMode: "VIDEO",
-      numHands: 1,
-    })
+    if (createLandmarker) {
+      video = videoRef
+      const vision = await FilesetResolver.forVisionTasks(import.meta.env.VITE_WASM)
+      landmarker = await HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: import.meta.env.VITE_TASK,
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numHands: 1,
+      })
+      createLandmarker = false
+    }
   }
 
   const predict = async () => {
