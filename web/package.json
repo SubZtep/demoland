@@ -19,20 +19,20 @@
   },
   "dependencies": {
     "@emotion/css": "^11.11.2",
-    "@mediapipe/tasks-vision": "^0.10.1",
+    "@mediapipe/tasks-vision": "^0.10.2",
     "camera-controls": "^2.7.0",
     "canvas-confetti": "^1.6.0",
     "cursor-bee": "^1.0.1",
     "is-mobile": "^4.0.0",
-    "solid-js": "^1.7.7",
+    "solid-js": "^1.7.8",
     "three": "^0.154.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.0",
-    "@types/three": "^0.152.1",
+    "@types/three": "^0.154.0",
     "@types/uuid": "^9.0.2",
-    "vite": "^4.3.9",
+    "vite": "^4.4.4",
     "vite-plugin-solid": "^2.7.0"
   }
 }
