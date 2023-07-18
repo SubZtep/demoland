@@ -1,5 +1,5 @@
 import { unwrap } from "solid-js/store"
-import { state, setState } from "./state"
+import { state, setState } from "../state"
 import { startMessageLoop, stopMessageLoop } from "./message"
 import { sendMessage } from "./conn"
 

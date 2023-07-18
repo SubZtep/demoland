@@ -1,64 +1,96 @@
+import { css } from "@emotion/css"
 import * as THREE from "three"
-import { state } from "../app/state"
+import { setState, state } from "../state"
 import ThreeScene from "./ThreeScene"
-import HandEnvironment from "./3d/HandEnvironment"
 import HandSkeleton from "./3d/HandSkeleton"
+import CameraStream from "./CameraStream"
+import OptionsFieldset from "./OptionsFieldset"
+import useMediapipe from "../hooks/useMediapipe"
+import { For, Match, Show, Switch } from "solid-js/web"
+import GridHelper from "./3d/GridHelper"
+import DirectionalLight from "./3d/DirectionalLight"
+import useResizeObserver from "../hooks/useResizeObserver"
+import { createEffect, createSignal, onMount } from "solid-js"
 
-const App = () => {
+const Home = () => {
+  const { init, start, stop, loading } = useMediapipe()
+  const [debug, setDebug] = createSignal("")
+  let screen: HTMLDivElement | undefined
+
+  onMount(() => {
+    useResizeObserver(screen, (width, height) => {
+      setState({ input: { width, height } })
+    })
+  })
+
+  createEffect(() => {
+    setDebug(JSON.stringify(state.player.handLandmarks, null, 2))
+  })
+
   return (
-    <>
-      <ThreeScene
-        colour="#009900"
-        background={new THREE.Color(0x00cd00)}
-        lookAt={[0, 1.2, 0, 0, 1, 0]}
-        class="bg-colour"
-        border={state.isDesktop}
+    <div
+      class={css`
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+        @media (orientation: portrait) {
+          flex-direction: column;
+        }
+      `}
+    >
+      <div
+        ref={screen}
+        class={css`
+          background-color: #369;
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: grid;
+          place-items: center;
+          > * {
+            border: 2px dashed yellow;
+            position: absolute;
+          }
+        `}
       >
-        {({ scene }) => (
-          <>
-            <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} landmarks={state.player.landmarks} scale={0.4} />
-          </>
-        )}
-      </ThreeScene>
-      <ThreeScene colour={state.player.colour} class="bg-colour" border={state.isDesktop} rotate alpha>
-        {({ scene }) => (
-          <>
-            <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} landmarks={state.player.landmarks} scale={0.4} />
-          </>
-        )}
-      </ThreeScene>
-      <ThreeScene
-        colour="#000099"
-        background={new THREE.Color(0x0000cd)}
-        lookAt={[0, 0, 1.2, 0, 0.5, 0]}
-        class="bg-colour"
-        border={state.isDesktop}
-      >
-        {({ scene }) => (
-          <>
-            <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} landmarks={state.player.landmarks} scale={0.4} />
-          </>
-        )}
-      </ThreeScene>
-      <ThreeScene
-        colour="#990000"
-        background={new THREE.Color(0xcd0000)}
-        lookAt={[-1.2, 0, 0, 0, 0.5, 0]}
-        class="bg-colour"
-        border={state.isDesktop}
-      >
-        {({ scene }) => (
-          <>
-            <HandEnvironment scene={scene} />
-            <HandSkeleton scene={scene} landmarks={state.player.landmarks} scale={0.4} />
-          </>
-        )}
-      </ThreeScene>
-    </>
+        <CameraStream
+          enabled={state.camera}
+          onStart={async video => {
+            await init(video)
+            await start()
+          }}
+          onStop={() => {
+            stop()
+          }}
+        />
+        {/* <ThreeScene lookAt={[10, 1, 10, 0, 1, 0]} width={state.input.width} height={state.input.height} alpha>
+          {({ scene }) => (
+            <>
+              <DirectionalLight scene={scene} />
+              <GridHelper scene={scene} size={3} />
+              <For each={state.player.handLandmarks}>
+                {landmarks => <HandSkeleton scene={scene} landmarks={landmarks} scale={4} />}
+              </For>
+            </>
+          )}
+        </ThreeScene> */}
+        <pre>{debug()}</pre>
+        <Show when={loading()}>
+          <div
+            class={css`
+              color: #ff0;
+              font-size: 2rem;
+            `}
+          >
+            Loading
+          </div>
+        </Show>
+      </div>
+      <OptionsFieldset />
+    </div>
   )
 }
 
-export default App
+export default Home

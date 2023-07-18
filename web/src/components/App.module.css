@@ -1,31 +1,7 @@
-.finger {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  line-height: 1;
-}
-
-.finger > legend {
-  text-transform: capitalize;
-}
-
-.finger small {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 80px;
-  display: block;
-  margin-top: 2px;
-}
-
-.fingerMeters progress {
-  width: 100%;
-}
-
 .scenes {
   background-color: #123;
   box-shadow: var(--box-shadow), var(--box-shadow-inset);
-  border-radius: calc(var(--border-radius) * 0.75);
+  /* border-radius: calc(var(--border-radius) * 0.75); */
   overflow: auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -41,28 +17,4 @@
 .lobby {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-}
-
-.options {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.options label:global(.disabled), .options input:disabled {
-  cursor: not-allowed;
-}
-
-.options label:not(:global(.disabled)), .options input:enabled {
-  cursor: pointer;
-}
-
-.options input {
-  margin-right: 0.55rem;
-}
-
-.options input[type="checkbox"] {
-  scale: 1.5;
-  accent-color: #369;
 }

@@ -1,7 +1,7 @@
 import { unwrap, produce } from "solid-js/store"
 import { socket, sendMessage } from "./conn"
 import { startConfetti, stopConfetti } from "../lib/confetti"
-import { state, setState } from "./state"
+import { state, setState } from "../state"
 
 const anglesWorker = new Worker("/workers/angles.js")
 const compareWorker = new Worker("/workers/compare.js")

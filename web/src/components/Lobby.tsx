@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { For, type Component } from "solid-js"
 import { Dynamic } from "solid-js/web"
-import { state } from "../app/state"
+import { state } from "../state"
 import * as obss from "./3d/"
 import LobbyEnvironment from "./3d/LobbyEnvironment"
 import ThreeScene from "./ThreeScene"

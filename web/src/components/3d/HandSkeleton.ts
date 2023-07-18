@@ -2,7 +2,7 @@ import * as THREE from "three"
 import { unwrap } from "solid-js/store"
 import { createEffect, onCleanup, type Component } from "solid-js"
 import { HAND_CONNECTIONS } from "../../app/const"
-import { state } from "../../app/state"
+import { state } from "../../state"
 
 const dotGeometry = new THREE.SphereGeometry(0.0065, 4, 3)
 const bigDotGeometry = new THREE.SphereGeometry(state.player.dimensions.dotSize)

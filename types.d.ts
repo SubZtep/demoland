@@ -6,10 +6,11 @@ type RigidBody = import("./server/node_modules/@dimforge/rapier3d-compat").Rigid
 
 interface Player {
   id: string
-  colour: string
+  name: string
   dimensions: { dotSize: number }
   position: { x: number; y: number; z: number }
   landmarks: Landmark[]
+  handLandmarks?: Landmark[][]
   angles?: Angles
   // updated?: number
   /** server side can has rapier rigid bodies */

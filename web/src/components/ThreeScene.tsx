@@ -1,16 +1,17 @@
 import * as THREE from "three"
-import throttle from "lodash/throttle"
+import { css } from "@emotion/css"
 import CameraControls from "camera-controls"
-import { type Component, type JSX, onMount, onCleanup, mergeProps } from "solid-js"
+import { type Component, type JSX, onMount, onCleanup, mergeProps, createEffect } from "solid-js"
 import { runForever } from "../lib/loop"
-import { state } from "../app/state"
+import { state } from "../state"
 
 CameraControls.install({ THREE })
 type LookAt = [number, number, number, number, number, number]
 
 const ThreeScene: Component<{
+  width: number
+  height: number
   pid?: string
-  colour?: string
   background?: THREE.Color
   alpha?: boolean
   /** Camera position and rotation */
@@ -18,14 +19,13 @@ const ThreeScene: Component<{
   /** CSS class name */
   class?: string
   rotate?: boolean
-  border?: boolean
   children: ({ scene, controls }: { scene: THREE.Scene; controls: CameraControls }) => JSX.Element
 }> = rawProps => {
-  const props = mergeProps({ colour: "#f3f6f9", lookAt: [0.5, 1, 1, 0, 0.5, 0] as LookAt, alpha: false }, rawProps)
+  const props = mergeProps({ lookAt: [0.5, 1, 1, 0, 0.5, 0] as LookAt, alpha: false }, rawProps)
 
   let renderer: THREE.WebGLRenderer
   let controls: CameraControls
-  let resizer: ResizeObserver
+  // let resizer: ResizeObserver
   let wrapper: HTMLDivElement | undefined
   let canvas: HTMLCanvasElement | undefined
 
@@ -64,24 +64,42 @@ const ThreeScene: Component<{
 
     props.children({ scene, controls: controls! })
 
-    const resizeRenderer = () => {
-      const w = wrapper!.clientWidth - (props.border ? 4 : 0)
-      const h = wrapper!.clientHeight - (props.border ? 4 : 0)
-      renderer.setSize(w, h)
-      camera.aspect = w / h
-      camera.updateProjectionMatrix()
-    }
+    // const resizeRenderer = () => {
+    //   const w = wrapper!.clientWidth
+    //   const h = wrapper!.clientHeight
+    //   renderer.setSize(w, h)
+    //   camera.aspect = w / h
+    //   camera.updateProjectionMatrix()
+    // }
 
-    resizer = new ResizeObserver(throttle(resizeRenderer, 200))
-    resizer.observe(wrapper!, { box: "content-box" })
+    // resizer = new ResizeObserver(throttle(resizeRenderer, 200))
+    // resizer.observe(wrapper!, { box: "content-box" })
   })
 
-  onCleanup(() => {
-    resizer?.disconnect()
+  createEffect(() => {
+    // console.log("THREE", [props.width, props.height])
+    renderer.setSize(props.width, props.height)
+    camera.aspect = props.width / props.height
+    camera.updateProjectionMatrix()
   })
+
+  // onCleanup(() => {
+  //   resizer?.disconnect()
+  // })
 
   return (
-    <div ref={wrapper} data-pid={props.pid} style={`--colour: ${props.colour}`} class={props.class}>
+    <div
+      ref={wrapper}
+      data-pid={props.pid}
+      class={[
+        css`
+          line-height: 0;
+        `,
+        props.class,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <canvas ref={canvas}></canvas>
     </div>
   )
