@@ -1,30 +1,31 @@
 import { css } from "@emotion/css"
-import * as THREE from "three"
 import { setState, state } from "../state"
-import ThreeScene from "./ThreeScene"
-import HandSkeleton from "./3d/HandSkeleton"
 import CameraStream from "./CameraStream"
-import OptionsFieldset from "./OptionsFieldset"
-import useMediapipe from "../hooks/useMediapipe"
-import { For, Match, Show, Switch } from "solid-js/web"
-import GridHelper from "./3d/GridHelper"
-import DirectionalLight from "./3d/DirectionalLight"
+import OptionsPanel from "./OptionsPanel"
+import usePose from "../hooks/usePose"
 import useResizeObserver from "../hooks/useResizeObserver"
 import { createEffect, createSignal, onMount } from "solid-js"
+import { produce } from "solid-js/store"
+import Loading from "./Loading"
 
 const Home = () => {
-  const { init, start, stop, loading } = useMediapipe()
+  const { init, start, stop, loading } = usePose()
   const [debug, setDebug] = createSignal("")
   let screen: HTMLDivElement | undefined
 
   onMount(() => {
     useResizeObserver(screen, (width, height) => {
-      setState({ input: { width, height } })
+      setState(
+        produce(state => {
+          state.input.width = width
+          state.input.height = height
+        }),
+      )
     })
   })
 
   createEffect(() => {
-    setDebug(JSON.stringify(state.player.handLandmarks, null, 2))
+    setDebug(JSON.stringify(state.player.landmarks, null, 2))
   })
 
   return (
@@ -58,37 +59,20 @@ const Home = () => {
         <CameraStream
           enabled={state.camera}
           onStart={async video => {
-            await init(video)
+            await init(video, state.input.delegate)
             await start()
           }}
           onStop={() => {
             stop()
           }}
         />
-        {/* <ThreeScene lookAt={[10, 1, 10, 0, 1, 0]} width={state.input.width} height={state.input.height} alpha>
-          {({ scene }) => (
-            <>
-              <DirectionalLight scene={scene} />
-              <GridHelper scene={scene} size={3} />
-              <For each={state.player.handLandmarks}>
-                {landmarks => <HandSkeleton scene={scene} landmarks={landmarks} scale={4} />}
-              </For>
-            </>
-          )}
-        </ThreeScene> */}
+
         <pre>{debug()}</pre>
-        <Show when={loading()}>
-          <div
-            class={css`
-              color: #ff0;
-              font-size: 2rem;
-            `}
-          >
-            Loading
-          </div>
-        </Show>
+
+        <Loading visible={loading()} />
       </div>
-      <OptionsFieldset />
+
+      <OptionsPanel />
     </div>
   )
 }

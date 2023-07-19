@@ -7,39 +7,28 @@ import styles from "./App.module.css"
 
 export default () => {
   return (
-    <fieldset
+    <div
       class={
         styles.options +
         " " +
         css`
+          padding: 1rem;
           display: flex;
           flex-direction: column;
           flex-wrap: wrap;
           gap: 0.75rem;
           border-radius: var(--border-radius);
 
-          label:global(.disabled),
-          input:disabled {
-            cursor: not-allowed;
+          input[type="radio"] {
+            accent-color: pink;
           }
 
-          label:not(:global(.disabled)),
-          input:enabled {
-            cursor: pointer;
-          }
-
-          input {
-            margin-right: 0.55rem;
-          }
-
-          input[type="checkbox"] {
-            scale: 1.5;
-            accent-color: #369;
+          label:has(input[type="radio"]):not(:first-of-type) {
+            margin-left: 0.5rem;
           }
         `
       }
     >
-      <legend>Hello</legend>
       {/* <Switch>
         <Match when={!state.lobby}></Match>
         <Match when={state.lobby}>
@@ -94,6 +83,30 @@ export default () => {
         </div>
       </Show>
 
+      <fieldset disabled={state.camera}>
+        <legend>Delegate</legend>
+        <label>
+          <input
+            type="radio"
+            name="delegate"
+            value="CPU"
+            checked={state.input.delegate === "CPU"}
+            onChange={() => setState("input", "delegate", "CPU")}
+          />{" "}
+          CPU
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="delegate"
+            value="GPU"
+            checked={state.input.delegate === "GPU"}
+            onChange={() => setState("input", "delegate", "GPU")}
+          />{" "}
+          GPU
+        </label>
+      </fieldset>
+
       <p>
         {state.input.width}x{state.input.height}
       </p>
@@ -105,6 +118,6 @@ export default () => {
         />
         Broadcast
       </label> */}
-    </fieldset>
+    </div>
   )
 }

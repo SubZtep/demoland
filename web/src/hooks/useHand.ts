@@ -2,7 +2,7 @@ import { createSignal } from "solid-js"
 import { HandLandmarker, FilesetResolver } from "@mediapipe/tasks-vision"
 import { setState, state } from "../state"
 
-function useMediapipe() {
+function useHand() {
   const [loading, setLoading] = createSignal(false)
   let landmarker: HandLandmarker
   let lastPredictTime = 0
@@ -60,4 +60,4 @@ function useMediapipe() {
   return { init, start, stop, loading }
 }
 
-export default useMediapipe
+export default useHand

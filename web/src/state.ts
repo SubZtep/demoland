@@ -25,11 +25,11 @@ export const [state, setState] = createStore({
     name: window.localStorage.getItem("name") ?? "",
     position: { x, y: 0, z },
     dimensions: { dotSize: 0.06 },
-    landmarks: HAND_LANDMARKS,
   } as Player,
   input: {
     width: 0,
     height: 0,
+    delegate: "CPU" as "CPU" | "GPU",
   },
   channel: window.location.pathname.replaceAll("/", "") || null,
   camera: false,

@@ -114,7 +114,7 @@ export const createPlayerPhysics = (player: Player) => {
   const colliders: Collider[] = []
   const { x: px, y: py, z: pz } = player.position
   // console.log("player pos", [px, py, pz])
-  for (const { x, y, z } of player.landmarks) {
+  for (const { x, y, z } of player.handLandmarks) {
     // console.log("landmark pos", [x, y, z])
 
     const rigidBodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(x, y, z)

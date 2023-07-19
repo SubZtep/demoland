@@ -9,7 +9,7 @@ interface Player {
   name: string
   dimensions: { dotSize: number }
   position: { x: number; y: number; z: number }
-  landmarks: Landmark[]
+  landmarks?: Landmark[][]
   handLandmarks?: Landmark[][]
   angles?: Angles
   // updated?: number
