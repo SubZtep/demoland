@@ -29,6 +29,7 @@ export const [state, setState] = createStore({
   input: {
     width: 0,
     height: 0,
+    model: "pose_landmarker_lite.task",
     delegate: "CPU" as "CPU" | "GPU",
   },
   channel: window.location.pathname.replaceAll("/", "") || null,

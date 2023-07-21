@@ -9,13 +9,13 @@ function usePose() {
   let rafId: number
   let video: HTMLVideoElement
 
-  const init = async (videoRef: HTMLVideoElement, delegate: "CPU" | "GPU") => {
+  const init = async (videoRef: HTMLVideoElement, model: string, delegate: "CPU" | "GPU") => {
     setLoading(true)
     video = videoRef
     const vision = await FilesetResolver.forVisionTasks(import.meta.env.VITE_WASM)
     landmarker = await PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
-        modelAssetPath: import.meta.env.VITE_TASK,
+        modelAssetPath: import.meta.env.VITE_TASK + model,
         delegate,
       },
       runningMode: "VIDEO",

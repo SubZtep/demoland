@@ -23,8 +23,8 @@ export default () => {
             accent-color: pink;
           }
 
-          label:has(input[type="radio"]):not(:first-of-type) {
-            margin-left: 0.5rem;
+          label:has(input[type="radio"]) {
+            margin-right: 0.5rem;
           }
         `
       }
@@ -84,7 +84,26 @@ export default () => {
       </Show>
 
       <fieldset disabled={state.camera}>
-        <legend>Delegate</legend>
+        <legend>Run</legend>
+        <label
+          class={css`
+            display: block;
+            margin-bottom: 0.5rem;
+          `}
+        >
+          Model:{" "}
+          <select>
+            <option value="pose_landmarker_lite.task" selected={state.input.model === "pose_landmarker_lite.task"}>
+              Lite
+            </option>
+            <option value="pose_landmarker_full.task" selected={state.input.model === "pose_landmarker_full.task"}>
+              Full
+            </option>
+            <option value="pose_landmarker_heavy.task" selected={state.input.model === "pose_landmarker_heavy.task"}>
+              Heavy
+            </option>
+          </select>
+        </label>
         <label>
           <input
             type="radio"

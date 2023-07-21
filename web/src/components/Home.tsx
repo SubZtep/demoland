@@ -59,7 +59,7 @@ const Home = () => {
         <CameraStream
           enabled={state.camera}
           onStart={async video => {
-            await init(video, state.input.delegate)
+            await init(video, state.input.model, state.input.delegate)
             await start()
           }}
           onStop={() => {
