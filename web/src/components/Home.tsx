@@ -6,6 +6,7 @@ import usePose from "../hooks/usePose"
 import useResizeObserver from "../hooks/useResizeObserver"
 import { createEffect, createSignal, onMount } from "solid-js"
 import { produce } from "solid-js/store"
+import PoseCanvas from "./PoseCanvas"
 import Loading from "./Loading"
 
 const Home = () => {
@@ -66,6 +67,8 @@ const Home = () => {
             stop()
           }}
         />
+
+        <PoseCanvas landmarks={state.player.landmarks} width={state.input.width} height={state.input.height} />
 
         <pre>{debug()}</pre>
 
