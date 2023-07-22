@@ -6,9 +6,9 @@ Perform a real-time comparison of multiple hand gestures using Web Socket.
 
 - [Server Stats](https://hammerhead-app-3hrzw.ondigitalocean.app/)
 
-- [Hand landmarks detection guide](https://developers.google.com/mediapipe/solutions/vision/hand_landmarker/index)
+- [Pose landmarks detection guide](https://developers.google.com/mediapipe/solutions/vision/pose_landmarker)
 
-  ![hand joints](web/public/images/hand-landmarks.png)
+  ![pose joints](web/public/images/pose_landmarks_index.png)
 
 
 ## Legal
