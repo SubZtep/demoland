@@ -1,30 +1,13 @@
 import mobile from "is-mobile"
-import { v4 as uuid } from "uuid"
 import { createStore } from "solid-js/store"
-import { createRandomColour } from "./lib/misc"
-import { HAND_LANDMARKS, PLANE_SIZE } from "./app/const"
-
-let id = window.localStorage.getItem("id")
-if (!id) {
-  id = uuid()
-  window.localStorage.setItem("id", id)
-}
-
-const x = Math.random() * PLANE_SIZE - PLANE_SIZE / 2 // TODO: pos from local storage
-const z = Math.random() * PLANE_SIZE - PLANE_SIZE / 2
-
-const isMobile = mobile()
-if (isMobile) {
-  document.documentElement.style.setProperty("--app-cols", "1fr 1fr")
-  document.documentElement.style.setProperty("--app-rows", "1fr auto")
-}
+import { POSE_LANDMARKS } from "./app/const"
 
 export const [state, setState] = createStore({
   player: {
-    id,
     name: window.localStorage.getItem("name") ?? "",
-    position: { x, y: 0, z },
+    // position: { x, y: 0, z },
     dimensions: { dotSize: 0.06 },
+    landmarks: POSE_LANDMARKS,
   } as Player,
   input: {
     width: 0,
@@ -32,10 +15,10 @@ export const [state, setState] = createStore({
     model: "pose_landmarker_lite.task",
     delegate: "CPU" as "CPU" | "GPU",
   },
+  playing: false,
   channel: window.location.pathname.replaceAll("/", "") || null,
   camera: false,
-  isDesktop: !isMobile,
-  lobby: false,
+  isDesktop: !mobile(),
   connected: false,
   /** Create player in lobby */
   broadcast: true,

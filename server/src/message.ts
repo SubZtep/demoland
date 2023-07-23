@@ -10,30 +10,30 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   switch (msg.cmd) {
     case "create":
       // send the current state to the new client
-      sendMessage(
-        {
-          cmd: "create",
-          players: Array.from(players.values()),
-          obstacles: getSerializedObstacles(obstacles),
-        },
-        client,
-      )
+      // sendMessage(
+      //   {
+      //     cmd: "create",
+      //     players: Array.from(players.values()),
+      //     obstacles: getSerializedObstacles(obstacles),
+      //   },
+      //   client,
+      // )
 
-      msg.players?.forEach(player => {
-        players.set(client, {
-          ...player,
-          ...createPlayerPhysics(player),
-        })
-      })
+      // msg.players?.forEach(player => {
+      //   players.set(client, {
+      //     ...player,
+      //     ...createPlayerPhysics(player),
+      //   })
+      // })
       break
 
     case "update":
-      msg.players?.forEach(player => {
-        players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
-          const { x, y, z } = player.landmarks[i]
-          rigidBody.setTranslation(new RAPIER.Vector3(x, y, z), true)
-        })
-      })
+      // msg.players?.filter(v => v.landmarks).forEach(player => {
+      //   players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
+      //     const { x, y, z } = player.landmarks![i]
+      //     rigidBody.setTranslation(new RAPIER.Vector3(x, y, z), true)
+      //   })
+      // })
       break
 
     case "bye":

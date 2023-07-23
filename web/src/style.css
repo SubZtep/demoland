@@ -100,6 +100,10 @@ legend + ul {
   margin-bottom: 6px;
 }
 
+.mr05 {
+  margin-right: 0.5rem;
+}
+
 .bg-colour {
   background-color: var(--colour);
 }
@@ -157,6 +161,10 @@ legend + ul {
   animation: pulse 2s infinite;
 }
 
+.center {
+  text-align: center;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.98);
@@ -175,13 +183,13 @@ legend + ul {
 }
 
 @media (orientation: portrait) {
-  .landscape {
+  .portrait {
     display: none;
   }
 }
 
 @media (orientation: landscape) {
-  .portrait {
+  .landscape {
     display: none;
   }
 }

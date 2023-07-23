@@ -1,6 +1,6 @@
 import { type Component, createEffect } from "solid-js"
 
-const PoseCanvas: Component<{ landmarks?: Landmark[][]; width: number; height: number }> = props => {
+const PoseCanvas: Component<{ landmarks?: Landmark[]; width: number; height: number }> = props => {
   let canvas: HTMLCanvasElement | undefined
 
   const drawCircle = (ctx: CanvasRenderingContext2D) => (x: number, y: number) => {
@@ -30,10 +30,8 @@ const PoseCanvas: Component<{ landmarks?: Landmark[][]; width: number; height: n
 
     line(0, props.height / 2, props.width, props.height / 2)
 
-    props.landmarks?.forEach(landmarks => {
-      landmarks.forEach(({ x, y }) => {
-        circle(x * props.width, y * props.height)
-      })
+    props.landmarks?.forEach(({ x, y }) => {
+      circle(x * props.width, y * props.height)
     })
   })
 

@@ -2,10 +2,10 @@ import * as THREE from "three"
 import { unwrap } from "solid-js/store"
 import { createEffect, onCleanup, type Component } from "solid-js"
 import { HAND_CONNECTIONS } from "../../app/const"
-import { state } from "../../state"
+// import { state } from "../../state"
 
 const dotGeometry = new THREE.SphereGeometry(0.0065, 4, 3)
-const bigDotGeometry = new THREE.SphereGeometry(state.player.dimensions.dotSize)
+// const bigDotGeometry = new THREE.SphereGeometry(state.player.dimensions.dotSize)
 const dotMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 })
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
 
@@ -30,7 +30,8 @@ const HandSkeleton: Component<{
 
   // create joint dots
   for (let i = 0; i < new Set(HAND_CONNECTIONS.flat()).size; i++) {
-    const dot = new THREE.Mesh(props.scale ? dotGeometry : bigDotGeometry, dotMaterial)
+    // const dot = new THREE.Mesh(props.scale ? dotGeometry : bigDotGeometry, dotMaterial)
+    const dot = new THREE.Mesh(dotGeometry, dotMaterial)
     dot.receiveShadow = true
     dot.castShadow = true
     dots.set(i, dot)

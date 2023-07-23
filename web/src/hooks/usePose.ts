@@ -35,8 +35,8 @@ function usePose() {
     rafId = requestAnimationFrame(poseLoop)
 
     const landmarks = await predict()
-    if (landmarks) {
-      setState("player", "landmarks", landmarks)
+    if (landmarks?.[0]) {
+      setState("player", "landmarks", landmarks[0])
     }
   }
 

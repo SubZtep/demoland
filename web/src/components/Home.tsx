@@ -70,7 +70,7 @@ const Home = () => {
 
         <PoseCanvas landmarks={state.player.landmarks} width={state.input.width} height={state.input.height} />
 
-        <pre>{debug()}</pre>
+        <pre class={css`scale: 0.2`}>{debug()}</pre>
 
         <Loading visible={loading()} />
       </div>

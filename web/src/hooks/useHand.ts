@@ -43,7 +43,7 @@ function useHand() {
     lastPredictTime = now
 
     if (handLandmarks) {
-      setState("player", "handLandmarks", handLandmarks)
+      // setState("player", "handLandmarks", handLandmarks)
     }
   }
 

@@ -1,134 +1,49 @@
 import { css } from "@emotion/css"
-import { Switch, Match, Show } from "solid-js"
-import { gotoLobby, leaveLobby } from "../app/lobby"
-import { sendMessage } from "../app/conn"
-import { state, setState } from "../state"
-import styles from "./App.module.css"
+import { Show } from "solid-js/web"
+import { state } from "../state"
+import Name from "./options/Name"
+import Camera from "./options/Camera"
+import TaskSettings from "./options/TaskSettings"
+import Start from "./options/Start"
 
 export default () => {
   return (
     <div
-      class={
-        styles.options +
-        " " +
-        css`
-          padding: 1rem;
-          display: flex;
-          flex-direction: column;
-          flex-wrap: wrap;
-          gap: 0.75rem;
-          border-radius: var(--border-radius);
+      class={css`
+        padding: 0.5rem;
+        display: grid;
+        gap: 0.75rem;
 
-          input[type="radio"] {
-            accent-color: pink;
+        @media (orientation: portrait) {
+          grid-template-columns: 1fr 1fr;
+          & > *:nth-child(n + 3) {
+            grid-column: 2 span;
           }
-
-          label:has(input[type="radio"]) {
-            margin-right: 0.5rem;
-          }
-        `
-      }
-    >
-      {/* <Switch>
-        <Match when={!state.lobby}></Match>
-        <Match when={state.lobby}>
-          <button onClick={() => leaveLobby()}>Leave lobby</button>
-        </Match>
-      </Switch> */}
-      <input
-        type="text"
-        value={/*@once*/ state.player.name}
-        // disabled={state.broadcast}
-        placeholder="Enter your name"
-        class={css`
-          padding: 0.5rem;
-        `}
-        onInput={ev => {
-          setState("player", "name", ev.target.value)
-          localStorage.setItem("name", ev.target.value)
-        }}
-      />
-
-      <button onClick={() => setState("camera", !state.camera)}>
-        <Switch>
-          <Match when={!state.camera}>Turn On Camera</Match>
-          <Match when={state.camera}>Turn Off Camera</Match>
-        </Switch>
-      </button>
-
-      <button
-        onClick={() => gotoLobby()}
-        disabled={!state.connected || state.player.name.length === 0}
-        class={
-          css`
-            text-transform: uppercase;
-            font-size: 1.5rem;
-            padding: 1rem;
-            font-weight: 550;
-            letter-spacing: 0.1rem;
-          ` + " pulse"
         }
-      >
-        Start
-      </button>
+      `}
+    >
+      <Name />
+
+      <Camera />
+
+      <TaskSettings />
+
+      <Start />
 
       <Show when={state.player.name.length > 0}>
         <div>
           Open
-          <br />
+          <br class="portrait" />{" "}
           <strong>
-            https://demo.land
-            <br />/{state.player.name}
+            {import.meta.env.VITE_APP_HOST}
+            <br class="portrait" />/{state.player.name} 🎊
           </strong>
         </div>
       </Show>
 
-      <fieldset disabled={state.camera}>
-        <legend>Run</legend>
-        <label
-          class={css`
-            display: block;
-            margin-bottom: 0.5rem;
-          `}
-        >
-          Model:{" "}
-          <select>
-            <option value="pose_landmarker_lite.task" selected={state.input.model === "pose_landmarker_lite.task"}>
-              Lite
-            </option>
-            <option value="pose_landmarker_full.task" selected={state.input.model === "pose_landmarker_full.task"}>
-              Full
-            </option>
-            <option value="pose_landmarker_heavy.task" selected={state.input.model === "pose_landmarker_heavy.task"}>
-              Heavy
-            </option>
-          </select>
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="delegate"
-            value="CPU"
-            checked={state.input.delegate === "CPU"}
-            onChange={() => setState("input", "delegate", "CPU")}
-          />{" "}
-          CPU
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="delegate"
-            value="GPU"
-            checked={state.input.delegate === "GPU"}
-            onChange={() => setState("input", "delegate", "GPU")}
-          />{" "}
-          GPU
-        </label>
-      </fieldset>
-
-      <p>
+      {/* <p>
         {state.input.width}x{state.input.height}
-      </p>
+      </p> */}
       {/* <label>
         <input
           type="checkbox"

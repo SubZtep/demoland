@@ -3,14 +3,14 @@ import { socket, sendMessage } from "./conn"
 import { startConfetti, stopConfetti } from "../lib/confetti"
 import { state, setState } from "../state"
 
-const anglesWorker = new Worker("/workers/angles.js")
+// const anglesWorker = new Worker("/workers/angles.js")
 const compareWorker = new Worker("/workers/compare.js")
 let lastMessageSentTime = 0
 let messageInterval: NodeJS.Timer
 
-anglesWorker.addEventListener("message", ({ data: player }) => {
-  sendMessage({ cmd: "update", time: Date.now(), players: [player] } as ClientMessage)
-})
+// anglesWorker.addEventListener("message", ({ data: player }) => {
+//   sendMessage({ cmd: "update", time: Date.now(), players: [player] } as ClientMessage)
+// })
 
 compareWorker.addEventListener("message", ({ data: isSimilar }) => {
   if (isSimilar) {
@@ -39,9 +39,9 @@ socket.addEventListener("message", ({ data }) => {
           if (msg.obstacles) {
             state.obstacles.push(...msg.obstacles)
           }
-          if (msg.players) {
-            state.players.push(...msg.players)
-          }
+          // if (msg.player) {
+          //   state.players.push(...msg.players)
+          // }
         }),
       )
       break
@@ -63,18 +63,18 @@ socket.addEventListener("message", ({ data }) => {
         }),
       )
 
-      if (msg.players) {
-        setState(
-          produce(state => {
-            for (const msgPlayer of msg.players!) {
-              const statePlayer = state.players.find(p => p.id === msgPlayer!.id)
-              if (statePlayer) {
-                Object.assign(statePlayer, msgPlayer)
-              }
-            }
-          }),
-        )
-      }
+      // if (msg.players) {
+      //   setState(
+      //     produce(state => {
+      //       for (const msgPlayer of msg.players!) {
+      //         const statePlayer = state.players.find(p => p.id === msgPlayer!.id)
+      //         if (statePlayer) {
+      //           Object.assign(statePlayer, msgPlayer)
+      //         }
+      //       }
+      //     }),
+      //   )
+      // }
       break
   }
 
@@ -91,7 +91,8 @@ export const startMessageLoop = () => {
   messageInterval = setInterval(() => {
     if (state.lastLandmarksUpdate <= lastMessageSentTime) return
 
-    anglesWorker.postMessage({ player: unwrap(state.player) })
+    // anglesWorker.postMessage({ player: unwrap(state.player) })
+    sendMessage({ cmd: "update", time: Date.now(), players: [unwrap(state.player)] } as ClientMessage)
 
     lastMessageSentTime = Date.now()
   }, state.messageDelay)

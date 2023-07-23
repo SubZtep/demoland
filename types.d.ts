@@ -5,12 +5,14 @@ type Collider = import("./server/node_modules/@dimforge/rapier3d-compat").Collid
 type RigidBody = import("./server/node_modules/@dimforge/rapier3d-compat").RigidBody
 
 interface Player {
-  id: string
+  /** @deprecated */
+  id?: string
   name: string
-  dimensions: { dotSize: number }
-  position: { x: number; y: number; z: number }
-  landmarks?: Landmark[][]
-  handLandmarks?: Landmark[][]
+  /** @deprecated */
+  dimensions?: { dotSize: number }
+  // position: { x: number; y: number; z: number }
+  landmarks?: Landmark[]
+  // handLandmarks?: Landmark[][]
   angles?: Angles
   // updated?: number
   /** server side can has rapier rigid bodies */
@@ -57,7 +59,7 @@ type Obstacle = PlaneObstacle | BoxObstacle
 
 interface CreateMessage {
   cmd: "create"
-  players?: Player[]
+  player?: Player
   obstacles?: Obstacle[]
 }
 
@@ -68,7 +70,7 @@ interface ByeMessage {
 
 interface UpdateMessage {
   cmd: "update"
-  players?: Player[]
+  player?: Player[]
   obstacles?: Obstacle[]
 }
 
