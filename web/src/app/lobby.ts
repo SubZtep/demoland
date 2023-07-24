@@ -11,15 +11,15 @@ export function gotoLobby() {
   const { name, landmarks } = unwrap(state.player)
   startMessageLoop()
   console.log("gotoLobby", { name, landmarks })
-  sendMessage({ cmd: "create", player: { name, landmarks } })
+  sendMessage({ cmd: "player-hi", player: { name, landmarks } })
   setState({ playing: true })
 }
 
 export function leaveLobby() {
   // if (state.broadcast) {
     sendMessage({
-      cmd: "bye",
-      player: { id: state.player.id },
+      cmd: "player-bye",
+      player: { name: state.player.name },
     })
     stopMessageLoop()
   // }

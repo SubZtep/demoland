@@ -11,11 +11,11 @@ wss.on("connection", ws => {
   })
 
   ws.on("close", () => {
-    if (players.has(ws)) {
-      const { id } = players.get(ws)!
-      players.delete(ws)
-      sendMessage({ cmd: "bye", player: { id } })
-    }
+    // if (players.has(ws)) {
+    //   const { id } = players.get(ws)!
+    //   players.delete(ws)
+    //   sendMessage({ cmd: "bye", player: { id } })
+    // }
 
     updateStats(wss)
   })

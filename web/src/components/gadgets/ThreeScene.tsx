@@ -2,8 +2,8 @@ import * as THREE from "three"
 import { css } from "@emotion/css"
 import CameraControls from "camera-controls"
 import { type Component, type JSX, onMount, onCleanup, mergeProps, createEffect } from "solid-js"
-import { runForever } from "../lib/loop"
-import { state } from "../state"
+import { runForever } from "../../lib/loop"
+import { state } from "../../state"
 
 CameraControls.install({ THREE })
 type LookAt = [number, number, number, number, number, number]

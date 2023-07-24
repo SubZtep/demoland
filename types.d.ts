@@ -13,7 +13,7 @@ interface Player {
   // position: { x: number; y: number; z: number }
   landmarks?: Landmark[]
   // handLandmarks?: Landmark[][]
-  angles?: Angles
+  // angles?: Angles
   // updated?: number
   /** server side can has rapier rigid bodies */
   rigidBodies?: RigidBody[]
@@ -57,15 +57,19 @@ type Obstacle = PlaneObstacle | BoxObstacle
 // WebSocket
 //
 
-interface CreateMessage {
-  cmd: "create"
-  player?: Player
-  obstacles?: Obstacle[]
+interface PlayerHiMessage {
+  cmd: "player-hi"
+  player: Player
 }
 
-interface ByeMessage {
-  cmd: "bye"
-  player: Pick<Player, "id">
+interface PlayerByeMessage {
+  cmd: "player-bye"
+  player: Pick<Player, "name">
+}
+
+interface CreateObstaclesMessage {
+  cmd: "create-obstacles"
+  obstacles: Obstacle[]
 }
 
 interface UpdateMessage {
@@ -74,8 +78,23 @@ interface UpdateMessage {
   obstacles?: Obstacle[]
 }
 
+interface ViewerHiMessage {
+  cmd: "viewer-hi"
+  channel: string
+}
+
+interface ViewerByeMessage {
+  cmd: "viewer-bye"
+  channel: string
+}
+
+interface ErrorMessage {
+  cmd: "error"
+  error: string
+}
+
 /** From server to client */
-type ServerMessage = CreateMessage | UpdateMessage | ByeMessage
+type ServerMessage = PlayerHiMessage | UpdateMessage | PlayerByeMessage | CreateObstaclesMessage | ErrorMessage
 
 /** From client to server */
-type ClientMessage = CreateMessage | UpdateMessage | ByeMessage
+type ClientMessage = ViewerHiMessage | ViewerByeMessage | PlayerHiMessage | UpdateMessage | PlayerByeMessage

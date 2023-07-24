@@ -1,9 +1,9 @@
 import { Switch, Match, For } from "solid-js"
 import { state } from "./state"
-import Lobby from "./components/Lobby"
+import Viewer from "./components/Viewer"
 import Home from "./components/Home"
 // import HandSkeleton from "./components/3d/HandSkeleton"
-import ThreeScene from "./components/ThreeScene"
+import ThreeScene from "./components/gadgets/ThreeScene"
 import DirectionalLight from "./components/3d/DirectionalLight"
 import GridHelper from "./components/3d/GridHelper"
 
@@ -11,7 +11,7 @@ export default () => {
   return (
     <Switch>
       <Match when={state.channel}>
-        <Lobby />
+        <Viewer />
       </Match>
       <Match when={!state.channel}>
         <Switch>

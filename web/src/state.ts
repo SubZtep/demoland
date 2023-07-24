@@ -16,6 +16,7 @@ export const [state, setState] = createStore({
     delegate: "CPU" as "CPU" | "GPU",
   },
   playing: false,
+  error: "",
   channel: window.location.pathname.replaceAll("/", "") || null,
   camera: false,
   isDesktop: !mobile(),

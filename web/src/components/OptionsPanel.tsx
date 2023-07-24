@@ -1,5 +1,5 @@
 import { css } from "@emotion/css"
-import { Show } from "solid-js/web"
+import { Show, Switch, Match } from "solid-js/web"
 import { state } from "../state"
 import Name from "./options/Name"
 import Camera from "./options/Camera"
@@ -30,16 +30,20 @@ export default () => {
 
       <Start />
 
-      <Show when={state.player.name.length > 0}>
-        <div>
-          Open
-          <br class="portrait" />{" "}
-          <strong>
-            {import.meta.env.VITE_APP_HOST}
-            <br class="portrait" />/{state.player.name} 🎊
-          </strong>
-        </div>
-      </Show>
+      <div>
+        <Switch>
+          <Match when={state.playing}>
+            Open
+            <br class="portrait" />{" "}
+            <strong>
+              {import.meta.env.VITE_APP_HOST}
+              <br class="portrait" />/{state.player.name} 🎊
+            </strong>
+          </Match>
+          <Match when={state.error}>{state.error}</Match>
+          <Match when={!state.playing && !state.error!}>o.o</Match>
+        </Switch>
+      </div>
 
       {/* <p>
         {state.input.width}x{state.input.height}

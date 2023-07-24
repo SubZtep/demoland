@@ -22,29 +22,32 @@ compareWorker.addEventListener("message", ({ data: isSimilar }) => {
 
 socket.addEventListener("message", ({ data }) => {
   const msg = JSON.parse(data) as ServerMessage
-  // console.log("received", msg)
+  console.log("received", msg)
 
   switch (msg.cmd) {
-    case "bye":
-      setState(
-        produce(state => {
-          state.players = state.players.filter(player => player.id !== msg.player.id)
-        }),
-      )
-      return
-
-    case "create":
-      setState(
-        produce(state => {
-          if (msg.obstacles) {
-            state.obstacles.push(...msg.obstacles)
-          }
-          // if (msg.player) {
-          //   state.players.push(...msg.players)
-          // }
-        }),
-      )
+    case "error":
+      setState({ error: msg.error })
       break
+    // case "bye":
+    //   setState(
+    //     produce(state => {
+    //       state.players = state.players.filter(player => player.id !== msg.player.id)
+    //     }),
+    //   )
+    //   return
+
+    // case "create":
+    //   setState(
+    //     produce(state => {
+    //       if (msg.obstacles) {
+    //         state.obstacles.push(...msg.obstacles)
+    //       }
+    //       // if (msg.player) {
+    //       //   state.players.push(...msg.players)
+    //       // }
+    //     }),
+    //   )
+    //   break
 
     case "update":
       setState(

@@ -22,6 +22,6 @@ export function isLandmarkList(value: any): value is Landmark[] {
   return Array.isArray(value)
 }
 
-export function isAngles(value: any): value is Angles {
-  return value != null
-}
+// export function isAngles(value: any): value is Angles {
+//   return value != null
+// }

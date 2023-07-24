@@ -3,28 +3,44 @@ import RAPIER from "@dimforge/rapier3d-compat"
 import { players, obstacles, getSerializedObstacles } from "./state.js"
 import { sendMessage } from "./conn.js"
 import { createPlayerPhysics } from "./physics.js"
+import { channels } from "./channels.js"
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
+  console.log("RECEIVED", msg)
 
   switch (msg.cmd) {
-    case "create":
-      // send the current state to the new client
-      // sendMessage(
-      //   {
-      //     cmd: "create",
-      //     players: Array.from(players.values()),
-      //     obstacles: getSerializedObstacles(obstacles),
-      //   },
-      //   client,
-      // )
+    case "viewer-hi":
+      channels.get(msg.channel)?.viewers.add(client)
+      sendMessage({
+        cmd: "create-obstacles",
+        obstacles: getSerializedObstacles(obstacles),
+      }, client)
+      break
 
-      // msg.players?.forEach(player => {
-      //   players.set(client, {
-      //     ...player,
-      //     ...createPlayerPhysics(player),
-      //   })
-      // })
+    case "viewer-bye":
+      channels.get(msg.channel)?.viewers.delete(client)
+      break
+
+    case "player-hi":
+      if (channels.has(msg.player.name)) {
+        sendMessage({
+          cmd: "error",
+          error: "Player already exists",
+        }, client)
+        break
+      }
+      channels.set(msg.player.name, {
+        player: msg.player,
+        world: new RAPIER.World(new RAPIER.Vector3(0, -9.81, 0)),
+        obstacles,
+        viewers: new Set(),
+      })
+      break
+
+    case "player-bye":
+      channels.delete(msg.player.name)
+      // FIXME: remove all references to this player
       break
 
     case "update":
@@ -35,16 +51,14 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
       //   })
       // })
       break
-
-    case "bye":
-      players.delete(client)
-      break
   }
 
+  console.log("CHANNELS", Array.from(channels.keys()))
+
   // broadcast to all clients
-  server.clients.forEach(v => {
-    if (v.readyState === WebSocket.OPEN) {
-      v.send(data, { binary })
-    }
-  })
+  // server.clients.forEach(v => {
+  //   if (v.readyState === WebSocket.OPEN) {
+  //     v.send(data, { binary })
+  //   }
+  // })
 }

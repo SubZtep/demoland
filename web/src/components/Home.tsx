@@ -1,13 +1,13 @@
 import { css } from "@emotion/css"
 import { setState, state } from "../state"
-import CameraStream from "./CameraStream"
+import CameraStream from "./gadgets/CameraStream"
 import OptionsPanel from "./OptionsPanel"
 import usePose from "../hooks/usePose"
 import useResizeObserver from "../hooks/useResizeObserver"
 import { createEffect, createSignal, onMount } from "solid-js"
 import { produce } from "solid-js/store"
-import PoseCanvas from "./PoseCanvas"
-import Loading from "./Loading"
+import PoseCanvas from "./gadgets/PoseCanvas"
+import Text from "./gadgets/Text"
 
 const Home = () => {
   const { init, start, stop, loading } = usePose()
@@ -72,7 +72,7 @@ const Home = () => {
 
         <pre class={css`scale: 0.2`}>{debug()}</pre>
 
-        <Loading visible={loading()} />
+        <Text visible={loading()}>Loading</Text>
       </div>
 
       <OptionsPanel />

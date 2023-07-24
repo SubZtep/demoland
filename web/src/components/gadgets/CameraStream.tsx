@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import { createEffect, type ParentComponent, Switch, Match, Show, type JSXElement, onMount, onCleanup } from "solid-js"
-import { state, setState } from "../state"
-import useResizeObserver from "../hooks/useResizeObserver"
+import { state, setState } from "../../state"
+import useResizeObserver from "../../hooks/useResizeObserver"
 
 const monitorClass = css`
   position: relative;
