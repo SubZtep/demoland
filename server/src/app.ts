@@ -1,8 +1,10 @@
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import express, { type Express } from "express"
-import { connections, players } from "./state.js"
+import cors from "cors"
+import { connections } from "./state.js"
 import channelApi from "./api/api.js"
+import { channels } from "./channels.js"
 
 export const app: Express = express()
 
@@ -12,11 +14,12 @@ app.get("/", (_req, res) => {
   res.render("index", {
     title: "Stats",
     connections,
-    players: Array.from(players.values()),
+    channels: Array.from(channels.keys()),
     mem: Object.fromEntries(
       Object.entries(process.memoryUsage()).map(([key, value]) => [key, `${(value / 1_000_000).toFixed(2)} MB`]),
     ),
   })
 })
 
+app.use(cors())
 app.use(channelApi)

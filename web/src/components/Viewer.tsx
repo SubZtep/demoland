@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { For, type Component, onMount, onCleanup, Show } from "solid-js"
+import { For, type Component, onMount, onCleanup, Show, createResource, createEffect } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { state } from "../state"
 import * as obss from "./3d"
@@ -8,13 +8,25 @@ import ThreeScene from "./gadgets/ThreeScene"
 import { sendMessage } from "../app/conn"
 import useViewer from "../hooks/useViewer"
 
+const fetchChannel = async () =>
+  (await fetch(`${import.meta.env.VITE_API_HOST}/api/channel/${state.channel}`)).json()
+
 const Viewer: Component<{ channel: string }> = props => {
-  const { isChannelExists } = useViewer()
+  const [channelData, { refetch }] = createResource(fetchChannel)
+
+  createEffect(() => {
+    state.channel
+    refetch()
+  })
+
+  createEffect(() => {
+    console.log(channelData())
+  })
 
   onMount(async () => {
-    sendMessage({ cmd: "viewer-hi", channel: state.channel! })
+    // sendMessage({ cmd: "viewer-hi", channel: state.channel! })
 
-    console.log(await isChannelExists(props.channel))
+    // console.log(await isChannelExists(props.channel))
   })
 
   onCleanup(() => {
@@ -22,7 +34,7 @@ const Viewer: Component<{ channel: string }> = props => {
   })
 
   return (
-    <Show when={isChannelExists(props.channel)} fallback={<h1>Channel not found</h1>}>
+    <Show when={channelData()?.exists} fallback={<h1>Channel not found</h1>}>
       <ThreeScene
         background={new THREE.Color(0x606060)}
         lookAt={[1.2, 0, 0, 0, 0, 0]}

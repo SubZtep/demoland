@@ -1,12 +1,28 @@
 import { css } from "@emotion/css"
+import { createEffect, createResource, createSignal } from "solid-js"
 import { Show, Switch, Match } from "solid-js/web"
-import { state } from "../state"
+import { setState, state } from "../state"
 import Name from "./options/Name"
 import Camera from "./options/Camera"
 import TaskSettings from "./options/TaskSettings"
 import Start from "./options/Start"
+import Debug from "./gadgets/Debug"
+
+const fetchChannel = async () =>
+  (await fetch(`${import.meta.env.VITE_API_HOST}/api/channel/${state.player.name}`)).json()
 
 export default () => {
+  const [channelData, { refetch }] = createResource(fetchChannel)
+
+  createEffect(() => {
+    state.player.name
+    refetch()
+  })
+
+  createEffect(() => {
+    setState("error", channelData()?.error)
+  })
+
   return (
     <div
       class={css`
@@ -28,7 +44,9 @@ export default () => {
 
       <TaskSettings />
 
-      <Start />
+      <Start disabled={state.player.name.length === 0 || channelData()?.error || channelData()?.exists} />
+
+      {/* <Debug var={channelData()} /> */}
 
       <div>
         <Switch>

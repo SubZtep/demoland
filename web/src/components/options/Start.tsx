@@ -1,10 +1,10 @@
 import { state, setState } from "../../state"
 import { gotoLobby, leaveLobby } from "../../app/lobby"
 import { css } from "@emotion/css"
-import { createEffect } from "solid-js"
+import { type Component, createEffect } from "solid-js"
 import { Match, Switch } from "solid-js/web"
 
-export default () => {
+const Start: Component<{ disabled: boolean }> = props => {
   createEffect(() => {
     if (state.playing) {
       gotoLobby()
@@ -20,7 +20,7 @@ export default () => {
       <Match when={!state.playing}>
         <button
           onClick={() => setState("playing", true)}
-          disabled={isUnprepared()}
+          disabled={props.disabled || isUnprepared()}
           class={
             css`
               text-transform: uppercase;
@@ -37,7 +37,7 @@ export default () => {
       <Match when={state.playing}>
         <button
           onClick={() => setState("playing", false)}
-          disabled={isUnprepared()}
+          disabled={props.disabled || isUnprepared()}
           class={css`
             text-transform: uppercase;
             font-size: 1.5rem;
@@ -52,3 +52,5 @@ export default () => {
     </Switch>
   )
 }
+
+export default Start
