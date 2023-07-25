@@ -26,7 +26,7 @@ export async function startPhysics(server: WebSocket.Server) {
     // broadcast to all clients
     server.clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
-        // client.send(JSON.stringify(message))
+        client.send(JSON.stringify(message))
       }
     })
 

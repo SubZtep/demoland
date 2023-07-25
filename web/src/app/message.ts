@@ -25,6 +25,9 @@ socket.addEventListener("message", ({ data }) => {
   console.log("received", msg)
 
   switch (msg.cmd) {
+    case "create-obstacles":
+      setState("obstacles", msg.obstacles)
+      break
     case "error":
       setState({ error: msg.error })
       break
