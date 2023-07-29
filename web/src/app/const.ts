@@ -2,45 +2,16 @@ export const LANDMARK_SCALE = -10
 
 export const PLANE_SIZE = 10
 
-/** values are identical to `HAND_CONNECTIONS` values (indices) */
-export const HAND_ANGLES = [
-  [
-    "thumb",
-    [
-      [4, 3, 2],
-      [3, 2, 1],
-      [2, 1, 0],
-    ],
-  ],
-  [
-    "index_finger",
-    [
-      [8, 7, 6],
-      [7, 6, 5],
-    ],
-  ],
-  [
-    "middle_finger",
-    [
-      [12, 11, 10],
-      [11, 10, 9],
-    ],
-  ],
-  [
-    "ring_finger",
-    [
-      [16, 15, 14],
-      [15, 14, 13],
-    ],
-  ],
-  [
-    "pinky",
-    [
-      [20, 19, 18],
-      [19, 18, 17],
-    ],
-  ],
-] as const
+export const POSE_CONNECTIONS: [number, number][] = [
+  [20, 22],
+  [22, 16],
+  [16, 18],
+  [18, 20],
+  [21, 19],
+  [19, 17],
+  [17, 15],
+  [15, 21],
+]
 
 export const POSE_LANDMARKS = [
   {

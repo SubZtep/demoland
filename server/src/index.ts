@@ -1,9 +1,10 @@
 import { onMessage } from "./message.js"
 import { players, updateStats } from "./state.js"
 import { server, wss, sendMessage } from "./conn.js"
-import { startPhysics } from "./physics.js"
+// import { startPhysics } from "./physics.js"
+import "./physics.js"
 
-startPhysics(wss)
+// startPhysics(wss)
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {
@@ -20,8 +21,8 @@ wss.on("connection", ws => {
     updateStats(wss)
   })
 
-  ws.on("upgrade", req => console.log("WS Upgrade", req))
-  ws.on("error", ev => console.log("WS Error", ev))
+  ws.on("upgrade", _req => console.log("WS Upgrade"))
+  ws.on("error", _ev => console.log("WS Error"))
   updateStats(wss)
 })
 

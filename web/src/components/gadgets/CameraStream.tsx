@@ -92,7 +92,6 @@ const CameraStream: ParentComponent<{
   createEffect(async () => {
     if (props.enabled) {
       mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-      console.log(mediaStream)
       video!.srcObject = mediaStream
 
       // resizer?.observe(video!, { box: "content-box" })

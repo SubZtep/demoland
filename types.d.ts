@@ -8,13 +8,7 @@ interface Player {
   /** @deprecated */
   id?: string
   name: string
-  /** @deprecated */
-  dimensions?: { dotSize: number }
-  // position: { x: number; y: number; z: number }
   landmarks?: Landmark[]
-  // handLandmarks?: Landmark[][]
-  // angles?: Angles
-  // updated?: number
   /** server side can has rapier rigid bodies */
   rigidBodies?: RigidBody[]
   /** server side has rapier colliders */
@@ -67,6 +61,11 @@ interface PlayerByeMessage {
   player: Pick<Player, "name">
 }
 
+interface CreatePlayerMessage {
+  cmd: "create-player"
+  player: Player
+}
+
 interface CreateObstaclesMessage {
   cmd: "create-obstacles"
   obstacles: Obstacle[]
@@ -94,7 +93,7 @@ interface ErrorMessage {
 }
 
 /** From server to client */
-type ServerMessage = PlayerHiMessage | UpdateMessage | PlayerByeMessage | CreateObstaclesMessage | ErrorMessage
+type ServerMessage = PlayerHiMessage | UpdateMessage | PlayerByeMessage | CreateObstaclesMessage | CreatePlayerMessage | ErrorMessage
 
 /** From client to server */
 type ClientMessage = ViewerHiMessage | ViewerByeMessage | PlayerHiMessage | UpdateMessage | PlayerByeMessage

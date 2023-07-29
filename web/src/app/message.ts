@@ -28,9 +28,15 @@ socket.addEventListener("message", ({ data }) => {
     case "create-obstacles":
       setState("obstacles", msg.obstacles)
       break
+
+    case "create-player":
+      setState("player", msg.player)
+      break
+
     case "error":
       setState({ error: msg.error })
       break
+
     // case "bye":
     //   setState(
     //     produce(state => {
@@ -86,7 +92,7 @@ socket.addEventListener("message", ({ data }) => {
 
   // find similar poses
   // if (state.players.length > 1) {
-  //   const { playerIds, angleThreshold: threshold } = unwrap(state)
+  //   const { playerIds, angleThreshold: threshold } = unwrap(state) // angleThreshold = 28
   //   compareWorker.postMessage({ playerIds, threshold, players })
   // } else {
   //   stopConfetti()

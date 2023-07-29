@@ -1,6 +1,6 @@
 import { css } from "@emotion/css"
-import { createEffect, createResource, createSignal } from "solid-js"
-import { Show, Switch, Match } from "solid-js/web"
+import { createEffect, createResource } from "solid-js"
+import { Switch, Match } from "solid-js/web"
 import { setState, state } from "../state"
 import Name from "./options/Name"
 import Camera from "./options/Camera"
@@ -62,18 +62,6 @@ export default () => {
           <Match when={!state.playing && !state.error!}>o.o</Match>
         </Switch>
       </div>
-
-      {/* <p>
-        {state.input.width}x{state.input.height}
-      </p> */}
-      {/* <label>
-        <input
-          type="checkbox"
-          checked={/ *@once* / state.broadcast}
-          onChange={ev => setState("broadcast", ev.target.checked)}
-        />
-        Broadcast
-      </label> */}
     </div>
   )
 }
