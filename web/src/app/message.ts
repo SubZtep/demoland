@@ -2,6 +2,7 @@ import { unwrap, produce } from "solid-js/store"
 import { socket, sendMessage } from "./conn"
 import { startConfetti, stopConfetti } from "../lib/confetti"
 import { state, setState } from "../state"
+import { set } from "lodash"
 
 // const anglesWorker = new Worker("/workers/angles.js")
 const compareWorker = new Worker("/workers/compare.js")
@@ -59,6 +60,9 @@ socket.addEventListener("message", ({ data }) => {
     //   break
 
     case "update":
+      if (msg.player) {
+        setState("landmarks", msg.player.landmarks!)
+      }
       setState(
         produce(state => {
           state.obstacles
@@ -89,22 +93,13 @@ socket.addEventListener("message", ({ data }) => {
       // }
       break
   }
-
-  // find similar poses
-  // if (state.players.length > 1) {
-  //   const { playerIds, angleThreshold: threshold } = unwrap(state) // angleThreshold = 28
-  //   compareWorker.postMessage({ playerIds, threshold, players })
-  // } else {
-  //   stopConfetti()
-  // }
 })
 
 export const startMessageLoop = () => {
   messageInterval = setInterval(() => {
     if (state.lastLandmarksUpdate <= lastMessageSentTime) return
 
-    // anglesWorker.postMessage({ player: unwrap(state.player) })
-    sendMessage({ cmd: "update", time: Date.now(), players: [unwrap(state.player)] } as ClientMessage)
+    sendMessage({ cmd: "update", time: Date.now(), player: unwrap(state.player) } as ClientMessage)
 
     lastMessageSentTime = Date.now()
   }, state.messageDelay)

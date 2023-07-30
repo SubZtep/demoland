@@ -37,6 +37,7 @@ function usePose() {
     const landmarks = await predict()
     if (landmarks?.[0]) {
       setState("player", "landmarks", landmarks[0])
+      setState("lastLandmarksUpdate", Date.now())
     }
   }
 

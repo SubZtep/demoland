@@ -12,7 +12,6 @@ export default () => {
         padding: 0.5rem;
       `}
       onInput={ev => {
-        // setState("channel", ev.target.value)
         setState("player", "name", ev.target.value)
         localStorage.setItem("name", ev.target.value)
       }}

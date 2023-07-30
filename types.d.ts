@@ -73,7 +73,7 @@ interface CreateObstaclesMessage {
 
 interface UpdateMessage {
   cmd: "update"
-  player?: Player[]
+  player?: Player
   obstacles?: Obstacle[]
 }
 

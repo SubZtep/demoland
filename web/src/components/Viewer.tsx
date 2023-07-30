@@ -45,17 +45,13 @@ const Viewer: Component = props => {
           <>
             <LobbyEnvironment scene={scene} controls={controls} />
 
-            {/* <For each={state.players}>
-              {player => <HandSkeleton scene={scene} landmarks={player.landmarks} position={[0, 0, -0.7]} />}
-            </For> */}
-
             <For each={state.obstacles}>
               {/* @ts-ignore */}
               {obstacle => <Dynamic component={obss[obstacle.component]} obstacle={obstacle} scene={scene} />}
             </For>
 
-            <Show when={state.player.landmarks}>
-              <PoseSkeleton scene={scene} landmarks={state.player.landmarks!} position={[0, 0, -0.7]} />
+            <Show when={state.landmarks}>
+              <PoseSkeleton scene={scene} landmarks={state.landmarks} />
             </Show>
           </>
         )}

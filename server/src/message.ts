@@ -8,11 +8,12 @@ const gravity = new RAPIER.Vector3(0, -9.81, 0)
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
-  console.log("RECEIVED", msg)
+  // console.log("RECEIVED", msg)
+  let channel
 
   switch (msg.cmd) {
     case "viewer-hi":
-      const channel = channels.get(msg.channel)
+      channel = channels.get(msg.channel)
       if (channel) {
         channel.viewers.add(client)
         sendMessage({ cmd: "create-obstacles", obstacles: getSerializedObstacles(obstacles) }, client)
@@ -39,6 +40,14 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
       break
 
     case "update":
+      channel = channels.get(msg.player!.name)
+      if (channel) {
+        channel.player = msg.player!
+        const serializedPlayer = getSerializedPlayer(channel.player)
+        channel.viewers.forEach(viewer => {
+          sendMessage({ cmd: "update", player: serializedPlayer }, viewer)
+        })
+      }
       // msg.players?.filter(v => v.landmarks).forEach(player => {
       //   players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
       //     const { x, y, z } = player.landmarks![i]
