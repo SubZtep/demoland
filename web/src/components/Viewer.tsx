@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { For, type Component, onMount, onCleanup, Show, createResource, createEffect } from "solid-js"
+import { For, type Component, onMount, onCleanup, Show, createResource, createEffect, createSignal } from "solid-js"
 import { Dynamic } from "solid-js/web"
 import { state } from "../state"
 import * as obss from "./3d"
@@ -11,8 +11,9 @@ import PoseSkeleton from "./3d/PoseSkeleton"
 
 const fetchChannel = async () => (await fetch(`${import.meta.env.VITE_API_HOST}/api/channel/${state.channel}`)).json()
 
-const Viewer: Component = props => {
+const Viewer: Component<{ onMessageReceived: (cb: (msg: ServerMessage) => void) => void }> = props => {
   const [channelData, { refetch }] = createResource(fetchChannel)
+  const [landmarks, setLandmarks] = createSignal<Landmark[]>([])
 
   createEffect(() => {
     state.channel
@@ -25,8 +26,18 @@ const Viewer: Component = props => {
     }
   })
 
+  props.onMessageReceived(msg => {
+    switch (msg.cmd) {
+      case "update":
+        if (msg.player?.landmarks) {
+          setLandmarks(msg.player.landmarks)
+        }
+        break
+    }
+  })
+
   // createEffect(() => {
-  //   console.log("obstacles", unwrap(state.obstacles))
+  //   // console.log("obstacles", unwrap(state.obstacles))
   // })
 
   onCleanup(() => {
@@ -51,7 +62,7 @@ const Viewer: Component = props => {
             </For>
 
             <Show when={state.landmarks}>
-              <PoseSkeleton scene={scene} landmarks={state.landmarks} />
+              <PoseSkeleton scene={scene} landmarks={landmarks()} />
             </Show>
           </>
         )}

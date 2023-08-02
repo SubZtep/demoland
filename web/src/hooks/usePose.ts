@@ -2,7 +2,7 @@ import { createSignal } from "solid-js"
 import { FilesetResolver, PoseLandmarker } from "@mediapipe/tasks-vision"
 import { setState, state } from "../state"
 
-function usePose() {
+function usePose(onPredict: (landmarks: Landmark[]) => void) {
   const [loading, setLoading] = createSignal(false)
   let landmarker: PoseLandmarker
   let lastVideoTime = -1
@@ -36,8 +36,9 @@ function usePose() {
 
     const landmarks = await predict()
     if (landmarks?.[0]) {
-      setState("player", "landmarks", landmarks[0])
-      setState("lastLandmarksUpdate", Date.now())
+      onPredict(landmarks[0])
+      // setState("player", "landmarks", landmarks[0])
+      // setState("lastLandmarksUpdate", Date.now())
     }
   }
 

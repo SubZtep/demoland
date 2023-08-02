@@ -1,17 +1,24 @@
-import { Switch, Match } from "solid-js"
+import { Show, Switch, Match, onCleanup } from "solid-js"
 import { state } from "./state"
 import Viewer from "./components/Viewer"
 import Home from "./components/Home"
+import useWebSocket from "./hooks/useWebSocket"
 
 export default () => {
+  const { connected, disconnect, sendMessage, onMessageReceived } = useWebSocket(import.meta.env.VITE_WSPP)
+
+  onCleanup(() => disconnect())
+
   return (
-    <Switch>
-      <Match when={state.channel}>
-        <Viewer />
-      </Match>
-      <Match when={!state.channel}>
-        <Home />
-      </Match>
-    </Switch>
+    <Show when={connected}>
+      <Switch>
+        <Match when={state.channel}>
+          <Viewer onMessageReceived={onMessageReceived} />
+        </Match>
+        <Match when={!state.channel}>
+          <Home sendMessage={sendMessage} />
+        </Match>
+      </Switch>
+    </Show>
   )
 }

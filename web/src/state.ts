@@ -21,7 +21,7 @@ export const [state, setState] = createStore({
   connected: false,
   messageDelay: 1_000 / 30,
   lastLandmarksUpdate: Date.now(),
-  /** Player landmarks for display to viewver received from the server */
+  /** Player landmarks for display to viewer received from the server */
   landmarks: [] as Landmark[],
   obstacles: [] as Obstacle[],
 })

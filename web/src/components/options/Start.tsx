@@ -1,5 +1,5 @@
 import { state, setState } from "../../state"
-import { gotoLobby, leaveLobby } from "../../app/lobby"
+// import { gotoLobby, leaveLobby } from "../../app/lobby"
 import { css } from "@emotion/css"
 import { type Component, createEffect } from "solid-js"
 import { Match, Switch } from "solid-js/web"
@@ -7,9 +7,9 @@ import { Match, Switch } from "solid-js/web"
 const Start: Component<{ disabled: boolean }> = props => {
   createEffect(() => {
     if (state.playing) {
-      gotoLobby()
+      // gotoLobby()
     } else {
-      leaveLobby()
+      // leaveLobby()
     }
   })
 

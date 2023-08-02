@@ -1,10 +1,9 @@
+import RAPIER from "@dimforge/rapier3d-compat"
 import { onMessage } from "./message.js"
 import { players, updateStats } from "./state.js"
 import { server, wss, sendMessage } from "./conn.js"
-// import { startPhysics } from "./physics.js"
-import "./physics.js"
 
-// startPhysics(wss)
+await RAPIER.init()
 
 wss.on("connection", ws => {
   ws.on("message", (data, binary) => {

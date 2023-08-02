@@ -4,13 +4,16 @@ import CameraStream from "./gadgets/CameraStream"
 import OptionsPanel from "./OptionsPanel"
 import usePose from "../hooks/usePose"
 import useResizeObserver from "../hooks/useResizeObserver"
-import { createEffect, createSignal, onMount } from "solid-js"
+import { type Component, createEffect, createSignal, onMount } from "solid-js"
 import { produce } from "solid-js/store"
 import PoseCanvas from "./gadgets/PoseCanvas"
 import Text from "./gadgets/Text"
 
-const Home = () => {
-  const { init, start, stop, loading } = usePose()
+const Home: Component<{ sendMessage: (msg: ClientMessage) => void }> = props => {
+  const { init, start, stop, loading } = usePose(landmarks =>
+    props.sendMessage({ cmd: "update", player: { name: state.player.name, landmarks } }),
+  )
+
   const [debug, setDebug] = createSignal("")
   let screen: HTMLDivElement | undefined
 
@@ -70,7 +73,13 @@ const Home = () => {
 
         <PoseCanvas landmarks={state.player.landmarks} width={state.input.width} height={state.input.height} />
 
-        <pre class={css`scale: 0.2`}>{debug()}</pre>
+        <pre
+          class={css`
+            scale: 0.2;
+          `}
+        >
+          {debug()}
+        </pre>
 
         <Text visible={loading()}>Loading</Text>
       </div>

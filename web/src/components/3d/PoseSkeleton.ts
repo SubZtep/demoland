@@ -19,15 +19,19 @@ const PoseSkeleton: Component<{
   const dots = new Map<number, THREE.Mesh>()
   const pose = new THREE.Group()
 
+  const createDot = (material = whiteMaterial) => {
+    const dot = new THREE.Mesh(dotGeometry, material)
+    dot.receiveShadow = true
+    dot.castShadow = true
+    return dot
+  }
+
   const createObjects = () => {
     // create joint dots
     for (let i = 0; i < POSE_LANDMARKS.length; i++) {
-      const dot = new THREE.Mesh(
-        dotGeometry,
+      const dot = createDot(
         leftHandIndices.includes(i) ? blueMaterial : rightHandIndices.includes(i) ? redMaterial : whiteMaterial,
       )
-      dot.receiveShadow = true
-      dot.castShadow = true
       dots.set(i, dot)
       pose.add(dot)
     }
@@ -42,9 +46,7 @@ const PoseSkeleton: Component<{
   })
 
   createEffect(() => {
-    props.landmarks
-    console.log("landmarks", unwrap(props.landmarks))
-    unwrap(props.landmarks).forEach(({ x, y, z }, i) => {
+    props.landmarks.forEach(({ x, y, z }, i) => {
       dots.get(i)!.position.set(x, y, z)
     })
   })

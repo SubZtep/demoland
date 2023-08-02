@@ -9,10 +9,6 @@ const compareWorker = new Worker("/workers/compare.js")
 let lastMessageSentTime = 0
 let messageInterval: NodeJS.Timer
 
-// anglesWorker.addEventListener("message", ({ data: player }) => {
-//   sendMessage({ cmd: "update", time: Date.now(), players: [player] } as ClientMessage)
-// })
-
 compareWorker.addEventListener("message", ({ data: isSimilar }) => {
   if (isSimilar) {
     startConfetti()
@@ -23,7 +19,7 @@ compareWorker.addEventListener("message", ({ data: isSimilar }) => {
 
 socket.addEventListener("message", ({ data }) => {
   const msg = JSON.parse(data) as ServerMessage
-  console.log("received", msg)
+  console.log("received", msg.cmd)
 
   switch (msg.cmd) {
     case "create-obstacles":
@@ -61,6 +57,7 @@ socket.addEventListener("message", ({ data }) => {
 
     case "update":
       if (msg.player) {
+        console.log("set landmarks")
         setState("landmarks", msg.player.landmarks!)
       }
       setState(
@@ -97,7 +94,7 @@ socket.addEventListener("message", ({ data }) => {
 
 export const startMessageLoop = () => {
   messageInterval = setInterval(() => {
-    if (state.lastLandmarksUpdate <= lastMessageSentTime) return
+    // if (state.lastLandmarksUpdate <= lastMessageSentTime) return
 
     sendMessage({ cmd: "update", time: Date.now(), player: unwrap(state.player) } as ClientMessage)
 

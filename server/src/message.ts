@@ -8,7 +8,7 @@ const gravity = new RAPIER.Vector3(0, -9.81, 0)
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
-  // console.log("RECEIVED", msg)
+  console.log("RECEIVED", msg.cmd)
   let channel
 
   switch (msg.cmd) {
@@ -42,10 +42,12 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
     case "update":
       channel = channels.get(msg.player!.name)
       if (channel) {
-        channel.player = msg.player!
-        const serializedPlayer = getSerializedPlayer(channel.player)
+        // channel.player = msg.player!
+        // const serializedPlayer = getSerializedPlayer(channel.player)
         channel.viewers.forEach(viewer => {
-          sendMessage({ cmd: "update", player: serializedPlayer }, viewer)
+          console.log("SENDING UPDATE TO VIEWER", new Date().toLocaleTimeString())
+          sendMessage({ cmd: "update", player: msg.player }, viewer)
+          // sendMessage({ cmd: "update", player: serializedPlayer }, viewer)
         })
       }
       // msg.players?.filter(v => v.landmarks).forEach(player => {

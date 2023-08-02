@@ -13,7 +13,6 @@ export function createWebSocketConnection() {
 
   const sendMessage = (msg: ClientMessage) => {
     if (socket.readyState === WebSocket.OPEN) {
-      console.log("sending", msg)
       socket.send(JSON.stringify(msg))
     }
   }
