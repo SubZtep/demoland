@@ -1,17 +1,23 @@
 import { state, setState } from "../../state"
 // import { gotoLobby, leaveLobby } from "../../app/lobby"
 import { css } from "@emotion/css"
-import { type Component, createEffect } from "solid-js"
+import { type Component, createEffect, on } from "solid-js"
 import { Match, Switch } from "solid-js/web"
+import { sendMessage } from "../../app/conn"
 
 const Start: Component<{ disabled: boolean }> = props => {
-  createEffect(() => {
-    if (state.playing) {
-      // gotoLobby()
-    } else {
-      // leaveLobby()
-    }
-  })
+  createEffect(
+    on(
+      () => state.playing,
+      isPlaying => {
+        if (isPlaying) {
+          sendMessage({ cmd: "player-hi", player: { name: state.player.name, landmarks: state.player.landmarks } })
+        } else {
+          sendMessage({ cmd: "player-bye", player: { name: state.player.name } })
+        }
+      },
+    ),
+  )
 
   const isUnprepared = () => !state.connected || state.player.name.length === 0
 

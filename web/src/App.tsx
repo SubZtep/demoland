@@ -13,7 +13,7 @@ export default () => {
     <Show when={connected}>
       <Switch>
         <Match when={state.channel}>
-          <Viewer onMessageReceived={onMessageReceived} />
+          <Viewer sendMessage={sendMessage} onMessageReceived={onMessageReceived} />
         </Match>
         <Match when={!state.channel}>
           <Home sendMessage={sendMessage} />

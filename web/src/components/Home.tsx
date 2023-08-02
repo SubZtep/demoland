@@ -10,9 +10,12 @@ import PoseCanvas from "./gadgets/PoseCanvas"
 import Text from "./gadgets/Text"
 
 const Home: Component<{ sendMessage: (msg: ClientMessage) => void }> = props => {
-  const { init, start, stop, loading } = usePose(landmarks =>
-    props.sendMessage({ cmd: "update", player: { name: state.player.name, landmarks } }),
-  )
+  const { init, start, stop, loading } = usePose(landmarks => {
+    if (state.playing) {
+      props.sendMessage({ cmd: "update", player: { name: state.player.name, landmarks } })
+    }
+    setState("player", "landmarks", landmarks)
+  })
 
   const [debug, setDebug] = createSignal("")
   let screen: HTMLDivElement | undefined
