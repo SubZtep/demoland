@@ -1,9 +1,10 @@
 import { startConfetti, stopConfetti } from "./lib/confetti"
-import { render } from "solid-js/web"
+import { createRoot } from "react-dom/client"
 import App from "./App"
 import "./style.css"
 
-render(() => <App />, document.body)
+const root = createRoot(document.getElementById("app")!)
+root.render(<App />)
 
 startConfetti()
 setTimeout(() => stopConfetti(), 369)
