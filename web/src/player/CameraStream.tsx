@@ -12,10 +12,11 @@ export default function Player({ enabled, onLoaded }: Props) {
 
   useEffect(() => {
     video.current!.addEventListener("loadedmetadata", ev => {
+      // console.log("loaded", ev.target)
       onLoaded(ev.target as HTMLVideoElement)
 
-      // @ts-ignore
-      console.log(ev.target.clientHeight)
+      // // @ts-ignore
+      // console.log(ev.target.clientHeight)
 
       // @ts-ignore
       document.body.style.setProperty("--input-aspect-ratio", String(ev.target.videoWidth / ev.target.videoHeight))

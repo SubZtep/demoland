@@ -1,9 +1,10 @@
 import { createRef, useRef, useState } from "react"
 import { FilesetResolver, PoseLandmarker } from "@mediapipe/tasks-vision"
+import { type PoseLandmarkerResult } from "@mediapipe/tasks-vision"
 // import { createSignal } from "solid-js"
 // import { setState, state } from "../state"
 
-function usePose(onPredict: (landmarks: Landmark[]) => void) {
+function usePose(onPredict: (landmarks: PoseLandmarkerResult) => void) {
   const [loading, setLoading] = useState(false)
   let landmarker: PoseLandmarker
   let lastVideoTime = -1
@@ -27,19 +28,15 @@ function usePose(onPredict: (landmarks: Landmark[]) => void) {
     const startTimeMs = performance.now()
     if (lastVideoTime !== video.currentTime && video.srcObject !== null) {
       lastVideoTime = video.currentTime
-      const predicted = landmarker.detectForVideo(video, startTimeMs)
-      return predicted.landmarks
+      return landmarker.detectForVideo(video, startTimeMs)
     }
   }
 
   const poseLoop = async () => {
     rafId.current = requestAnimationFrame(poseLoop)
-
-    const landmarks = await predict()
-    if (landmarks?.[0]) {
-      onPredict(landmarks[0])
-      // setState("player", "landmarks", landmarks[0])
-      // setState("lastLandmarksUpdate", Date.now())
+    const predicted = await predict()
+    if (predicted) {
+      onPredict(predicted)
     }
   }
 
