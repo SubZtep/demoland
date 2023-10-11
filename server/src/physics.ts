@@ -1,6 +1,6 @@
 import RAPIER from "@dimforge/rapier3d-compat"
 import WebSocket from "ws"
-import { getSerializedObstacles, obstacles } from "./state.js"
+import { getSerializedObstacles, obstacles } from "./state"
 
 // const gravity = { x: 0.0, y: -9.81, z: 0.0 }
 const frameLimit = 1000 / 30

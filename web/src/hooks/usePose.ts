@@ -1,12 +1,13 @@
-import { createSignal } from "solid-js"
+import { createRef, useRef, useState } from "react"
 import { FilesetResolver, PoseLandmarker } from "@mediapipe/tasks-vision"
-import { setState, state } from "../state"
+// import { createSignal } from "solid-js"
+// import { setState, state } from "../state"
 
 function usePose(onPredict: (landmarks: Landmark[]) => void) {
-  const [loading, setLoading] = createSignal(false)
+  const [loading, setLoading] = useState(false)
   let landmarker: PoseLandmarker
   let lastVideoTime = -1
-  let rafId: number
+  const rafId = useRef(0)
   let video: HTMLVideoElement
 
   const init = async (videoRef: HTMLVideoElement, model: string, delegate: "CPU" | "GPU") => {
@@ -32,7 +33,7 @@ function usePose(onPredict: (landmarks: Landmark[]) => void) {
   }
 
   const poseLoop = async () => {
-    rafId = requestAnimationFrame(poseLoop)
+    rafId.current = requestAnimationFrame(poseLoop)
 
     const landmarks = await predict()
     if (landmarks?.[0]) {
@@ -49,7 +50,7 @@ function usePose(onPredict: (landmarks: Landmark[]) => void) {
   }
 
   const stop = () => {
-    cancelAnimationFrame(rafId)
+    cancelAnimationFrame(rafId.current)
   }
 
   return { init, start, stop, loading }

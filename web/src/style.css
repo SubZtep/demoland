@@ -37,7 +37,11 @@ body {
   /* box-sizing: border-box; */
   /* grid-template-columns: var(--app-cols, repeat(5, 1fr)); */
   /* grid-template-rows: var(--app-rows, auto 1fr auto); */
-  background-color: #369;
+  /* background-color: #369; */
+}
+
+#app {
+  height: 100%;
 }
 
 .camera-overlay {
@@ -98,6 +102,10 @@ fieldset > legend {
 legend + ul {
   margin-top: 0;
   margin-bottom: 6px;
+}
+
+input[type="text"] {
+  padding: 0.5rem;
 }
 
 .mr05 {

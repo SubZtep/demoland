@@ -1,18 +1,19 @@
-import { onCleanup, onMount } from "solid-js"
+import { type Ref, useEffect, useRef } from "react"
 
-function useResizeObserver(el: HTMLElement | undefined, callback: (width: number, height: number) => void) {
-  const resizer = new ResizeObserver(() => {
-    callback(el?.clientWidth ?? 0, el?.clientHeight ?? 0)
-  })
-  onMount(() => {
-    if (el) {
-      resizer.observe(el)
+function useResizeObserver(el: Ref<HTMLElement>, callback: (width: number, height: number) => void) {
+  const resizer = useRef<ResizeObserver>()
+
+  useEffect(() => {
+    resizer.current = new ResizeObserver(() => {
+      callback(el?.clientWidth ?? 0, el?.clientHeight ?? 0)
+    })
+
+    resizer.current.observe(el)
+
+    return () => {
+      resizer?.disconnect()
     }
-  })
-
-  onCleanup(() => {
-    resizer?.disconnect()
-  })
+  }, [])
 
   return resizer
 }

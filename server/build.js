@@ -10,13 +10,10 @@ const builder = await context({
   format: "esm",
 })
 
-if (args.has("--watch")) {
-  await builder.watch()
-} else {
-  if (args.has("--prod")) {
-    builder.drop = ["console", "debugger"]
-  }
-  await builder.rebuild()
+if (args.has("--prod")) {
+  builder.drop = ["console", "debugger"]
 }
+
+await builder.rebuild()
 
 process.exit()

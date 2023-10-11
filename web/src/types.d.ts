@@ -12,9 +12,3 @@ interface ImportMeta {
 }
 
 type Fn = () => void
-
-type TickFn = (deltaTime: number) => void
-
-type Angles = Record<string, number[]>
-
-type State = typeof import("./state").state

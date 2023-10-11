@@ -3,12 +3,15 @@
 // import Viewer from "./components/Viewer"
 // import Home from "./components/Home"
 // import useWebSocket from "./hooks/useWebSocket"
+import Player from "./player/Player"
 
 export default function App() {
-  return <h1>Hello</h1>
+  // return <div>Hello</div>
   // const { connected, disconnect, sendMessage, onMessageReceived } = useWebSocket(import.meta.env.VITE_WSPP)
 
   // onCleanup(() => disconnect())
+
+  return <Player />
 
   // return (
   //   <Show when={connected}>

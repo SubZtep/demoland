@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { channels } from "../channels.js"
+import { channels } from "../channels"
 
 const router: Router = Router()
 

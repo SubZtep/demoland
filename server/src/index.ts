@@ -3,6 +3,7 @@ import { onMessage } from "./message.js"
 import { players, updateStats } from "./state.js"
 import { server, wss, sendMessage } from "./conn.js"
 
+const port = Number(process.env.PORT ?? 8080)
 await RAPIER.init()
 
 wss.on("connection", ws => {
@@ -25,6 +26,6 @@ wss.on("connection", ws => {
   updateStats(wss)
 })
 
-server.listen(+process.env.PORT, () => {
-  console.log("Server is running on port", process.env.PORT)
+server.listen(port, () => {
+  console.log("Server is running on port", port)
 })
