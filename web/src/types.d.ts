@@ -15,6 +15,7 @@ type Fn = () => void
 
 /** Options Context */
 interface Options {
+  name: string
   streaming: boolean
   model: "pose_landmarker_lite.task" | "pose_landmarker_full.task" | "pose_landmarker_heavy.task"
   delegate: "CPU" | "GPU"

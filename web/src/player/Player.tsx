@@ -9,6 +9,7 @@ import { NormalizedLandmark } from "@mediapipe/tasks-vision"
 
 export default function Player() {
   const [options, setOptions] = useState<Options>({
+    name: "",
     streaming: false,
     model: "pose_landmarker_full.task",
     delegate: "GPU",
