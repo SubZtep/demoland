@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { OptionsContext } from "./context"
-import CameraStream from "./CameraStream"
+import CameraVideo from "./CameraVideo"
 import PoseCanvas from "./PoseCanvas"
 import Options from "./Options"
 import styles from "./player.module.css"
@@ -22,24 +22,20 @@ export default function Player() {
   })
 
   useEffect(() => {
-    console.log(options)
-  }, [options.streaming])
-
-  // useEffect(() => {
-  //   if (streaming && !loading) {
-  //     console.log("start")
-  //     // start()
-  //   } else {
-  //     console.log("end")
-  //     // stop()
-  //   }
-  // }, [streaming, loading])
+    if (options.playing) {
+      console.log("start")
+      start()
+    } else {
+      console.log("end")
+      stop()
+    }
+  }, [options.playing])
 
   return (
     <OptionsContext.Provider value={{ options, setOptions }}>
       <div className={styles.wrapper}>
         <div className={styles.videoWrapper}>
-          <CameraStream
+          <CameraVideo
             enabled={options.streaming}
             onLoaded={async video => {
               console.log("stream", video)

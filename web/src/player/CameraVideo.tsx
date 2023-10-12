@@ -6,7 +6,7 @@ interface Props {
   onLoaded: (video: HTMLVideoElement) => void
 }
 
-export default function Player({ enabled, onLoaded }: Props) {
+export default function CameraVideo({ enabled, onLoaded }: Props) {
   const video = useRef<HTMLVideoElement>(null)
   const mediaStream = useRef<MediaStream | null>(null)
 

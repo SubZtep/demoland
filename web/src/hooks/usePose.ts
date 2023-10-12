@@ -1,21 +1,19 @@
-import { createRef, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { FilesetResolver, PoseLandmarker } from "@mediapipe/tasks-vision"
 import { type PoseLandmarkerResult } from "@mediapipe/tasks-vision"
-// import { createSignal } from "solid-js"
-// import { setState, state } from "../state"
 
 function usePose(onPredict: (landmarks: PoseLandmarkerResult) => void) {
   const [loading, setLoading] = useState(false)
-  let landmarker: PoseLandmarker
-  let lastVideoTime = -1
+  const landmarker = useRef<PoseLandmarker>()
+  const lastVideoTime = useRef(-1)
   const rafId = useRef(0)
-  let video: HTMLVideoElement
+  const video = useRef<HTMLVideoElement>()
 
-  const init = async (videoRef: HTMLVideoElement, model: string, delegate: "CPU" | "GPU") => {
+  const init = async (videoEl: HTMLVideoElement, model: string, delegate: "CPU" | "GPU") => {
     setLoading(true)
-    video = videoRef
+    video.current = videoEl
     const vision = await FilesetResolver.forVisionTasks(import.meta.env.VITE_WASM)
-    landmarker = await PoseLandmarker.createFromOptions(vision, {
+    landmarker.current = await PoseLandmarker.createFromOptions(vision, {
       baseOptions: {
         modelAssetPath: import.meta.env.VITE_TASK + model,
         delegate,
@@ -26,9 +24,10 @@ function usePose(onPredict: (landmarks: PoseLandmarkerResult) => void) {
 
   const predict = async () => {
     const startTimeMs = performance.now()
-    if (lastVideoTime !== video.currentTime && video.srcObject !== null) {
-      lastVideoTime = video.currentTime
-      return landmarker.detectForVideo(video, startTimeMs)
+    const el = video.current!
+    if (lastVideoTime.current !== el.currentTime && el.srcObject !== null) {
+      lastVideoTime.current = el.currentTime
+      return landmarker.current!.detectForVideo(el, startTimeMs)
     }
   }
 
