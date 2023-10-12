@@ -14,8 +14,7 @@ export default function Options() {
         onChange={ev =>
           setOptions({
             ...options,
-            // @ts-ignore
-            model: ev.target.value,
+            name: ev.target.value,
           })
         }
       />
