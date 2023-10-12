@@ -12,3 +12,11 @@ interface ImportMeta {
 }
 
 type Fn = () => void
+
+/** Options Context */
+interface Options {
+  streaming: boolean
+  model: "pose_landmarker_lite.task" | "pose_landmarker_full.task" | "pose_landmarker_heavy.task"
+  delegate: "CPU" | "GPU"
+  playing: boolean
+}

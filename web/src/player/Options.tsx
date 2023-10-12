@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { StreamingContext } from "./context"
+import { OptionsContext } from "./context"
 import styles from "./player.module.css"
 
 export default function Options() {
@@ -8,19 +8,7 @@ export default function Options() {
   const [delegate, setDelegate] = useState(localStorage.getItem("delegate") ?? "GPU")
   // const [camera, setCamera] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const { streaming, setStreaming } = useContext(StreamingContext)
-
-  useEffect(() => {
-    localStorage.setItem("name", name)
-  }, [name])
-
-  useEffect(() => {
-    localStorage.setItem("model", model)
-  }, [model])
-
-  useEffect(() => {
-    localStorage.setItem("delegate", delegate)
-  }, [delegate])
+  const { options, setOptions } = useContext(OptionsContext)
 
   useEffect(() => {
     // if (playing) {
@@ -34,13 +22,20 @@ export default function Options() {
     <div className={styles.options}>
       <input type="text" value={name} placeholder="Enter your name" onChange={ev => setName(ev.target.value)} />
 
-      <button onClick={() => setStreaming(!streaming)}>{streaming ? "Turn Off Camera" : "Turn On Camera"}</button>
+      <button onClick={() => setOptions({
+        ...options,
+        streaming: !options.streaming
+      })}>{options.streaming ? "Turn Off Camera" : "Turn On Camera"}</button>
 
-      <fieldset disabled={streaming} className={styles.AIsettings}>
+      <fieldset disabled={options.streaming} className={styles.AIsettings}>
         <legend>AI settings</legend>
         <label className={styles.modelLabel}>
           Model:{" "}
-          <select onChange={ev => setModel(ev.target.value)} defaultValue={model}>
+          <select onChange={ev => setOptions({
+            ...options,
+            // @ts-ignore
+            model: ev.target.value
+          })} defaultValue={options.model}>
             <option value="pose_landmarker_lite.task">Lite</option>
             <option value="pose_landmarker_full.task">Full</option>
             <option value="pose_landmarker_heavy.task">Heavy</option>
@@ -51,8 +46,11 @@ export default function Options() {
             type="radio"
             name="delegate"
             value="CPU"
-            checked={delegate === "CPU"}
-            onChange={() => setDelegate("CPU")}
+            checked={options.delegate === "CPU"}
+            onChange={() => setOptions({
+              ...options,
+              delegate: "CPU"
+            })}
           />{" "}
           CPU
         </label>
@@ -61,17 +59,23 @@ export default function Options() {
             type="radio"
             name="delegate"
             value="GPU"
-            checked={delegate === "GPU"}
-            onChange={() => setDelegate("GPU")}
+            checked={options.delegate === "GPU"}
+            onChange={() => setOptions({
+              ...options,
+              delegate: "GPU"
+            })}
           />{" "}
           GPU
         </label>
       </fieldset>
 
       <button
-        onClick={() => setPlaying(!playing)}
-        // disabled={props.disabled || isUnprepared()}
-        className={`${styles.start}${playing ? "" : " pulse"}`}
+        onClick={() => setOptions({
+          ...options,
+          playing: !options.playing
+        })}
+        disabled={!options.streaming}
+        className={`${styles.start}${options.playing ? "" : " pulse"}`}
       >
         {playing ? "Stop" : "Start"}
       </button>

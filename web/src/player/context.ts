@@ -1,3 +1,3 @@
 import { createContext } from "react"
 
-export const StreamingContext = createContext({ streaming: false, setStreaming: (v: boolean) => {} })
+export const OptionsContext = createContext({ options: {} as Options, setOptions: (v: Options) => {} })
