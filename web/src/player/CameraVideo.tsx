@@ -3,7 +3,7 @@ import styles from "./player.module.css"
 
 interface Props {
   enabled: boolean
-  onLoaded: (video: HTMLVideoElement) => void
+  onLoaded: (videoEl: HTMLVideoElement) => void
 }
 
 export default function CameraVideo({ enabled, onLoaded }: Props) {
