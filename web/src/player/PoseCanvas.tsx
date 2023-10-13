@@ -69,7 +69,7 @@ export default function PoseCanvas({ landmarks, width, height }: Props) {
 }
 
 function n2px(num: number, multi: number) {
-  return (num + 0.5) * multi
+  return (num + 0.5) * multi * 0.2
 }
 
 function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number) {

@@ -184,8 +184,8 @@ export default function Player() {
   ])
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const { init, start, stop, loading } = usePose(res => {
-    // setLandmarks(res.landmarks[0])
-    setLandmarks(res.worldLandmarks[0])
+    setLandmarks(res.landmarks[0])
+    // setLandmarks(res.worldLandmarks[0])
   })
 
   useEffect(() => {
