@@ -182,7 +182,7 @@ export default function Player() {
       z: -0.28173828125,
     },
   ])
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+  const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const { init, start, stop, loading } = usePose(res => {
     // setLandmarks(res.landmarks[0])
     setLandmarks(res.worldLandmarks[0])
@@ -207,7 +207,7 @@ export default function Player() {
               await init(videoEl, options.model, options.delegate)
             }}
           />
-          <pre>{JSON.stringify(landmarks, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(landmarks, null, 2)}</pre> */}
 
           <PoseCanvas landmarks={landmarks} width={dimensions.width} height={dimensions.height} />
 
