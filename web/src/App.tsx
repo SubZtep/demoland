@@ -3,15 +3,25 @@
 // import Viewer from "./components/Viewer"
 // import Home from "./components/Home"
 // import useWebSocket from "./hooks/useWebSocket"
+import { useRef, useState } from "react"
+import useWebSocket from "./hooks/useWebSocket"
 import Player from "./player/Player"
+import Viewer from "./viewer/Viewer"
 
 export default function App() {
-  // return <div>Hello</div>
-  // const { connected, disconnect, sendMessage, onMessageReceived } = useWebSocket(import.meta.env.VITE_WSPP)
+  const channel = useRef(window.location.pathname.replaceAll("/", ""))
+  const [message, setMessage] = useState({})
+  const { connected, sendMessage } = useWebSocket(import.meta.env.VITE_WSPP, data => {
+    console.log("received", data)
+    setMessage(data)
+  })
 
-  // onCleanup(() => disconnect())
-
-  return <Player />
+  // prettier-ignore
+  return connected && (
+    channel.current
+      ? <Viewer message={message} />
+      : <Player sendMessage={sendMessage} />
+  )
 
   // return (
   //   <Show when={connected}>

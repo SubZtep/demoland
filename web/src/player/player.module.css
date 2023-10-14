@@ -87,17 +87,3 @@
 .videoWrapper video {
   transform: scaleX(-1);
 }
-
-.blue {
-  background-color: #00f9;
-  /* aspect-ratio: var(--video-aspect-ratio, 16 / 9); */
-  width: 100%;
-  height: 100%;
-}
-
-.blue * {
-  background-color: #0f09;
-  aspect-ratio: var(--input-aspect-ratio, 16 / 9);
-  width: 100%;
-  height: auto;
-}

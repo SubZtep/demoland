@@ -8,7 +8,7 @@ const gravity = new RAPIER.Vector3(0, -9.81, 0)
 
 export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebSocket, server: WebSocket.Server) {
   const msg = JSON.parse(data.toString()) as ClientMessage
-  console.log("RECEIVED", msg.cmd)
+  // console.log("RECEIVED", msg.cmd)
   let channel
 
   switch (msg.cmd) {
@@ -62,9 +62,10 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   // console.log("CHANNELS", Array.from(channels.keys()))
 
   // broadcast to all clients
-  // server.clients.forEach(v => {
-  //   if (v.readyState === WebSocket.OPEN) {
-  //     v.send(data, { binary })
-  //   }
-  // })
+  server.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) {
+      console.log("sending", data.toString())
+      client.send(data, { binary })
+    }
+  })
 }

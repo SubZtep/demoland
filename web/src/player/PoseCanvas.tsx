@@ -68,6 +68,7 @@ export default function PoseCanvas({ landmarks, width, height }: Props) {
   return <canvas ref={canvas} width={width} height={height} />
 }
 
+/** Normalized value to pixel */
 function n2px(num: number, multi: number) {
   return (num + 0.5) * multi * 0.2
 }
