@@ -55,7 +55,8 @@ export default function PoseSkeleton({ pid, scene, landmarks }: Props) {
 
   useEffect(() => {
     landmarks.forEach(({ x, y, z }, i) => {
-      dots.current.get(i)!.position.set(x, y, z)
+      
+      dots.current.get(i)!.position.set(x, y * -1 + 3, z)
     })
   }, [landmarks])
 

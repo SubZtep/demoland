@@ -3,6 +3,7 @@ import ThreeScene from "./ThreeScene"
 import PoseSkeleton from "./PoseSkeleton"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import Box from "./Box"
+import LobbyEnvironment from "./LobbyEnvironment"
 
 interface Props {
   message: { name: string; landmarks: NormalizedLandmark[] }
@@ -18,6 +19,7 @@ export default function Viewer({ message }: Props) {
         {({ scene, controls }) => {
           return (
             <>
+              <LobbyEnvironment scene={scene} controls={controls} />
               <Box scene={scene} />
               <PoseSkeleton scene={scene} landmarks={message.landmarks} />
             </>
