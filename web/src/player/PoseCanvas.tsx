@@ -1,49 +1,12 @@
 import { useEffect, useRef } from "react"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
+import { POSE_CONNECTIONS } from "../const"
 
 interface Props {
   landmarks: NormalizedLandmark[]
   width: number
   height: number
 }
-
-const POSE_CONNECTIONS = [
-  [0, 1],
-  [1, 2],
-  [2, 3],
-  [3, 7],
-  [0, 4],
-  [4, 5],
-  [5, 6],
-  [6, 8],
-  [9, 10],
-  [11, 12],
-  [11, 13],
-  [13, 15],
-  [15, 17],
-  [15, 19],
-  [15, 21],
-  [17, 19],
-  [12, 14],
-  [14, 16],
-  [16, 18],
-  [16, 20],
-  [16, 22],
-  [18, 20],
-  [11, 23],
-  [12, 24],
-  [23, 24],
-  [23, 25],
-  [24, 26],
-  [25, 27],
-  [26, 28],
-  [27, 29],
-  [28, 30],
-  [29, 31],
-  [30, 32],
-  [27, 31],
-  [28, 32],
-]
 
 export default function PoseCanvas({ landmarks, width, height }: Props) {
   const canvas = useRef<HTMLCanvasElement>(null)
@@ -54,13 +17,22 @@ export default function PoseCanvas({ landmarks, width, height }: Props) {
 
     if (!landmarks) return
 
-    landmarks.forEach(v => {
+    console.log(landmarks)
+
+    const flippedLandmarks = landmarks.map(v => {
+      return {
+        ...v,
+        x: v.x * -1 + 1
+      }
+    })
+
+    flippedLandmarks.forEach(v => {
       drawCircle(ctx, n2px(v.x, width), n2px(v.y, height))
     })
 
     POSE_CONNECTIONS.forEach(([a, b]) => {
-      const { x: x1, y: y1 } = landmarks[a]
-      const { x: x2, y: y2 } = landmarks[b]
+      const { x: x1, y: y1 } = flippedLandmarks[a]
+      const { x: x2, y: y2 } = flippedLandmarks[b]
       drawLine(ctx, n2px(x1, width), n2px(y1, height), n2px(x2, width), n2px(y2, height))
     })
   }, [landmarks])

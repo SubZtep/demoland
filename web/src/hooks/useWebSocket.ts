@@ -1,7 +1,10 @@
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { useEffect, useRef, useState } from "react"
 
-export default function useWebSocket(url: string, onMessage: (landmarks: NormalizedLandmark[]) => void) {
+export default function useWebSocket(
+  url: string,
+  onMessage: (data: { name: string; landmarks: NormalizedLandmark[] }) => void,
+) {
   const [connected, setConnected] = useState(false)
   const ws = useRef<WebSocket>()
 
