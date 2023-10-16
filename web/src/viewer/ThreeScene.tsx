@@ -1,19 +1,17 @@
 import { useEffect, useRef } from "react"
 import * as THREE from "three"
-import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import CameraControls from "camera-controls"
 
 CameraControls.install({ THREE })
 type LookAt = [number, number, number, number, number, number]
 
 interface Props {
-  landmarks?: NormalizedLandmark[]
   width: number
   height: number
   children: ({ scene, controls }: { scene: THREE.Scene; controls: CameraControls }) => JSX.Element
 }
 
-export default function ThreeScene({ landmarks, width, height, children }: Props) {
+export default function ThreeScene({ width, height, children }: Props) {
   const canvas = useRef<HTMLCanvasElement>(null)
   const renderer = useRef<THREE.WebGLRenderer>()
   const controls = useRef<CameraControls>()
@@ -39,7 +37,7 @@ export default function ThreeScene({ landmarks, width, height, children }: Props
     controls.current = new CameraControls(camera.current, renderer.current.domElement)
     controls.current.minDistance = 0.5
     controls.current.maxDistance = 80
-    controls.current.setLookAt(0.5, 1, 1, 0, 0.5, 0, false)
+    controls.current.setLookAt(0, 2, -10, 0, 0, 0, false)
 
     scene.current.background = new THREE.Color("darkred")
 
@@ -57,9 +55,12 @@ export default function ThreeScene({ landmarks, width, height, children }: Props
 
   return (
     <>
-      <canvas ref={canvas} />
+      <canvas
+        ref={canvas}
+        // width={width}
+        // height={height}
+      />
       {children({ scene: scene.current, controls: controls.current! })}
     </>
   )
-  // return <canvas ref={canvas} width={width} height={height} />
 }

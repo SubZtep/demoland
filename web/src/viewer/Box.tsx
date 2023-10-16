@@ -7,7 +7,7 @@ interface Props {
 
 export default function Box({ scene }: Props) {
   useEffect(() => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
+    const geometry = new THREE.BoxGeometry(1, 0.5, 1)
     const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("yellow") })
     const box = new THREE.Mesh(geometry, material)
     scene.add(box)
