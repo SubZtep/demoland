@@ -1,9 +1,10 @@
-import { useRef, useState } from "react"
+import { lazy, useRef, useState } from "react"
 import useWebSocket from "./hooks/useWebSocket"
-import Player from "./player/Player"
-import Viewer from "./viewer/Viewer"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { POSE_LANDMARKS } from "./const"
+
+const Player = lazy(() => import("./player/Player"))
+const Viewer = lazy(() => import("./viewer/Viewer"))
 
 export default function App() {
   const channel = useRef(window.location.pathname.replaceAll("/", ""))
