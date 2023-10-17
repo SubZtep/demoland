@@ -34,7 +34,7 @@ export const POSE_CONNECTIONS = [
   [30, 32],
   [27, 31],
   [28, 32],
-]
+] as const
 
 export const POSE_LANDMARKS = [
   { x: 0.7720941305160522, y: 0.8091784715652466, z: -0.9766896367073059 },

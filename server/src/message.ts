@@ -64,7 +64,7 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   // broadcast to all clients
   server.clients.forEach(client => {
     if (client.readyState === WebSocket.OPEN) {
-      console.log("sending", data.toString())
+      // console.log("sending", data.toString())
       client.send(data, { binary })
     }
   })

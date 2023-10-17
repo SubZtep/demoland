@@ -16,15 +16,13 @@ export default function Viewer({ message }: Props) {
   return (
     <>
       <ThreeScene width={dimensions.width} height={dimensions.height}>
-        {({ scene, controls }) => {
-          return (
-            <>
-              <LobbyEnvironment scene={scene} controls={controls} />
-              <Box scene={scene} />
-              <PoseSkeleton scene={scene} landmarks={message.landmarks} />
-            </>
-          )
-        }}
+        {({ scene, controls }) => (
+          <>
+            <LobbyEnvironment scene={scene} controls={controls} />
+            <Box scene={scene} />
+            <PoseSkeleton scene={scene} landmarks={message.landmarks} />
+          </>
+        )}
       </ThreeScene>
       <pre>{JSON.stringify(message, null, 2)}</pre>
     </>

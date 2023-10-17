@@ -31,8 +31,8 @@ export default function PoseCanvas({ landmarks, width, height }: Props) {
     })
 
     POSE_CONNECTIONS.forEach(([a, b]) => {
-      const { x: x1, y: y1 } = flippedLandmarks[a]
-      const { x: x2, y: y2 } = flippedLandmarks[b]
+      const { x: x1, y: y1 } = flippedLandmarks[a]!
+      const { x: x2, y: y2 } = flippedLandmarks[b]!
       drawLine(ctx, n2px(x1, width), n2px(y1, height), n2px(x2, width), n2px(y2, height))
     })
   }, [landmarks])
