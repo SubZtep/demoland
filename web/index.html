@@ -5,17 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>▦</title>
     <link rel="preload" href="/Mona-Sans.woff2" as="font" type="font/woff2" crossorigin />
+    <script src="https://unpkg.com/three@0.131.2/build/three.min.js"></script>
   </head>
   <body>
-    Hello, World!
-    <canvas id="myCanvas" width="200" height="100" style="border: 1px solid #ffff00"> </canvas>
+    Hello, World!<br />
+    <canvas id="myCanvas" width="320" height="240"></canvas>
     <script>
-      var c = document.getElementById("myCanvas")
-      var ctx = c.getContext("2d")
-      ctx.moveTo(0, 0)
-      ctx.lineTo(200, 100)
-      ctx.strokeStyle = "red"
-      ctx.stroke()
+      var canvas = document.getElementById("myCanvas")
+      // var ctx = c.getContext("2d")
+      // ctx.moveTo(0, 0)
+      // ctx.lineTo(200, 100)
+      // ctx.strokeStyle = "red"
+      // ctx.stroke()
+      const camera = new THREE.PerspectiveCamera(60, 200 / 100, 0.01, 100)
+      const scene = new THREE.Scene()
+      scene.background = new THREE.Color("red")
+      
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: false,
+        logarithmicDepthBuffer: false,
+      })
+      renderer.setPixelRatio(window.devicePixelRatio)
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap
+      renderer.shadowMap.enabled = true
+
+      // const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("pink") })
+      // const geometry = new THREE.BoxGeometry(1, 1, 1)
+      // const box = new THREE.Mesh(geometry, material)
+      // scene.add(box)
+
+      renderer.render(scene, camera)
     </script>
     <div id="app"></div>
     <script type="module" src="./src/index.tsx"></script>
