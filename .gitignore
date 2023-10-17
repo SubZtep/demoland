@@ -3,5 +3,3 @@ tsconfig.tsbuildinfo
 vite.config.ts.*
 /server/dist
 /web/dist
-/web/public/models
-/web/public/wasm
