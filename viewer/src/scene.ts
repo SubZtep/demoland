@@ -25,7 +25,7 @@ renderer.shadowMap.enabled = true
 
 
 const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("pink") })
-const geometry = new THREE.BoxGeometry(1, 1, 1)
+const geometry = new THREE.BoxGeometry(2, 0.1, 2)
 
 const box = new THREE.Mesh(geometry, material)
 box.rotateY(90)
