@@ -72,7 +72,6 @@
   width: 100%;
   position: relative;
   background-color: #369;
-  border: 10px dashed red;
   transform: scaleX(-1); /* selfie mode */
 }
 
@@ -84,11 +83,4 @@
   right: 0;
   bottom: 0;
   left: 0; */
-}
-
-.videoWrapper video {
-  /* transform: scaleX(-1); */
-  background-color: red;
-  /* width: var(--width);
-  height: var(--height); */
 }

@@ -4,15 +4,15 @@ import styles from "../player.module.css"
 interface Props {
   enabled: boolean
   onLoaded: (videoEl: HTMLVideoElement) => void
-  maxWidth: number
-  maxHeight: number
+  width: number
+  height: number
 }
 
-export default function CameraVideo({ enabled, onLoaded, maxWidth, maxHeight }: Props) {
+export default function CameraVideo({ enabled, onLoaded, width, height }: Props) {
   const video = useRef<HTMLVideoElement>(null)
   const mediaStream = useRef<MediaStream | null>(null)
-  const [width, setWidth] = useState(0)
-  const [height, setHeight] = useState(0)
+  // const [width, setWidth] = useState(0)
+  // const [height, setHeight] = useState(0)
 
   const setDimensions = () => {
     // if (video.current!.videoWidth > maxWidth && video.current!.videoWidth > video.current!.videoHeight) {
@@ -38,10 +38,6 @@ export default function CameraVideo({ enabled, onLoaded, maxWidth, maxHeight }: 
     const ratio = el.videoHeight / el.videoWidth
     // const ratio = el.videoWidth / el.videoHeight
     // setWidth(maxWidth * ratio)
-    setWidth(maxHeight)
-    setHeight(maxHeight)
-
-    console.log("Hello", [maxWidth, maxHeight, width, height, videoWidth, videoHeight])
   }
 
   useEffect(() => {
@@ -107,8 +103,8 @@ export default function CameraVideo({ enabled, onLoaded, maxWidth, maxHeight }: 
       muted
       disablePictureInPicture
       className={styles.video}
-      width={maxWidth}
-      height={maxHeight}
+      width={width}
+      height={height}
     ></video>
   )
 }

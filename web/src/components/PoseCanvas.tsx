@@ -1,8 +1,6 @@
-import { type RefObject, useEffect, useRef } from "react"
+import { type RefObject, useEffect } from "react"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { POSE_CONNECTIONS } from "../const"
-
-const drawingUtils = window
 
 interface Props {
   landmarks: NormalizedLandmark[]
@@ -13,14 +11,11 @@ interface Props {
 }
 
 export default function PoseCanvas({ landmarks, width, height, canvasRef, children }: Props) {
-  // const canvas = useRef<HTMLCanvasElement>(null)
-
   useEffect(() => {
-    console.log("pose", landmarks)
+    if (!landmarks) return
+
     const ctx = canvasRef.current!.getContext("2d")!
     ctx.clearRect(0, 0, width, height)
-
-    if (!landmarks) return
 
     landmarks.forEach(v => {
       drawCircle(ctx, v.x * width, v.y * height)

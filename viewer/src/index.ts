@@ -3,6 +3,8 @@ import { runForever, Loop } from "./loop"
 import { move, pose } from "./skeleton"
 import "./index.css"
 
+const channel = window.location.pathname.replaceAll("/", "")
+
 scene.add(pose)
 
 new Loop().start()
