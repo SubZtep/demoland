@@ -3,16 +3,16 @@ import { runForever, Loop } from "./loop"
 import { move, pose } from "./skeleton"
 import "./index.css"
 
-const channel = window.location.pathname.replaceAll("/", "")
+// const channel = window.location.pathname.replaceAll("/", "")
 
-scene.add(pose)
+// scene.add(pose)
 
-new Loop().start()
+// new Loop().start()
 const debug = document.getElementById("debug")!
 
-runForever.add(() => {
-  renderer.render(scene, camera)
-})
+// runForever.add(() => {
+//   renderer.render(scene, camera)
+// })
 
 let ws: WebSocket
 // @ts-ignore
@@ -29,15 +29,15 @@ ws.addEventListener("error", () => {
 
 ws.addEventListener("open", () => {
   debug.innerText = "connected"
-  document.getElementById("myCanvas")?.classList.remove("fade")
+  // document.getElementById("myCanvas")?.classList.remove("fade")
 })
 
-ws.addEventListener("close", () => {
-  document.getElementById("myCanvas")?.classList.add("fade")
-})
+// ws.addEventListener("close", () => {
+//   document.getElementById("myCanvas")?.classList.add("fade")
+// })
 
-ws.addEventListener("message", ({ data }) => {
-  const msg = JSON.parse(data) // as ServerMessage
-  // console.log(msg)
-  move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
-})
+// ws.addEventListener("message", ({ data }) => {
+//   const msg = JSON.parse(data) // as ServerMessage
+//   // console.log(msg)
+//   move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
+// })
