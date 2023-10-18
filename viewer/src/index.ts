@@ -35,9 +35,10 @@ ws.addEventListener("open", () => {
 // ws.addEventListener("close", () => {
 //   document.getElementById("myCanvas")?.classList.add("fade")
 // })
-
-// ws.addEventListener("message", ({ data }) => {
-//   const msg = JSON.parse(data) // as ServerMessage
-//   // console.log(msg)
-//   move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
-// })
+  
+ws.addEventListener("message", ({ data }) => {
+  debug.innerText = "data: " + data
+  // const msg = JSON.parse(data) // as ServerMessage
+  // // console.log(msg)
+  // move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
+})
