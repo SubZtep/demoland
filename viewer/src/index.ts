@@ -17,11 +17,11 @@ runForever.add(() => {
 const ws = new WebSocket(import.meta.env.VITE_WSPP)
 
 ws.addEventListener("open", () => {
-  console.log("connected")
+  document.getElementById("myCanvas")?.classList.remove("fade")
 })
 
 ws.addEventListener("close", () => {
-  console.log("disconnected")
+  document.getElementById("myCanvas")?.classList.add("fade")
 })
 
 ws.addEventListener("message", ({ data }) => {
