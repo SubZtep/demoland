@@ -1,7 +1,6 @@
 import { type RefObject, useEffect, useRef } from "react"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { POSE_CONNECTIONS } from "../const"
-// import "@mediapipe/drawing_utils"
 
 const drawingUtils = window
 
@@ -23,33 +22,15 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
 
     if (!landmarks) return
 
-    // // @ts-ignore
-    // drawingUtils.drawConnectors(ctx, landmarks, POSE_CONNECTIONS, { visibilityMin: 0.65, color: "white" })
-    // // @ts-ignore
-    // drawingUtils.drawLandmarks(ctx, landmarks, { visibilityMin: 0.65, color: "white", fillColor: "rgb(255,138,0)" })
-
-    // console.log(landmarks)
-
-    // const flippedLandmarks = landmarks.map(v => {
-    //   return {
-    //     ...v,
-    //     x: v.x * -1 + 1,
-    //   }
-    // })
-
     landmarks.forEach(v => {
-      drawCircle(ctx, n2px(v.x, width), n2px(v.y, height))
+      drawCircle(ctx, v.x * width, v.y * height)
     })
 
-    // flippedLandmarks.forEach(v => {
-    //   drawCircle(ctx, n2px(v.x, width), n2px(v.y, height))
-    // })
-
-    // POSE_CONNECTIONS.forEach(([a, b]) => {
-    //   const { x: x1, y: y1 } = flippedLandmarks[a]!
-    //   const { x: x2, y: y2 } = flippedLandmarks[b]!
-    //   drawLine(ctx, n2px(x1, width), n2px(y1, height), n2px(x2, width), n2px(y2, height))
-    // })
+    POSE_CONNECTIONS.forEach(([a, b]) => {
+      const { x: x1, y: y1 } = landmarks[a]!
+      const { x: x2, y: y2 } = landmarks[b]!
+      drawLine(ctx, x1 * width, y1 * height, x2 * width, y2 * height)
+    })
   }, [landmarks])
 
   return (
@@ -58,12 +39,6 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
       {children?.({ canvasRef })}
     </>
   )
-}
-
-/** Normalized value to pixel */
-function n2px(num: number, multi: number) {
-  return num * multi
-  // return (num + 0.5) * multi * 0.2
 }
 
 function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number) {
