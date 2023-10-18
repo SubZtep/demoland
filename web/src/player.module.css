@@ -86,7 +86,7 @@
 }
 
 .videoWrapper video {
-  transform: scaleX(-1);
+  /* transform: scaleX(-1); */
   background-color: red;
   /* width: var(--width);
   height: var(--height); */
