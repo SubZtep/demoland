@@ -1,7 +1,7 @@
 import * as THREE from "three"
 
-const width = window.innerWidth / window.devicePixelRatio
-const height = window.innerHeight / window.devicePixelRatio
+const width = 320 // window.innerWidth / window.devicePixelRatio
+const height = 240 // window.innerHeight / window.devicePixelRatio
 
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement
 canvas.width = width
