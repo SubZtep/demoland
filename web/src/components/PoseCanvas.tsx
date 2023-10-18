@@ -1,7 +1,7 @@
 import { type RefObject, useEffect, useRef } from "react"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { POSE_CONNECTIONS } from "../const"
-import drawingUtils from "@mediapipe/drawing_utils"
+import * as drawingUtils from "@mediapipe/drawing_utils"
 
 interface Props {
   landmarks: NormalizedLandmark[]
@@ -22,7 +22,7 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
     if (!landmarks) return
 
     // @ts-ignore
-    drawingUtils.drawConnectors(ctx, landmarks, POSE_CONNECTIONS, { visibilityMin: 0.65, color: "white" })
+    // drawingUtils.drawConnectors(ctx, landmarks, POSE_CONNECTIONS, { visibilityMin: 0.65, color: "white" })
 
     drawingUtils.drawLandmarks(ctx, landmarks, { visibilityMin: 0.65, color: "white", fillColor: "rgb(255,138,0)" })
 
