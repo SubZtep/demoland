@@ -1,7 +1,9 @@
 import { type RefObject, useEffect, useRef } from "react"
 import { type NormalizedLandmark } from "@mediapipe/tasks-vision"
 import { POSE_CONNECTIONS } from "../const"
-import * as drawingUtils from "@mediapipe/drawing_utils"
+// import "@mediapipe/drawing_utils"
+
+const drawingUtils = window
 
 interface Props {
   landmarks: NormalizedLandmark[]
@@ -21,10 +23,10 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
 
     if (!landmarks) return
 
-    // @ts-ignore
+    // // @ts-ignore
     // drawingUtils.drawConnectors(ctx, landmarks, POSE_CONNECTIONS, { visibilityMin: 0.65, color: "white" })
-
-    drawingUtils.drawLandmarks(ctx, landmarks, { visibilityMin: 0.65, color: "white", fillColor: "rgb(255,138,0)" })
+    // // @ts-ignore
+    // drawingUtils.drawLandmarks(ctx, landmarks, { visibilityMin: 0.65, color: "white", fillColor: "rgb(255,138,0)" })
 
     // console.log(landmarks)
 
@@ -34,6 +36,10 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
     //     x: v.x * -1 + 1,
     //   }
     // })
+
+    landmarks.forEach(v => {
+      drawCircle(ctx, n2px(v.x, width), n2px(v.y, height))
+    })
 
     // flippedLandmarks.forEach(v => {
     //   drawCircle(ctx, n2px(v.x, width), n2px(v.y, height))
@@ -56,12 +62,13 @@ export default function PoseCanvas({ landmarks, width, height, canvasRef, childr
 
 /** Normalized value to pixel */
 function n2px(num: number, multi: number) {
-  return (num + 0.5) * multi * 0.2
+  return num * multi
+  // return (num + 0.5) * multi * 0.2
 }
 
 function drawCircle(ctx: CanvasRenderingContext2D, x: number, y: number) {
   ctx.beginPath()
-  ctx.arc(x, y, 7, 0, 2 * Math.PI, false)
+  ctx.arc(x, y, 7, 0, 2 * Math.PI)
   ctx.fillStyle = "green"
   ctx.fill()
   ctx.lineWidth = 3
