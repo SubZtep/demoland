@@ -8,15 +8,27 @@ const channel = window.location.pathname.replaceAll("/", "")
 scene.add(pose)
 
 new Loop().start()
+const debug = document.getElementById("debug")!
 
 runForever.add(() => {
   renderer.render(scene, camera)
 })
 
+let ws: WebSocket
 // @ts-ignore
-const ws = new WebSocket(import.meta.env.VITE_WSPP)
+try {
+  ws = new WebSocket(import.meta.env.VITE_WSPP)
+  debug.innerText = typeof ws
+} catch (e: any) {
+  debug.innerText = e.message
+}
+
+ws.addEventListener("error", () => {
+  debug.innerText = "error"
+})
 
 ws.addEventListener("open", () => {
+  debug.innerText = "connected"
   document.getElementById("myCanvas")?.classList.remove("fade")
 })
 

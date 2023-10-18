@@ -10,6 +10,12 @@ body {
   background-color: #000;
 }
 
+#debug {
+  background: black;
+  color: yellow;
+  font-size: 2rem;
+}
+
 .fade {
   opacity: 0.3;
   border: 8px solid darkred;
