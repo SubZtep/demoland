@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { OptionsContext } from "./context"
-import styles from "./player.module.css"
+import { OptionsContext } from "../context"
+import styles from "../player.module.css"
 
 export default function Options() {
   const { options, setOptions } = useContext(OptionsContext)

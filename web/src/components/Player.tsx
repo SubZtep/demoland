@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { OptionsContext } from "./context"
+import { OptionsContext, defaultOptions } from "../context"
 import CameraVideo from "./CameraVideo"
 import PoseCanvas from "./PoseCanvas"
 import Options from "./Options"
@@ -14,13 +14,7 @@ interface Props {
 }
 
 export default function Player({ sendMessage }: Props) {
-  const [options, setOptions] = useState<Options>({
-    name: "",
-    streaming: false,
-    model: "pose_landmarker_full.task",
-    delegate: "GPU",
-    playing: false,
-  })
+  const [options, setOptions] = useState<Options>(defaultOptions)
   const [localLandmarks, setLocalLandmarks] = useState<NormalizedLandmark[]>(POSE_LANDMARKS)
   const [dimensions, setDimensions] = useState({ width: 320, height: 240 })
   const { init, start, stop, loading } = usePose(res => {
