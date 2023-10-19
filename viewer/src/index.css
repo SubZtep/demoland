@@ -6,14 +6,19 @@
 
 body {
   margin: 0;
-  /* overflow: hidden; */
   background-color: #000;
+  position: relative;
 }
 
-#debug {
+#log, canvas {
+  position: absolute;
+}
+
+#log {
   background: black;
   color: yellow;
   font-size: 2rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .fade {

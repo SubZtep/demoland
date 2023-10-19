@@ -1,7 +1,7 @@
 import * as THREE from "three"
 
-const width = 320 // window.innerWidth / window.devicePixelRatio
-const height = 240 // window.innerHeight / window.devicePixelRatio
+const width = window.innerWidth / window.devicePixelRatio
+const height = window.innerHeight / window.devicePixelRatio
 
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement
 canvas.width = width
@@ -16,8 +16,8 @@ scene.background = new THREE.Color("skyblue")
 
 export const renderer = new THREE.WebGLRenderer({
   canvas,
-  antialias: false,
-  logarithmicDepthBuffer: false,
+  antialias: true,
+  logarithmicDepthBuffer: true,
 })
 renderer.setPixelRatio(window.devicePixelRatio)
 renderer.shadowMap.type = THREE.PCFSoftShadowMap

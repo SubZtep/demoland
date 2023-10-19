@@ -1,6 +1,7 @@
 import { camera, scene, renderer } from "./scene"
 import { runForever, Loop } from "./loop"
 import { move, pose } from "./skeleton"
+import { log } from "./hud"
 import "./index.css"
 
 // const channel = window.location.pathname.replaceAll("/", "")
@@ -8,41 +9,40 @@ import "./index.css"
 scene.add(pose)
 
 new Loop().start()
-const debug = document.getElementById("debug")!
 
 runForever.add(() => {
   renderer.render(scene, camera)
 })
 
 let ws!: WebSocket
-// @ts-ignore
 try {
+  // @ts-ignore
   ws = new WebSocket(import.meta.env.VITE_WSPP)
-  debug.innerText = typeof ws
+  log(typeof ws)
 } catch (e: any) {
-  debug.innerText = e.message
+  log(e.message)
 }
 
 ws.addEventListener("error", () => {
-  debug.innerText = "error"
+  log("error")
 })
 
 ws.addEventListener("open", () => {
-  debug.innerText = "connected"
+  log("connected")
   document.getElementById("myCanvas")!.className = ""
 })
 
 ws.addEventListener("close", () => {
-  debug.innerText = "close"
+  log("close")
   document.getElementById("myCanvas")?.classList.add("fade")
 })
 
 let dataCounter = 0
   
 ws.addEventListener("message", ({ data }) => {
-  debug.innerText = `data: ${++dataCounter}`
+  log(`data: ${++dataCounter}`)
   const msg = JSON.parse(data) // as ServerMessage
   // // console.log(msg)
   move(msg.landmarks)
-  // move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
+  // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
 })
