@@ -1,5 +1,5 @@
 import * as THREE from "three"
-import { POSE_CONNECTIONS, POSE_LANDMARKS } from "./const"
+import { POSE_CONNECTIONS, POSE_LANDMARKS } from "../const"
 
 type Landmarks = { x: number, y: number, z: number }[]
 

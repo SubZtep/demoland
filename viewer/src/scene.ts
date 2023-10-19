@@ -26,16 +26,16 @@ controls.maxDistance = 80
 controls.setLookAt(0, 0.5, 3, 0, 1, 0, false)
 
 export const scene = new THREE.Scene()
-scene.background = new THREE.Color("skyblue")
+scene.background = new THREE.Color("#008B8B")
 
 const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("pink") })
-const geometry = new THREE.BoxGeometry(2, 0.1, 2)
+const geometry = new THREE.BoxGeometry(2, 0.05, 2)
 
 const box = new THREE.Mesh(geometry, material)
 scene.add(box)
 
 setInterval(() => {
-  box.rotation.y += 0.01
+  box.rotation.y += 0.002
 }, 15)
 
 const ambient = new THREE.AmbientLight(0xffffff, 0.35)
@@ -61,9 +61,9 @@ scene.add(
   // new THREE.CameraHelper(light.shadow.camera),
 )
 
-loadSkybox().then(texture => {
-  scene.background = texture
-})
+// loadSkybox().then(texture => {
+//   scene.background = texture
+// })
 
 async function loadSkybox(nr = 4): Promise<THREE.CubeTexture> {
   return new Promise((resolve, reject) => {

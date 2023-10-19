@@ -1,12 +1,14 @@
 import { camera, scene, renderer, controls } from "./scene"
 import { runForever, Loop } from "./loop"
-import { move, pose } from "./skeleton"
+// import { move, pose } from "./avatars/skeleton"
+import { move, boxes } from "./avatars/handboxes"
 import { log } from "./hud"
 import "./index.css"
 
 // const channel = window.location.pathname.replaceAll("/", "")
 
-scene.add(pose)
+// scene.add(pose)
+scene.add(boxes)
 
 new Loop().start()
 

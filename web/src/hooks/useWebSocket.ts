@@ -34,6 +34,7 @@ export default function useWebSocket(
 
     sendMessage(name: string, landmarks: NormalizedLandmark[]) {
       if (ws.current?.readyState === WebSocket.OPEN) {
+        console.log("Sending", landmarks)
         ws.current.send(JSON.stringify({ name, landmarks }))
       }
     },
