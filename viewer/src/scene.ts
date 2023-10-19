@@ -23,14 +23,15 @@ renderer.setPixelRatio(window.devicePixelRatio)
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.shadowMap.enabled = true
 
-
 const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("pink") })
 const geometry = new THREE.BoxGeometry(2, 0.1, 2)
 
 const box = new THREE.Mesh(geometry, material)
-box.rotateY(90)
 scene.add(box)
 
+setInterval(() => {
+  box.rotation.y += 0.01
+}, 15)
 
 const ambient = new THREE.AmbientLight(0xffffff, 0.35)
 const light = new THREE.DirectionalLight(0xffffff, 0.5)

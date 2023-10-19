@@ -14,7 +14,7 @@ runForever.add(() => {
   renderer.render(scene, camera)
 })
 
-let ws: WebSocket
+let ws!: WebSocket
 // @ts-ignore
 try {
   ws = new WebSocket(import.meta.env.VITE_WSPP)
@@ -32,13 +32,17 @@ ws.addEventListener("open", () => {
   document.getElementById("myCanvas")!.className = ""
 })
 
-// ws.addEventListener("close", () => {
-//   document.getElementById("myCanvas")?.classList.add("fade")
-// })
+ws.addEventListener("close", () => {
+  debug.innerText = "close"
+  document.getElementById("myCanvas")?.classList.add("fade")
+})
+
+let dataCounter = 0
   
 ws.addEventListener("message", ({ data }) => {
-  debug.innerText = "data: " + data
+  debug.innerText = `data: ${++dataCounter}`
   const msg = JSON.parse(data) // as ServerMessage
   // // console.log(msg)
-  move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
+  move(msg.landmarks)
+  // move(msg.landmarks.map(v => ({ ...v, y: v.y * -1 + 2 })))
 })
