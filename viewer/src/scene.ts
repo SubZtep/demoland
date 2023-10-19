@@ -1,4 +1,7 @@
 import * as THREE from "three"
+import CameraControls from "camera-controls"
+
+CameraControls.install({ THREE })
 
 const width = window.innerWidth / window.devicePixelRatio
 const height = window.innerHeight / window.devicePixelRatio
@@ -6,13 +9,6 @@ const height = window.innerHeight / window.devicePixelRatio
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement
 canvas.width = width
 canvas.height = height
-
-export const camera = new THREE.PerspectiveCamera(60, width / height, 0.01, 100)
-camera.position.set(0, 0.5, -5)
-camera.lookAt(new THREE.Vector3(0, 1, 0))
-
-export const scene = new THREE.Scene()
-scene.background = new THREE.Color("skyblue")
 
 export const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -22,6 +18,15 @@ export const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio)
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.shadowMap.enabled = true
+
+export const camera = new THREE.PerspectiveCamera(60, width / height, 0.01, 100)
+export const controls = new CameraControls(camera, renderer.domElement)
+controls.minDistance = 0.5
+controls.maxDistance = 80
+controls.setLookAt(0, 0.5, 3, 0, 1, 0, false)
+
+export const scene = new THREE.Scene()
+scene.background = new THREE.Color("skyblue")
 
 const material = new THREE.MeshPhongMaterial({ color: new THREE.Color("pink") })
 const geometry = new THREE.BoxGeometry(2, 0.1, 2)
@@ -58,7 +63,6 @@ scene.add(
 
 loadSkybox().then(texture => {
   scene.background = texture
-  renderer.render(scene, camera)
 })
 
 async function loadSkybox(nr = 4): Promise<THREE.CubeTexture> {

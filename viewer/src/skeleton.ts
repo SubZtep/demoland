@@ -6,7 +6,7 @@ type Landmarks = { x: number, y: number, z: number }[]
 const dotGeometry = new THREE.SphereGeometry(0.1)
 const blueMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff }) // left hand
 const redMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 }) // right hand
-const whiteMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff })
+const whiteMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, opacity: 0.5, transparent: true })
 const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 })
 
 const leftHandIndices = [16, 18, 20, 22]
@@ -35,14 +35,14 @@ const createObjects = (landmarks: Landmarks) => {
     const dot = createDot(
       leftHandIndices.includes(i) ? blueMaterial : rightHandIndices.includes(i) ? redMaterial : whiteMaterial,
     )
-    const { x, y, z } = landmarks[i]
+    const { x, y, z } = landmarks[i]!
     dot.position.set(x, y, z)
     dots.set(i, dot)
     pose.add(dot)
   }
   POSE_CONNECTIONS.forEach(([a, b]) => {
-    const { x: x1, y: y1, z: z1 } = landmarks[a]
-    const { x: x2, y: y2, z: z2 } = landmarks[b]
+    const { x: x1, y: y1, z: z1 } = landmarks[a]!
+    const { x: x2, y: y2, z: z2 } = landmarks[b]!
     const line = createLine(new THREE.Vector3(x1, y1, z1), new THREE.Vector3(x2, y2, z2))
     lines.add(line)
     pose.add(line)
@@ -57,7 +57,3 @@ export const move = (landmarks: Landmarks) => {
 }
 
 createObjects(POSE_LANDMARKS.map(v => ({ ...v, y: v.y * -1 + 3 })))
-
-// setTimeout(() => {
-//   move(POSE_LANDMARKS.map(v => ({ ...v, y: v.y * -1 + 2 })))
-// }, 1000)

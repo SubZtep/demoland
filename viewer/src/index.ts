@@ -1,4 +1,4 @@
-import { camera, scene, renderer } from "./scene"
+import { camera, scene, renderer, controls } from "./scene"
 import { runForever, Loop } from "./loop"
 import { move, pose } from "./skeleton"
 import { log } from "./hud"
@@ -10,13 +10,13 @@ scene.add(pose)
 
 new Loop().start()
 
-runForever.add(() => {
+runForever.add(delta => {
+  controls.update(delta)
   renderer.render(scene, camera)
 })
 
 let ws!: WebSocket
 try {
-  // @ts-ignore
   ws = new WebSocket(import.meta.env.VITE_WSPP)
   log(typeof ws)
 } catch (e: any) {
@@ -29,7 +29,7 @@ ws.addEventListener("error", () => {
 
 ws.addEventListener("open", () => {
   log("connected")
-  document.getElementById("myCanvas")!.className = ""
+  document.getElementById("myCanvas")?.classList.remove("fade")
 })
 
 ws.addEventListener("close", () => {
@@ -38,11 +38,11 @@ ws.addEventListener("close", () => {
 })
 
 let dataCounter = 0
-  
+
 ws.addEventListener("message", ({ data }) => {
   log(`data: ${++dataCounter}`)
-  const msg = JSON.parse(data) // as ServerMessage
-  // // console.log(msg)
-  move(msg.landmarks)
+  const msg = JSON.parse(data) as { name: string; landmarks: Landmark[] }
+  // move(msg.landmarks)
   // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
+  move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
 })
