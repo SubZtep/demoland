@@ -53,6 +53,10 @@ light.shadow.camera.bottom = -side
 light.shadow.camera.left = side
 light.shadow.camera.right = -side
 
+const pointLight = new THREE.PointLight(0xff0000, 1, 100)
+pointLight.position.set(0, 1, 0)
+scene.add(pointLight)
+
 scene.add(
   ambient,
   light,

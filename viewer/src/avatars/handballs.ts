@@ -11,13 +11,12 @@ const rightBall = new THREE.Mesh(geometry, material)
 export const balls = new THREE.Group()
 balls.add(leftBall, rightBall)
 
-const light = new THREE.PointLight( 0xff0000, 1, 100 );
-light.position.set( 0, 1, 0 );
-balls.add( light );
-
 export const move = (landmarks: Landmarks) => {
-  const { x: lx, y: ly, z: lz } = landmarks[1]!
-  const { x: rx, y: ry, z: rz } = landmarks[0]!
+  const [right, left] = landmarks
+      .filter((_, index) => [19, 20].includes(index))
+      .map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 }))
+  const { x: lx, y: ly, z: lz } = left!
+  const { x: rx, y: ry, z: rz } = right!
   leftBall.position.set(lx, ly, lz)
   rightBall.position.set(rx, ry, rz)
 }
