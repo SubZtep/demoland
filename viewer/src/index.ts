@@ -43,8 +43,10 @@ let dataCounter = 0
 
 ws.addEventListener("message", ({ data }) => {
   log(`data: ${++dataCounter}`)
-  const msg = JSON.parse(data) as { name: string; landmarks: Landmark[] }
-  move(msg.landmarks)
+  const msg = JSON.parse(data) as { name: string; landmarks?: Landmark[] }
+  if (msg.landmarks) {
+    move(msg.landmarks)
+  }
   // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
   // move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
 })
