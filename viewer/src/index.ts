@@ -46,5 +46,10 @@ ws.addEventListener("message", ({ data }) => {
   const msg = JSON.parse(data) as { name: string; landmarks: Landmark[] }
   // move(msg.landmarks)
   // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
-  move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
+  // move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
+  move(
+    msg.landmarks
+      .filter((_, index) => [19, 20].includes(index))
+      .map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })),
+  )
 })
