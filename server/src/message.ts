@@ -11,53 +11,53 @@ export function onMessage(data: WebSocket.RawData, binary: boolean, client: WebS
   // console.log("RECEIVED", msg.cmd)
   let channel
 
-  switch (msg.cmd) {
-    case "viewer-hi":
-      channel = channels.get(msg.channel)
-      if (channel) {
-        channel.viewers.add(client)
-        sendMessage({ cmd: "create-obstacles", obstacles: getSerializedObstacles(obstacles) }, client)
-        sendMessage({ cmd: "create-player", player: getSerializedPlayer(channel.player) }, client)
-      } else {
-        sendMessage({ cmd: "error", error: "Channel not found" }, client)
-      }
-      break
+  // switch (msg.cmd) {
+  //   case "viewer-hi":
+  //     channel = channels.get(msg.channel)
+  //     if (channel) {
+  //       channel.viewers.add(client)
+  //       sendMessage({ cmd: "create-obstacles", obstacles: getSerializedObstacles(obstacles) }, client)
+  //       sendMessage({ cmd: "create-player", player: getSerializedPlayer(channel.player) }, client)
+  //     } else {
+  //       sendMessage({ cmd: "error", error: "Channel not found" }, client)
+  //     }
+  //     break
 
-    case "viewer-bye":
-      channels.get(msg.channel)?.viewers.delete(client)
-      break
+  //   case "viewer-bye":
+  //     channels.get(msg.channel)?.viewers.delete(client)
+  //     break
 
-    case "player-hi":
-      if (channels.has(msg.player.name)) {
-        sendMessage({ cmd: "error", error: "Player already exists" }, client)
-      } else {
-        channels.set(msg.player.name, { player: msg.player, viewers: new Set(), world: new RAPIER.World(gravity) })
-      }
-      break
+  //   case "player-hi":
+  //     if (channels.has(msg.player.name)) {
+  //       sendMessage({ cmd: "error", error: "Player already exists" }, client)
+  //     } else {
+  //       channels.set(msg.player.name, { player: msg.player, viewers: new Set(), world: new RAPIER.World(gravity) })
+  //     }
+  //     break
 
-    case "player-bye":
-      channels.delete(msg.player.name)
-      break
+  //   case "player-bye":
+  //     channels.delete(msg.player.name)
+  //     break
 
-    case "update":
-      channel = channels.get(msg.player!.name)
-      if (channel) {
-        // channel.player = msg.player!
-        // const serializedPlayer = getSerializedPlayer(channel.player)
-        channel.viewers.forEach(viewer => {
-          console.log("SENDING UPDATE TO VIEWER", new Date().toLocaleTimeString())
-          sendMessage({ cmd: "update", player: msg.player }, viewer)
-          // sendMessage({ cmd: "update", player: serializedPlayer }, viewer)
-        })
-      }
-      // msg.players?.filter(v => v.landmarks).forEach(player => {
-      //   players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
-      //     const { x, y, z } = player.landmarks![i]
-      //     rigidBody.setTranslation(new RAPIER.Vector3(x, y, z), true)
-      //   })
-      // })
-      break
-  }
+  //   case "update":
+  //     channel = channels.get(msg.player!.name)
+  //     if (channel) {
+  //       // channel.player = msg.player!
+  //       // const serializedPlayer = getSerializedPlayer(channel.player)
+  //       channel.viewers.forEach(viewer => {
+  //         console.log("SENDING UPDATE TO VIEWER", new Date().toLocaleTimeString())
+  //         sendMessage({ cmd: "update", player: msg.player }, viewer)
+  //         // sendMessage({ cmd: "update", player: serializedPlayer }, viewer)
+  //       })
+  //     }
+  //     // msg.players?.filter(v => v.landmarks).forEach(player => {
+  //     //   players.get(client)?.rigidBodies?.forEach((rigidBody, i) => {
+  //     //     const { x, y, z } = player.landmarks![i]
+  //     //     rigidBody.setTranslation(new RAPIER.Vector3(x, y, z), true)
+  //     //   })
+  //     // })
+  //     break
+  // }
 
   // console.log("CHANNELS", Array.from(channels.keys()))
 

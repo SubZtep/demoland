@@ -7,7 +7,6 @@ import "./index.css"
 
 // const channel = window.location.pathname.replaceAll("/", "")
 
-// scene.add(pose)
 scene.add(balls)
 
 new Loop().start()
@@ -39,14 +38,11 @@ ws.addEventListener("close", () => {
   document.getElementById("myCanvas")?.classList.add("fade")
 })
 
-let dataCounter = 0
-
 ws.addEventListener("message", ({ data }) => {
-  log(`data: ${++dataCounter}`)
-  const msg = JSON.parse(data) as { name: string; landmarks?: Landmark[] }
-  if (msg.landmarks) {
-    move(msg.landmarks)
-  }
+  const msg = JSON.parse(data) as ServerMessage
+
+  move(msg.player)
+
   // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
   // move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
 })

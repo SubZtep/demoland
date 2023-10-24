@@ -93,7 +93,27 @@ interface ErrorMessage {
 }
 
 /** From server to client */
-type ServerMessage = PlayerHiMessage | UpdateMessage | PlayerByeMessage | CreateObstaclesMessage | CreatePlayerMessage | ErrorMessage
+// type ServerMessage = PlayerHiMessage | UpdateMessage | PlayerByeMessage | CreateObstaclesMessage | CreatePlayerMessage | ErrorMessage
 
 /** From client to server */
 type ClientMessage = ViewerHiMessage | ViewerByeMessage | PlayerHiMessage | UpdateMessage | PlayerByeMessage
+
+//
+//
+//
+//
+//
+//
+
+interface ServerMessage {
+  channel: string
+  player: {
+    left: Landmark
+    right: Landmark
+  }
+  obstacles: {
+    id: string
+    position: { x: number; y: number; z: number }
+    rotation: { x: number; y: number; z: number; w: number }
+  }[]
+}

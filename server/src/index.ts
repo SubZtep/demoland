@@ -1,23 +1,19 @@
-import RAPIER from "@dimforge/rapier3d-compat"
-import { onMessage } from "./message.js"
-import { players, updateStats } from "./state.js"
-import { server, wss, sendMessage } from "./conn.js"
+import { onMessage } from "./onebox.js"
+import { updateStats } from "./state.js"
+import { server, wss } from "./conn.js"
+import { startPhysics } from "./physics.js"
 
 const port = Number(process.env.PORT ?? 8080)
-await RAPIER.init()
 
-wss.on("connection", ws => {
-  ws.on("message", (data, binary) => {
-    onMessage(data, binary, ws, wss)
+await startPhysics(wss)
+
+wss.on("connection", async ws => {
+
+  ws.on("message", data => {
+    onMessage(data, ws, wss)
   })
 
   ws.on("close", () => {
-    // if (players.has(ws)) {
-    //   const { id } = players.get(ws)!
-    //   players.delete(ws)
-    //   sendMessage({ cmd: "bye", player: { id } })
-    // }
-
     updateStats(wss)
   })
 

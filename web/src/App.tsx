@@ -42,12 +42,7 @@ export default function App() {
           width={width}
           height={height}
         />
-        <PoseCanvas
-          canvasRef={canvasRef}
-          landmarks={landmarks}
-          width={width}
-          height={height}
-        />
+        <PoseCanvas canvasRef={canvasRef} landmarks={landmarks} width={width} height={height} />
       </div>
 
       <Options />

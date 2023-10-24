@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { POSE_CONNECTIONS, POSE_LANDMARKS } from "../const"
 
-type Landmarks = { x: number, y: number, z: number }[]
+type Landmarks = { x: number; y: number; z: number }[]
 
 const dotGeometry = new THREE.SphereGeometry(0.1)
 const blueMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff }) // left hand
