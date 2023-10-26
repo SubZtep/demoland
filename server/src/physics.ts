@@ -1,37 +1,33 @@
 import RAPIER from "@dimforge/rapier3d-compat"
 import WebSocket from "ws"
-// import { getSerializedObstacles, obstacles } from "./state"
 import { Box } from "./objects/box.js"
+import { obstacles } from "./state.js"
 
 const gravity = { x: 0.0, y: -9.81, z: 0.0 }
 const frameLimit = 1000 / 30
-// const message: UpdateMessage = { cmd: "update" }
-// const message: ServerMessage = { box1: "" }
-const message = {}
+
+let message: ServerMessage = {
+  channel: "",
+  obstacles: [],
+}
 
 await RAPIER.init()
 const world = new RAPIER.World(gravity)
 
-const box1 = new Box(world)
-const box2 = new Box(world)
-
-console.log("i")
-
-export async function startPhysics(server: WebSocket.Server) {
-  // createObstacles(world, obstacles)
+export function startPhysics(server: WebSocket.Server) {
   const gameLoop = () => {
     world.step()
 
-    // console.log("j")
+    obstacles.forEach(obstacle => {
+      message.obstacles.push({
+        id: obstacle.id,
+        command: "move",
+        position: obstacle.body.translation(),
+        rotation: obstacle.body.rotation(),
+      })
+    })
 
-    // obstacles.forEach(obstacle => {
-    //   if (obstacle.rigidBody) {
-    //     obstacle.position = obstacle.rigidBody.translation()
-    //     obstacle.rotation = obstacle.rigidBody.rotation()
-    //   }
-    // })
-
-    // message.obstacles = getSerializedObstacles(obstacles).filter(v => v.id !== "ground")
+    // console.log(JSON.stringify(message))
 
     // broadcast to all clients
     server.clients.forEach(client => {
@@ -40,32 +36,30 @@ export async function startPhysics(server: WebSocket.Server) {
       }
     })
 
+    message.obstacles = []
+
     setTimeout(gameLoop, frameLimit)
   }
 
   gameLoop()
 }
 
-export function createPlayerCollider() {
-  // const colliderDesc = RAPIER.ColliderDesc.cuboid(width / 2, height / 2, depth / 2)
-  // obstacle.collider = world.createCollider(colliderDesc, obstacle.rigidBody)
+setInterval(() => {
+  if (obstacles.has("box")) {
+    destroyBox("box")
+  } else {
+    createBox("box")
+  }
+}, 1000)
+
+function createBox(id: string) {
+  const box = new Box(world, id, { width: 0.5, height: 0.5, depth: 0.5 })
+  box.position({ x: 0, y: 1, z: 0 })
+  message.obstacles.push(box.serialize("create"))
+  obstacles.set(id, box)
 }
 
-export const createPlayerPhysics = (player: Player) => {
-  const rigidBodies: RigidBody[] = []
-  const colliders: Collider[] = []
-  // const { x: px, y: py, z: pz } = player.position
-  // console.log("player pos", [px, py, pz])
-  // for (const { x, y, z } of player.landmarks) {
-  //   // console.log("landmark pos", [x, y, z])
-
-  //   const rigidBodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(x, y, z)
-  //   const rigidBody = world.createRigidBody(rigidBodyDesc)
-  //   rigidBodies.push(rigidBody)
-
-  //   const groundColliderDesc = RAPIER.ColliderDesc.ball(0.06).setTranslation(x, y, z - 0.4)
-  //   const collider = world.createCollider(groundColliderDesc, rigidBody)
-  //   colliders.push(collider)
-  // }
-  return { rigidBodies, colliders }
+function destroyBox(id: string) {
+  message.obstacles.push({ id, command: "destroy" })
+  obstacles.delete(id)
 }

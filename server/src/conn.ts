@@ -5,6 +5,8 @@ import { app } from "./app.js"
 export const server = createServer(app)
 export const wss = new WebSocketServer({ server })
 
+wss.on("error", err => console.log("WSS Error", err))
+
 export function sendMessage(msg: ServerMessage, client?: WebSocket) {
   // console.log(`sending${client ? " to one" : ""}`, JSON.stringify(msg))
   if (client) {
@@ -19,5 +21,3 @@ export function sendMessage(msg: ServerMessage, client?: WebSocket) {
     }
   })
 }
-
-wss.on("error", err => console.log("WSS Error", err))

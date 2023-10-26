@@ -1,11 +1,14 @@
-import { camera, scene, renderer, controls } from "./scene"
-import { runForever, Loop } from "./loop"
+import { camera, scene, renderer, controls } from "./app/scene"
+import { runForever, Loop } from "./app/loop"
 // import { move, pose } from "./avatars/skeleton"
 import { move, balls } from "./avatars/handballs"
-import { log } from "./hud"
+import { log } from "./app/hud"
 import "./index.css"
+import { Box } from "./obstacles/box"
 
 // const channel = window.location.pathname.replaceAll("/", "")
+
+const obstacles = new Map<string, Box>()
 
 scene.add(balls)
 
@@ -24,8 +27,35 @@ try {
   log(e.message)
 }
 
-ws.addEventListener("error", () => {
-  log("error")
+ws.addEventListener("message", ({ data }) => {
+  const msg = JSON.parse(data) as ServerMessage
+
+  msg.obstacles.forEach(obstacle => {
+    switch (obstacle.command) {
+      case "create":
+        if (!obstacles.has(obstacle.id)) {
+          obstacles.set(obstacle.id, new Box({ scene, ...obstacle }))
+        }
+        break
+      case "destroy":
+        if (obstacles.has(obstacle.id)) {
+          obstacles.get(obstacle.id)!.destroy()
+          obstacles.delete(obstacle.id)
+        }
+        break
+      case "move":
+        const obs = obstacles.get(obstacle.id)
+        if (obs) {
+          obs.position(obstacle.position)
+          obs.rotation(obstacle.rotation)
+        }
+        break
+    }
+  })
+
+  if (msg.player) {
+    move(msg.player)
+  }
 })
 
 ws.addEventListener("open", () => {
@@ -36,13 +66,9 @@ ws.addEventListener("open", () => {
 ws.addEventListener("close", () => {
   log("close")
   document.getElementById("myCanvas")?.classList.add("fade")
+  setTimeout(() => location.reload(), 2000)
 })
 
-ws.addEventListener("message", ({ data }) => {
-  const msg = JSON.parse(data) as ServerMessage
-
-  move(msg.player)
-
-  // move(msg.landmarks.map(v => ({ ...v, y: v.y + 2 })))
-  // move(msg.landmarks.map(v => ({ x: v.x * -1, y: v.y * -1 + 1, z: v.z * -1 })))
+ws.addEventListener("error", () => {
+  log("error")
 })

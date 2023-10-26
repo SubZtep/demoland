@@ -5,10 +5,9 @@ import { startPhysics } from "./physics.js"
 
 const port = Number(process.env.PORT ?? 8080)
 
-await startPhysics(wss)
+startPhysics(wss)
 
 wss.on("connection", async ws => {
-
   ws.on("message", data => {
     onMessage(data, ws, wss)
   })

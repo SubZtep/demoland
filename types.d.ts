@@ -44,7 +44,7 @@ interface BoxObstacle extends BaseObstacle {
   dimensions: { width: number; height: number; depth: number }
 }
 
-type Obstacle = PlaneObstacle | BoxObstacle
+// type Obstacle = PlaneObstacle | BoxObstacle
 
 //
 // MESSAGES
@@ -105,15 +105,34 @@ type ClientMessage = ViewerHiMessage | ViewerByeMessage | PlayerHiMessage | Upda
 //
 //
 
+type Position = { x: number; y: number; z: number }
+type Rotation = { x: number; y: number; z: number; w: number }
+type Dimensions = { width: number; height: number; depth: number }
+
 interface ServerMessage {
   channel: string
-  player: {
-    left: Landmark
-    right: Landmark
+  player?: {
+    left: Position
+    right: Position
   }
-  obstacles: {
-    id: string
-    position: { x: number; y: number; z: number }
-    rotation: { x: number; y: number; z: number; w: number }
-  }[]
+  obstacles: (
+    | {
+        id: string
+        command: "create"
+        type: "box"
+        position: Position
+        rotation: Rotation
+        dimensions: Dimensions
+      }
+    | {
+        id: string
+        command: "move"
+        position: Position
+        rotation: Rotation
+      }
+    | {
+        id: string
+        command: "destroy"
+      }
+  )[]
 }

@@ -19,7 +19,7 @@ let lastRightPos = new THREE.Vector3()
 export const balls = new THREE.Group()
 balls.add(leftBall, rightBall, box)
 
-export const move = ({ left, right }: ServerMessage["player"]) => {
+export const move = ({ left, right }: NonNullable<ServerMessage["player"]>) => {
   const { x: lx, y: ly, z: lz } = left
   const { x: rx, y: ry, z: rz } = right
 
