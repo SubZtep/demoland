@@ -1,5 +1,4 @@
-import { onMessage } from "./onebox.js"
-import { updateStats } from "./state.js"
+import { player, updateStats } from "./state.js"
 import { server, wss } from "./conn.js"
 import { startPhysics } from "./physics.js"
 
@@ -9,7 +8,15 @@ startPhysics(wss)
 
 wss.on("connection", async ws => {
   ws.on("message", data => {
-    onMessage(data, ws, wss)
+    const { landmarks } = JSON.parse(data.toString()) as ServerMessage
+    if (landmarks) {
+      const [right, left] = landmarks
+        .filter((_, index) => [19, 20].includes(index))
+        .map(v => ({ x: v.x * -2, y: v.y * -2 + 1, z: v.z * -2 }))
+
+      player.left = left!
+      player.right = right!
+    }
   })
 
   ws.on("close", () => {

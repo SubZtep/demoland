@@ -1,10 +1,5 @@
 import * as THREE from "three"
 
-const blueMaterial = new THREE.MeshPhongMaterial({ color: new THREE.Color("#9999ff") })
-const boxGeometry = new THREE.BoxGeometry(0.3, 0.3, 0.3)
-const box = new THREE.Mesh(boxGeometry, blueMaterial)
-box.position.set(0.9, 1.3, 0.3)
-
 const yellowMaterial = new THREE.MeshPhongMaterial({ color: new THREE.Color("#ffff00") })
 const sphereGeometry = new THREE.SphereGeometry(0.2)
 
@@ -17,7 +12,7 @@ let lastLeftPos = new THREE.Vector3()
 let lastRightPos = new THREE.Vector3()
 
 export const balls = new THREE.Group()
-balls.add(leftBall, rightBall, box)
+balls.add(leftBall, rightBall)
 
 export const move = ({ left, right }: NonNullable<ServerMessage["player"]>) => {
   const { x: lx, y: ly, z: lz } = left

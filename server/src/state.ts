@@ -11,6 +11,11 @@ export const players = new Map<WebSocket, Player>()
 
 export const obstacles = new Map<string, Box>()
 
+export const player: NonNullable<ServerMessage["player"]> = {
+  left: { x: 0, y: 0, z: 0 },
+  right: { x: 0, y: 0, z: 0 },
+}
+
 export const updateStats = (wss: WebSocket.Server) => {
   connections.active = wss.clients.size
   if (connections.active > connections.top) {

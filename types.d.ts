@@ -115,6 +115,8 @@ interface ServerMessage {
     left: Position
     right: Position
   }
+  /** @deprecated */
+  landmarks?: { x: number; y: number; z: number }[],
   obstacles: (
     | {
         id: string

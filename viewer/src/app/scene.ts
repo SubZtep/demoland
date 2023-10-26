@@ -28,17 +28,15 @@ controls.setLookAt(0, 0.5, 3, 0, 1, 0, false)
 export const scene = new THREE.Scene()
 scene.background = new THREE.Color("#008B8B")
 
-scene.add(createPlane(), ...createLights())
+scene.add(...createPlane(), ...createLights())
 
 function createLights() {
   const ambient = new THREE.AmbientLight(0xffffff, 0.35)
 
   const light = new THREE.DirectionalLight(0xffffff, 0.5)
-  // const grid = new THREE.GridHelper(50, 50)
   light.castShadow = true
   light.position.set(-8, 15, 1)
   light.target.position.set(-8, 5, 1)
-  // light.target.position.set(5, 10, -1)
   light.shadow.camera.near = 5
   light.shadow.camera.far = 25
   const side = 100
@@ -54,7 +52,6 @@ function createLights() {
     ambient,
     light,
     pointLight,
-    // grid,
     new THREE.DirectionalLightHelper(light),
     new THREE.CameraHelper(light.shadow.camera),
   ]
@@ -66,5 +63,6 @@ function createPlane() {
   const plane = new THREE.Mesh(geometry, material)
   plane.rotateX(Math.PI / -2)
   plane.receiveShadow = true
-  return plane
+  const grid = new THREE.GridHelper(10, 10)
+  return [plane, grid]
 }
