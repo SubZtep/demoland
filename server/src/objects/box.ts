@@ -1,5 +1,12 @@
 import RAPIER from "@dimforge/rapier3d-compat"
 
+interface Props {
+  world: RAPIER.World
+  id: string
+  dimensions: Dimensions
+  position: Position
+}
+
 export class Box {
   id: string
   world: RAPIER.World
@@ -7,12 +14,12 @@ export class Box {
   collider: RAPIER.Collider
   dimensions: Dimensions
 
-  constructor(world: RAPIER.World, id: string, dimensions: Dimensions) {
+  constructor({ world, id, dimensions, position: { x, y, z } }: Props) {
     this.id = id
     this.world = world
     this.dimensions = dimensions
 
-    const rigidBodyDesc = new RAPIER.RigidBodyDesc(RAPIER.RigidBodyType.Dynamic)
+    const rigidBodyDesc = new RAPIER.RigidBodyDesc(RAPIER.RigidBodyType.Dynamic).setUserData(id).setTranslation(x, y, z)
     this.rigidBody = this.world.createRigidBody(rigidBodyDesc)
 
     const { width, height, depth } = this.dimensions

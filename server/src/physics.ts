@@ -8,27 +8,28 @@ import { Player } from "./objects/player.js"
 const gravity = { x: 0.0, y: -9.81, z: 0.0 }
 const frameLimit = 1000 / 30
 
-let message: ServerMessage = {
-  channel: "",
-  // player,
-  obstacles: [],
-}
-
 await RAPIER.init()
 const world = new RAPIER.World(gravity)
 
-const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0)
+const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0).setSensor(true)
 const groundCollider = world.createCollider(groundColliderDesc)
 groundCollider.setTranslation({ x: 0, y: -0.1, z: 0 })
 
 export const player = new Player(world)
 
+const message: ServerMessage = {
+  channel: "",
+  player: player.serialize(),
+  obstacles: [],
+}
+
 export function startPhysics(server: WebSocket.Server) {
   const gameLoop = () => {
     world.step()
 
-    // world.intersectionsWith(p.leftCollider, collider => console.log("Player left intersectred", collider))
-    // world.intersectionsWith(p.rightCollider, collider => console.log("Player right intersectred", collider))
+    world.intersectionsWith(groundCollider, () => resetBox())
+    world.intersectionsWith(player.leftCollider, () => resetBox())
+    world.intersectionsWith(player.rightCollider, () => resetBox())
 
     message.player = player.serialize()
 
@@ -56,27 +57,42 @@ export function startPhysics(server: WebSocket.Server) {
   }
 
   gameLoop()
+  createBox("box")
 }
 
-setInterval(() => {
-  if (obstacles.has("box")) {
-    destroyBox("box")
-  } else {
-    createBox("box")
-  }
-}, 1500)
+// setInterval(() => {
+//   if (obstacles.has("box")) {
+//     destroyBox("box")
+//   } else {
+//     createBox("box")
+//   }
+// }, 1500)
+
+export function resetBox() {
+  destroyBox("box")
+  createBox("box")
+}
 
 function createBox(id: string) {
-  const box = new Box(world, id, { width: 0.5, height: 0.5, depth: 0.5 })
-  box.position({ x: 0, y: 1, z: 0 })
-  message.obstacles.push(box.serialize("create"))
-  obstacles.set(id, box)
+  if (!obstacles.has(id)) {
+    const box = new Box({
+      world,
+      id,
+      dimensions: { width: 0.5, height: 0.5, depth: 0.5 },
+      position: { x: Math.random(), y: Math.random() + 1, z: 0.5 },
+      // position: { x: 0, y: 1.5, z: 0.5 },
+    })
+    message.obstacles.push(box.serialize("create"))
+    obstacles.set(id, box)
+  }
 }
 
 function destroyBox(id: string) {
-  message.obstacles.push({ id, command: "destroy" })
-  const box = obstacles.get(id)!
-  world.removeCollider(box.collider, true)
-  world.removeRigidBody(box.rigidBody)
-  obstacles.delete(id)
+  if (obstacles.has(id)) {
+    message.obstacles.push({ id, command: "destroy" })
+    const box = obstacles.get(id)!
+    world.removeCollider(box.collider, true)
+    world.removeRigidBody(box.rigidBody)
+    obstacles.delete(id)
+  }
 }

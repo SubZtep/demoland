@@ -1,12 +1,14 @@
 import { updateStats } from "./state.js"
 import { server, wss } from "./conn.js"
-import { player, startPhysics } from "./physics.js"
+import { player, resetBox, startPhysics } from "./physics.js"
 
 const port = Number(process.env.PORT ?? 8080)
 
 startPhysics(wss)
 
 wss.on("connection", async ws => {
+  resetBox()
+
   ws.on("message", data => {
     const { landmarks } = JSON.parse(data.toString()) as ServerMessage
     if (landmarks) {

@@ -111,7 +111,7 @@ type Dimensions = { width: number; height: number; depth: number }
 
 interface ServerMessage {
   channel: string
-  player?: {
+  player: {
     left: Position
     right: Position
   }
