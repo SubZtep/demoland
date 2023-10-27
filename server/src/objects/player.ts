@@ -22,12 +22,20 @@ export class Player {
     const rigidBodyDesc = new RAPIER.RigidBodyDesc(RAPIER.RigidBodyType.Dynamic)
     const rigidBody = this.world.createRigidBody(rigidBodyDesc)
 
-    const colliderDesc = RAPIER.ColliderDesc.ball(radius / 2) // .setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS)
-    const collider = this.world.createCollider(colliderDesc, rigidBody)
-    // collider.setActiveCollisionTypes(RAPIER.ActiveCollisionTypes.ALL)
-    // collider.setSensor(true)
+    const colliderDesc = RAPIER.ColliderDesc.ball(radius / 2).setSensor(true) // .setActiveEvents(RAPIER.ActiveEvents.COLLISION_EVENTS).setSensor(true)
+    // const collider = this.world.createCollider(colliderDesc, rigidBody)
+    const collider = this.world.createCollider(colliderDesc)
+    collider.setActiveCollisionTypes(RAPIER.ActiveCollisionTypes.ALL)
+    // collider
     // collider.setActiveCollisionTypes(RAPIER.ActiveCollisionTypes.DEFAULT | RAPIER.ActiveCollisionTypes.KINEMATIC_FIXED)
 
     return [rigidBody, collider]
+  }
+
+  serialize() {
+    return {
+      left: this.leftBody.translation(),
+      right: this.rightBody.translation(),
+    }
   }
 }

@@ -1,14 +1,16 @@
 import RAPIER from "@dimforge/rapier3d-compat"
 import WebSocket from "ws"
 import { Box } from "./objects/box.js"
-import { obstacles, player } from "./state.js"
+import { obstacles } from "./state.js"
+import { Player } from "./objects/player.js"
 
+// const gravity = { x: 0.0, y: 0, z: 0.0 }
 const gravity = { x: 0.0, y: -9.81, z: 0.0 }
 const frameLimit = 1000 / 30
 
 let message: ServerMessage = {
   channel: "",
-  player,
+  // player,
   obstacles: [],
 }
 
@@ -19,23 +21,16 @@ const groundColliderDesc = RAPIER.ColliderDesc.cuboid(10.0, 0.1, 10.0)
 const groundCollider = world.createCollider(groundColliderDesc)
 groundCollider.setTranslation({ x: 0, y: -0.1, z: 0 })
 
-world.contactsWith(groundCollider, collider => console.log("Ground contacted", collider))
-world.intersectionsWith(groundCollider, collider => console.log("Ground intersectred", collider))
-
-// world.intersectionsWith(player.leftCollider, collider => {
-//   console.log("Left contacted", collider)
-// })
-
-// world.intersectionsWith(player.rightCollider, collider => {
-//   console.log("Right contacted", collider)
-// })
+export const player = new Player(world)
 
 export function startPhysics(server: WebSocket.Server) {
   const gameLoop = () => {
     world.step()
 
-    message.player!.left = player.left
-    message.player!.right = player.right
+    // world.intersectionsWith(p.leftCollider, collider => console.log("Player left intersectred", collider))
+    // world.intersectionsWith(p.rightCollider, collider => console.log("Player right intersectred", collider))
+
+    message.player = player.serialize()
 
     obstacles.forEach(obstacle => {
       message.obstacles.push({

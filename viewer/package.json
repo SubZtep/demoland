@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "camera-controls": "^2.7.2",
-    "three": "^0.157.0"
+    "three": "^0.158.0"
   },
   "devDependencies": {
     "@types/three": "^0.157.2",

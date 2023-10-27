@@ -1,6 +1,6 @@
-import { player, updateStats } from "./state.js"
+import { updateStats } from "./state.js"
 import { server, wss } from "./conn.js"
-import { startPhysics } from "./physics.js"
+import { player, startPhysics } from "./physics.js"
 
 const port = Number(process.env.PORT ?? 8080)
 
@@ -14,8 +14,7 @@ wss.on("connection", async ws => {
         .filter((_, index) => [19, 20].includes(index))
         .map(v => ({ x: v.x * -2, y: v.y * -2 + 1, z: v.z * -2 }))
 
-      player.left = left!
-      player.right = right!
+      player.position(left!, right!)
     }
   })
 
