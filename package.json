@@ -1,39 +1,16 @@
 {
-  "name": "demoland",
-  "version": "1.0.0",
-  "description": "",
-  "author": "Andras Serfozo <subztep@gmail.com>",
-  "repository": "github:SubZtep/demoland",
-  "license": "UNLICENSED",
+  "name": "vite-project",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
-  "workspaces": [
-    "server",
-    "viewer",
-    "web"
-  ],
   "scripts": {
-    "dev": "pnpm --parallel --if-present dev",
-    "build": "pnpm --recursive --if-present run build",
-    "build:server": "pnpm --filter server run build",
-    "build:web": "pnpm --filter web run build",
-    "lint": "pnpm --recursive --if-present run lint",
-    "test": "vitest"
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.200",
-    "@types/node": "^20.8.9",
-    "@typescript-eslint/eslint-plugin": "^6.9.0",
-    "@typescript-eslint/parser": "^6.9.0",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "eslint-plugin-tsdoc": "^0.2.17",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3",
+    "vite-plugin-pug": "../vite-plugin-pug/dist"
   }
 }

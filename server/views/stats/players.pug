@@ -1,9 +1,0 @@
-table
-  thead
-    tr
-      th(colspan="2") Players
-  tbody
-    each player in players
-      tr
-        td #{player.id}
-        td #{player.colour} — pos: [#{player.x.toString().substr(0, 5)}, #{player.y.toString().substr(0, 5)}]
