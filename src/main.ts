@@ -10,14 +10,14 @@ renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setAnimationLoop(animate)
 
 const color = 0x112200
-const bgColor = 0x031619
+const bgColor = 0x231609
 
 renderer.setClearColor(bgColor)
 
 camera.position.z = 18
 
 const geometry = new THREE.BoxGeometry(10, 10, 10)
-const material = new THREE.MeshBasicMaterial({ color })
+const material = new THREE.MeshToonMaterial({ color })
 const fog = new THREE.Fog(bgColor, 8, 20)
 
 material.color.set(color)

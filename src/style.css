@@ -40,4 +40,9 @@ h1 {
   place-self: center;
   font-size: 3.2em;
   margin: 0;
+  text-shadow:
+    -10px 0 #09060330,
+    0 10px #09060330,
+    10px 0 #09060330,
+    0 10px #09060330;
 }
